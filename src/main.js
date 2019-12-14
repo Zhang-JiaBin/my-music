@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import fastclick from 'fastclick'
+import './rem'
+import './assets/style/scss/icon.css'
+import './assets/style/scss/global.scss'
+fastclick.attach(document.body)
 
 Vue.config.productionTip = false
 
