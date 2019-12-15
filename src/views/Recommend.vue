@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getRecommend } from '../../api/recommend'
+import { getRecommend } from '../api/recommend'
 import 'swiper/dist/css/swiper.css'
 import scroll from '../common/scroll'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
