@@ -32,21 +32,23 @@ export default {
 <style lang="scss" scoped>
   @import "../assets/style/scss/global";
   .little-title{
-    height: 40px;
+    height: 45px;
     width: 100%;
     padding: 0 15px;
     box-sizing: border-box;
-    font-size: 15px;
     @include space;
     .title-text-wrapper{
       height: 100%;
-      color: black;
+      font-size: $font-size-medium-x;
+      color: #1a1a1a;
+      font-weight: bold;
       @include center;
     }
     .title-more-wrapper {
       height: 100%;
-      width: 50px;
-      color: #a5a5a5;
+      width: 40px;
+      color: #3c3c3c;
+      font-size: $font-size-small;
       @include space;
       /*.title-more {*/
       /*}*/

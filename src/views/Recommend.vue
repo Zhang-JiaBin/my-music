@@ -19,6 +19,10 @@
             <song-item :img-url="item.cover" :songText="item.title"></song-item>
           </div>
         </div>
+        <little-title title="排行榜"></little-title>
+        <recomend-rank :rank-group="rankGroup"></recomend-rank>
+        <little-title title="精选音乐FM"></little-title>
+        <recomend-song :new-song="newSongList"></recomend-song>
       </div>
     </scroll>
   </div>
@@ -31,6 +35,10 @@ import scroll from '../common/scroll'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import LittleTitle from '../common/LittleTitle'
 import SongItem from '../common/SongItem'
+import RecomendRank from '../components/Recommend/RecommendRank'
+import { createSong } from '../utils/song'
+import { randomlist } from '../utils/random'
+import RecomendSong from '../components/Recommend/RecommendSong'
 export default {
   name: 'Recommend',
   data () {
@@ -45,13 +53,18 @@ export default {
         clickable: true
       },
       swiperList: [],
-      vHotList: []
+      vHotList: [],
+      rankGroup: [],
+      newSong: [],
+      newSongList: []
     }
   },
   mounted () {
     this._getRecommend()
   },
   components: {
+    RecomendSong,
+    RecomendRank,
     SongItem,
     LittleTitle,
     swiper,
@@ -67,13 +80,30 @@ export default {
         console.log(res)
         this.swiperList = res.focus.data.content
         this.vHotList = res.recomPlaylist.data.v_hot
-        console.log(this.swiperList)
-        console.log(this.vHotList)
+        this.rankGroup = res.toplist.data.group
+        this.newSong = res.new_song.data.songlist
+        // console.log(this.swiperList)
+        // console.log(this.vHotList)
+        // console.log(this.rankGroup)
+        // console.log(this.newSong)
+        this.newSongList = randomlist(this.normalizeSong(this.newSong), 15)
+        // console.log(this.newSongList)
       })
     },
     loadImage () {
-      this.$refs.scroll.refresh()
-      // this.checkLoaded = true
+      if (!this.checkLoaded) {
+        this.$refs.scroll.refresh()
+        this.checkLoaded = true
+      }
+    },
+    normalizeSong (list) {
+      let ret = []
+      list.forEach(item => {
+        if (item.album.id) {
+          ret.push(createSong(item))
+        }
+      })
+      return ret
     }
   }
 }
