@@ -3,7 +3,7 @@
     <div class="title-text-wrapper">
       <span class="title-text">{{title}}</span>
     </div>
-    <div class="title-more-wrapper">
+    <div class="title-more-wrapper" v-if="showMore" @click="displayMore">
       <span class="title-more">更多</span>
       <span class="icon-more"></span>
     </div>
@@ -14,7 +14,11 @@
 export default {
   name: 'LittleTitle',
   props: {
-    title: String
+    title: String,
+    showMore: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
@@ -25,7 +29,11 @@ export default {
 
   computed: {},
 
-  methods: {}
+  methods: {
+    displayMore () {
+      this.$emit('displayMore')
+    }
+  }
 }
 
 </script>
@@ -50,11 +58,10 @@ export default {
       color: #3c3c3c;
       font-size: $font-size-small;
       @include space;
-      /*.title-more {*/
-      /*}*/
-      /*.icon-search {*/
-
-      /*}*/
+      .title-more {
+      }
+      .icon-search {
+      }
     }
   }
 </style>

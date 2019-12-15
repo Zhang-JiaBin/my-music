@@ -2,7 +2,7 @@
   <div class="rank-item">
     <div class="rank-item-wrapper">
       <div class="rank-img-wrapper">
-        <img class="rank-img" :src="rankList.frontPicUrl" alt="">
+        <img class="rank-img" v-lazy="rankList.frontPicUrl" alt="">
       </div>
       <div class="rank-song-wrapper">
         <div class="rank-song-item" v-for="subItem in rankList.song" :key="subItem.id">
@@ -21,7 +21,7 @@
 export default {
   name: 'rankItem',
   props: {
-    rankList: Object
+    rankList: Object,
   },
   data () {
     return {
@@ -84,6 +84,20 @@ export default {
               @include ellipsis2(1)
             }
           }
+        }
+      }
+    }
+    .rank-another-wrapper{
+      padding-left: 15px;
+      box-sizing: border-box;
+      display: flex;
+      height: 160px;
+      .rank-another-img-wrapper{
+        flex: 0 0 50%;
+        width: 50%;
+        .rank-another-img{
+          border-radius: 10px;
+          width: 100%;
         }
       }
     }

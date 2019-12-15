@@ -4,7 +4,7 @@
       <!-- slides -->
       <swiper-slide class="RecommendSong-swiper-item" v-for="(page,index) in pages" :key="index">
         <div class="item-img-wrapper" v-for="item in page" :key="item.id">
-          <img class="item-img" :src="item.image" alt="">
+          <img class="item-img" v-lazy="item.image" alt="">
           <div class="item-img-text">
             <span class="text-name">{{item.name}}</span>
             <span class="text-singer">{{item.singer}}</span>

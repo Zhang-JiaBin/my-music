@@ -1,7 +1,7 @@
 <template>
   <div class="song-item">
     <div class="song-img-wrapper">
-      <img class="song-img" :src="ImgUrl">
+      <img class="song-img" v-lazy="ImgUrl">
     </div>
     <div class="song-text-wrapper">
       <span class="song-text">{{songText}}</span>

@@ -19,8 +19,8 @@
             <song-item :img-url="item.cover" :songText="item.title"></song-item>
           </div>
         </div>
-        <little-title title="排行榜"></little-title>
-        <recomend-rank :rank-group="rankGroup"></recomend-rank>
+        <little-title title="排行榜" @displayMore="gotoRank"></little-title>
+        <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
         <little-title title="精选音乐FM"></little-title>
         <recomend-song :new-song="newSongList"></recomend-song>
       </div>
@@ -39,6 +39,7 @@ import RecomendRank from '../components/Recommend/RecommendRank'
 import { createSong } from '../utils/song'
 import { randomlist } from '../utils/random'
 import RecomendSong from '../components/Recommend/RecommendSong'
+import { singerMixin } from '../utils/mixin'
 export default {
   name: 'Recommend',
   data () {
@@ -54,7 +55,7 @@ export default {
       },
       swiperList: [],
       vHotList: [],
-      rankGroup: [],
+      // rankGroup: [],
       newSong: [],
       newSongList: []
     }
@@ -73,18 +74,24 @@ export default {
   },
 
   computed: {},
-
+  mixins: [singerMixin],
   methods: {
+    gotoRank () {
+      this.$router.push({
+        path: 'rank'
+      })
+    },
     _getRecommend () {
       getRecommend().then(res => {
         console.log(res)
         this.swiperList = res.focus.data.content
         this.vHotList = res.recomPlaylist.data.v_hot
-        this.rankGroup = res.toplist.data.group
+        this.setRankGroup(res.toplist.data.group)
+        // this.rankGroup = res.toplist.data.group
         this.newSong = res.new_song.data.songlist
         // console.log(this.swiperList)
         // console.log(this.vHotList)
-        // console.log(this.rankGroup)
+        console.log(this.rankGroup)
         // console.log(this.newSong)
         this.newSongList = randomlist(this.normalizeSong(this.newSong), 15)
         // console.log(this.newSongList)
