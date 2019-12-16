@@ -1,7 +1,10 @@
 <template>
   <div class="singer">
     <switches class="switches" :switches="switches" @switch="changeIndex" :c-index="cIndex"></switches>
-    <singer-list :singer-list="singerList" v-if="cIndex === 0"></singer-list>
+    <singer-list @select="selectSinger" :singer-list="singerList" v-if="cIndex === 0"></singer-list>
+    <transition name="slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -10,8 +13,10 @@ import Switches from '../common/switches'
 import { getSingerList } from '../api/singer'
 import Singer from '../utils/singer'
 import SingerList from '../components/singer/singerList'
+import { singerMixin } from '../utils/mixin'
 export default {
   name: 'Singer',
+  mixins: [singerMixin],
   data () {
     return {
       switches: [
@@ -34,13 +39,19 @@ export default {
     this._getSingerList()
   },
   methods: {
+    selectSinger (singer) {
+      this.$router.push({
+        path: `/home/singer/${singer.id}`
+      })
+      this.setSinger(singer)
+    },
     changeIndex (index) {
       this.cIndex = index
     },
     _getSingerList () {
       getSingerList().then(res => {
+        console.log(res.data.list)
         this.singerList = this.normalizeList(res.data.list)
-        console.log(this.singerList)
       })
     },
     normalizeList (list) {
@@ -95,5 +106,6 @@ export default {
     top: 50px;
     bottom: 50px;
     width: 100%;
+    z-index: 600;
   }
 </style>

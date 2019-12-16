@@ -39,7 +39,7 @@ export default {
 <style lang="scss" scoped>
   @import "../../assets/style/scss/global";
   .hometab {
-    z-index: 1000;
+    z-index: 500;
     position: fixed;
     bottom: 0;
     left: 0;

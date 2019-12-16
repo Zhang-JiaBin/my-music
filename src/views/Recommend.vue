@@ -3,7 +3,7 @@
     <scroll class="recommend-content-wrapper" :data="swiperList" ref="scroll">
       <div>
         <div class="swiper-wrapper">
-          <swiper class="recommend-swiper" :options="swiperOption" ref="mySwiper">
+          <swiper class="recommend-swiper" :options="swiperOption" ref="mySwiper" v-if="swiperList && swiperList.length">
             <!-- slides -->
             <swiper-slide class="recommend-swiper-item" v-for="item in swiperList" :key="item.id">
               <a :href="item.pic_info.url">
@@ -92,7 +92,7 @@ export default {
         // console.log(this.swiperList)
         // console.log(this.vHotList)
         console.log(this.rankGroup)
-        // console.log(this.newSong)
+        console.log(this.newSong)
         this.newSongList = randomlist(this.normalizeSong(this.newSong), 15)
         // console.log(this.newSongList)
       })
@@ -102,16 +102,16 @@ export default {
         this.$refs.scroll.refresh()
         this.checkLoaded = true
       }
-    },
-    normalizeSong (list) {
-      let ret = []
-      list.forEach(item => {
-        if (item.album.id) {
-          ret.push(createSong(item))
-        }
-      })
-      return ret
     }
+    // normalizeSong (list) {
+    //   let ret = []
+    //   list.forEach(item => {
+    //     if (item.album.id) {
+    //       ret.push(createSong(item))
+    //     }
+    //   })
+    //   return ret
+    // }
   }
 }
 

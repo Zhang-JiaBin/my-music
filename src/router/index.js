@@ -23,7 +23,11 @@ export default new VueRouter({
     }, {
       path: 'singer',
       name: 'singer',
-      component: () => import('../views/Singer.vue')
+      component: () => import('../views/Singer.vue'),
+      children: [{
+        path: ':id',
+        component: () => import('../components/singer/singerDetail.vue')
+      }]
     }, {
       path: 'my',
       name: 'my',

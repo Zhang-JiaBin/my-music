@@ -34,7 +34,7 @@ export default {
     width: 100%;
     position: relative;
     box-shadow: none;
-    z-index: 1000;
+    z-index: 500;
     /*box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);*/
     .home-search-wrapper {
       position: absolute;

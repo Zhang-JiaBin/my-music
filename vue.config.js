@@ -28,16 +28,26 @@ module.exports = {
           '^/api/getRecommend': ''
         }
       },
-      '/api/getSingerList': {
-        target: `https://api.qq.jsososo.com/singer/list`,
+      '/api/getSingerSongs': {
+        target: `https://api.qq.jsososo.com/singer/songs`,
         // bypass: function (req, res, proxyOptions) {
         //   req.headers.referer = 'https://c.y.qq.com'
         //   req.headers.host = 'c.y.qq.com'
         // },
         pathRewrite: {
-          '^/api/getSingerList': ''
+          '^/api/getSingerSongs': ''
         }
       }
+      // '/api/getSingerList': {
+      //   target: `https://api.qq.jsososo.com/singer/list`,
+      //   // bypass: function (req, res, proxyOptions) {
+      //   //   req.headers.referer = 'https://c.y.qq.com'
+      //   //   req.headers.host = 'c.y.qq.com'
+      //   // },
+      //   pathRewrite: {
+      //     '^/api/getSingerList': ''
+      //   }
+      // }
     }
   },
   css: {
