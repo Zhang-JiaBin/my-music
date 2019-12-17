@@ -2,20 +2,22 @@
   <div class="music-list">
     <div class="back-wrapper" @click="back">
       <span class="icon-back"></span>
+      <span class="back-text" ref="smallTitle">{{this.title}}</span>
     </div>
-    <div class="bg-image" :style="bgStyle">
+    <div class="bg-image" :style="bgStyle" ref="Image">
       <div class="filter"></div>
     </div>
-    <div class="content-wrapper">
-      <div class="title-wrapper">
+    <div class="content-wrapper" ref="content">
+      <div class="title-wrapper" ref="bigTitle">
         <span class="title-name">{{this.title}}</span>
         <div class="attention-wrapper">
           <span class="attention">已关注</span>
         </div>
       </div>
+      <div class="bg-layer" ref="layer"></div>
       <div class="list-wrapper">
-        <div class="list-title">歌曲</div>
-        <scroll class="list-scroll" :data="songs">
+        <div ref="songWrapper" class="list-title">歌曲</div>
+        <scroll ref="scrollList" @scroll="scroll" :listen-scroll="this.listenScroll" :probe-type="this.probeType" class="list-scroll" :data="songs">
           <div>
             <div class="list-function-wrapper">
               <div class="list-function">
@@ -52,11 +54,42 @@ export default {
   },
   data () {
     return {
+      scrollY: 0
     }
   },
-
+  created () {
+    this.probeType = 3
+    this.listenScroll = true
+  },
+  mounted () {
+    // this.$refs.list.$el.style.top = `${this.imageHeight}px`
+  },
   components: { Scroll, SongList },
-
+  watch: {
+    scrollY (newY) {
+      // console.log('newY', newY)
+      if (newY >= 0) {
+        this.$refs.content.style.top = `${90 + newY}px`
+        this.$refs.bigTitle.style.opacity = 1
+        this.$refs.smallTitle.style.opacity = 0
+        this.$refs.Image.style.filter = `blur(0px)`
+        if (newY <= 30) {
+          this.$refs.Image.style.transform = `translateY(${newY - 30}px)`
+        }
+      }
+      if (-newY > 0 && -newY <= 85) {
+        // console.log('-newY:', -newY)
+        let opacity = (-newY / 85)
+        // console.log('opacity:', opacity)
+        this.$refs.content.style.top = `${90 + newY}px`
+        this.$refs.bigTitle.style.opacity = -newY <= 50 ? `${1 - opacity}` : 0
+        this.$refs.smallTitle.style.opacity = -newY <= 60 ? `${opacity}` : 1
+        this.$refs.Image.style.filter = `blur(${-newY / 4}px)`
+        // this.$refs.scrollList.$el.style.transform = `translateY(${newY}px)`
+        // this.$refs.scrollList.style.transform = `translateY(${newY}px)`
+      }
+    }
+  },
   computed: {
     bgStyle () {
       return `background-image:url(${this.bgImage})`
@@ -66,6 +99,9 @@ export default {
   methods: {
     back () {
       this.$router.go(-1)
+    },
+    scroll (pos) {
+      this.scrollY = pos.y
     }
   }
 }
@@ -85,22 +121,30 @@ export default {
       position: absolute;
       top: 25px;
       left: 15px;
-      z-index: 50;
-      width: 40px;
+      z-index: 120;
+      width: 100%;
       height: 40px;
+      @include justcenter;
       .icon-back{
         font-size: $font-size-large-x;
         color: white;
+      }
+      .back-text{
+        margin-left: 10px;
+        font-size: $font-size-large;
+        color: white;
+        opacity: 0;
       }
     }
     .bg-image {
       position: relative;
       width: 100%;
       height: 0;
-      padding-top: 70%;
+      padding-top: 100%;
       transform-origin: top;
       background-size: cover;
       transform: translateY(-30px);
+      filter: blur(0);
       .filter{
         position: absolute;
         top: 0;
@@ -116,6 +160,7 @@ export default {
       top: 90px;
       bottom: 0;
       left: 0;
+      z-index: 100;
       .title-wrapper{
         z-index: 50;
         width: 100%;
@@ -144,17 +189,28 @@ export default {
           }
         }
       }
+      .bg-layer{
+        position: relative;
+        width: 100%;
+        top: 60px;
+        height: 100%;
+        z-index: 30;
+        background: white;
+        border-radius: 15px 15px 0 0;
+      }
       .list-wrapper {
-        position: fixed;
-        top: 150px;
+        position: absolute;
+        top: 60px;
         bottom: 0;
         width: 100%;
+        z-index: 30;
         background: white;
         border-radius: 15px 15px 0 0;
         .list-title {
           height: 40px;
           font-size: $font-size-medium-x;
           font-weight: bold;
+          z-index: 30;
           @include center;
           color: $color-icon;
         }
@@ -163,8 +219,10 @@ export default {
           position: absolute;
           top: 40px;
           bottom: 0;
+          z-index: 30;
           /*height: 100%;*/
           overflow: hidden;
+          background: white;
           .list-function-wrapper{
             height: 40px;
             padding:0 15px;
