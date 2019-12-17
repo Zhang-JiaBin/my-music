@@ -1,6 +1,6 @@
 <template>
   <div class="songList">
-    <div class="songList-wrapper" v-for="item in songs" :key="item.id">
+    <div class="songList-wrapper" @click.prevent="seleteSong(item, index)" v-for="(item,index) in songs" :key="item.id">
       <div class="song-item-wrapper">
         <div class="song-item-all">
           <div class="song-item">
@@ -42,7 +42,11 @@ export default {
 
   computed: {},
 
-  methods: {}
+  methods: {
+    seleteSong (item, index) {
+      this.$emit('selete', item, index)
+    }
+  }
 }
 
 </script>

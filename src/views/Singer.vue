@@ -10,7 +10,7 @@
 
 <script>
 import Switches from '../common/switches'
-import { getSingerList } from '../api/singer'
+import { getSingerList, getSongUrl } from '../api/singer'
 import Singer from '../utils/singer'
 import SingerList from '../components/singer/singerList'
 import { singerMixin } from '../utils/mixin'
@@ -50,7 +50,7 @@ export default {
     },
     _getSingerList () {
       getSingerList().then(res => {
-        console.log(res.data.list)
+        // console.log(res.data.list)
         this.singerList = this.normalizeList(res.data.list)
       })
     },

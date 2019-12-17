@@ -25,7 +25,10 @@
                 <span class="function-text">播放全部 ({{this.songs.length}})</span>
               </div>
             </div>
-            <song-list :songs="songs" class="list-song"></song-list>
+            <song-list @selete="selectItem" :songs="songs" class="list-song"></song-list>
+          </div>
+          <div class="loading-container" v-show="!this.songs.length">
+            <loading></loading>
           </div>
         </scroll>
       </div>
@@ -36,6 +39,9 @@
 <script>
 import SongList from './songList'
 import Scroll from './scroll'
+import Loading from './loading'
+import { getSongUrl } from '../api/singer'
+import { singerMixin } from '../utils/mixin'
 export default {
   name: 'musicList',
   props: {
@@ -64,7 +70,7 @@ export default {
   mounted () {
     // this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
-  components: { Scroll, SongList },
+  components: { Loading, Scroll, SongList },
   watch: {
     scrollY (newY) {
       // console.log('newY', newY)
@@ -73,6 +79,7 @@ export default {
         this.$refs.bigTitle.style.opacity = 1
         this.$refs.smallTitle.style.opacity = 0
         this.$refs.Image.style.filter = `blur(0px)`
+        this.$refs.Image.style.opacity = 1
         if (newY <= 30) {
           this.$refs.Image.style.transform = `translateY(${newY - 30}px)`
         }
@@ -80,6 +87,8 @@ export default {
       if (-newY > 0 && -newY <= 85) {
         // console.log('-newY:', -newY)
         let opacity = (-newY / 85)
+        this.$refs.Image.style.opacity = 0.5
+        // console.log('imgO:', imgOpacity)
         // console.log('opacity:', opacity)
         this.$refs.content.style.top = `${90 + newY}px`
         this.$refs.bigTitle.style.opacity = -newY <= 50 ? `${1 - opacity}` : 0
@@ -95,13 +104,22 @@ export default {
       return `background-image:url(${this.bgImage})`
     }
   },
-
+  mixins: [singerMixin],
   methods: {
     back () {
       this.$router.go(-1)
     },
     scroll (pos) {
       this.scrollY = pos.y
+    },
+    // 获取歌曲播放地址
+    selectItem (item, index) {
+      console.log('index:', index)
+      getSongUrl(item.mid).then(res => {
+        item.url = res.data[item.mid]
+      })
+      console.log(item)
+      this.selectPlay(this.songs, index)
     }
   }
 }
@@ -140,6 +158,7 @@ export default {
       position: relative;
       width: 100%;
       height: 0;
+      opacity: 1;
       padding-top: 100%;
       transform-origin: top;
       background-size: cover;
@@ -241,6 +260,12 @@ export default {
                 font-weight: bold;
               }
             }
+          }
+          .loading-container {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
           }
         }
       }

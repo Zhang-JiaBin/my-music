@@ -35,6 +35,9 @@
       <div class="title-show" v-show="showTitle">
         <span class="title-show-name">{{fixedTitle}}</span>
       </div>
+      <div class="loading-container" v-show="!this.singerList.length">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -42,6 +45,7 @@
 <script>
 import Scroll from '../../common/scroll'
 import { getData } from '../../utils/dom'
+import Loading from '../../common/loading'
 const HEIGHT = 21
 const TITLE_HEIGHT = 30
 export default {
@@ -66,7 +70,7 @@ export default {
     this.listenScroll = true
     this.probeType = 3
   },
-  components: { Scroll },
+  components: { Loading, Scroll },
   watch: {
     singerList () {
       // console.log('监控')
@@ -236,6 +240,7 @@ export default {
               flex: 1;
               @include justcenter;
               .name {
+                @include ellipsis2(1);
               }
             }
             .singer-attention {
@@ -303,6 +308,12 @@ export default {
           font-size: 20px;
           font-weight: bold;
         }
+      }
+      .loading-container {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

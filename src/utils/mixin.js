@@ -7,13 +7,26 @@ export const singerMixin = {
   computed: {
     ...mapGetters([
       'rankGroup',
-      'singer'
+      'singer',
+      'playing',
+      'fullScreen',
+      'playList',
+      'sequenceList',
+      'mode',
+      'currentIndex',
+      'currentSong'
     ])
   },
   methods: {
     ...mapActions([
       'setRankGroup',
-      'setSinger'
+      'setSinger',
+      'setPlaying',
+      'setFullScreen',
+      'setPlayList',
+      'setSequenceList',
+      'setMode',
+      'setCurrentIndex'
     ]),
     normalizeSong (list) {
       let ret = []
@@ -23,6 +36,14 @@ export const singerMixin = {
         }
       })
       return ret
+    },
+    selectPlay (list, index) {
+      console.log(list)
+      console.log(index)
+      this.setCurrentIndex(index)
+      this.setPlaying(true)
+      this.setPlayList(list)
+      this.setFullScreen(true)
     }
   }
 }

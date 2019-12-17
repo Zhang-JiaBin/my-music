@@ -21,13 +21,14 @@ import RankItem from '../common/rankItem'
 import { singerMixin } from '../utils/mixin'
 import Scroll from '../common/scroll'
 import RankAnother from '../common/rankAnother'
+import Loading from '../common/loading'
 export default {
   name: 'rank',
   data () {
     return {}
   },
   mixins: [singerMixin],
-  components: { RankAnother, Scroll, RankItem, LittleTitle },
+  components: { Loading, RankAnother, Scroll, RankItem, LittleTitle },
 
   computed: {
     ThreerankGroup () {
@@ -63,8 +64,11 @@ export default {
 
         }
       }
-      .rank-another{
-
+      .loading-container {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

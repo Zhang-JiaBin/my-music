@@ -5,17 +5,20 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <player></player>
   </div>
 </template>
 
 <script>
 import HomeSearch from '../components/Home/HomeSearch'
 import HomeTab from '../components/Home/HomeTab'
+import player from '../components/Home/player'
 export default {
   name: 'home',
   components: {
     HomeTab,
-    HomeSearch
+    HomeSearch,
+    player
   }
 }
 </script>

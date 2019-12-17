@@ -31,3 +31,15 @@ export function getSingerList () {
 
   return jsonp(url, data, options)
 }
+
+export function getSongUrl (mid) {
+  return axios({
+    methods: 'get',
+    url: '/api/getSongUrl',
+    params: {
+      id: mid
+    }
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

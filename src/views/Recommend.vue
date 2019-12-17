@@ -24,6 +24,9 @@
         <little-title title="精选音乐FM"></little-title>
         <recomend-song :new-song="newSongList"></recomend-song>
       </div>
+      <div class="loading-container" v-show="!vHotList.length">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -36,10 +39,10 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import LittleTitle from '../common/LittleTitle'
 import SongItem from '../common/SongItem'
 import RecomendRank from '../components/Recommend/RecommendRank'
-import { createSong } from '../utils/song'
 import { randomlist } from '../utils/random'
 import RecomendSong from '../components/Recommend/RecommendSong'
 import { singerMixin } from '../utils/mixin'
+import Loading from '../common/loading'
 export default {
   name: 'Recommend',
   data () {
@@ -64,6 +67,7 @@ export default {
     this._getRecommend()
   },
   components: {
+    Loading,
     RecomendSong,
     RecomendRank,
     SongItem,
@@ -166,6 +170,12 @@ export default {
             padding: 0 15px 15px 5px;
           }
         }
+      }
+      .loading-container {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

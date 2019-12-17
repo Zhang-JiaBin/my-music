@@ -37,6 +37,16 @@ module.exports = {
         pathRewrite: {
           '^/api/getSingerSongs': ''
         }
+      },
+      '/api/getSongUrl': {
+        target: `https://api.qq.jsososo.com/song/urls`,
+        // bypass: function (req, res, proxyOptions) {
+        //   req.headers.referer = 'https://c.y.qq.com'
+        //   req.headers.host = 'c.y.qq.com'
+        // },
+        pathRewrite: {
+          '^/api/getSongUrl': ''
+        }
       }
       // '/api/getSingerList': {
       //   target: `https://api.qq.jsososo.com/singer/list`,
