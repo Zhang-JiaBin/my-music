@@ -76,7 +76,14 @@ export default {
     swiperSlide,
     scroll
   },
-
+  watch: {
+    currentSong () {
+      if (this.currentSong !== undefined) {
+        this.$refs.recommend.style.bottom = `100px`
+        this.$refs.scroll.refresh()
+      }
+    }
+  },
   computed: {},
   mixins: [singerMixin],
   methods: {

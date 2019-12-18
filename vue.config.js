@@ -28,6 +28,7 @@ module.exports = {
           '^/api/getRecommend': ''
         }
       },
+      // 线上qq音乐API
       '/api/getSingerSongs': {
         target: `https://api.qq.jsososo.com/singer/songs`,
         // bypass: function (req, res, proxyOptions) {
@@ -38,16 +39,37 @@ module.exports = {
           '^/api/getSingerSongs': ''
         }
       },
+      // 真实qq音乐API
+      '/api/getSingerDetail': {
+        target: `https://u.y.qq.com/cgi-bin/musicu.fcg`,
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://u.y.qq.com'
+          req.headers.host = 'u.y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getSingerDetail': ''
+        }
+      },
       '/api/getSongUrl': {
-        target: `https://api.qq.jsososo.com/song/urls`,
-        // bypass: function (req, res, proxyOptions) {
-        //   req.headers.referer = 'https://c.y.qq.com'
-        //   req.headers.host = 'c.y.qq.com'
-        // },
+        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://u.y.qq.com'
+          req.headers.host = 'u.y.qq.com'
+        },
         pathRewrite: {
           '^/api/getSongUrl': ''
         }
       }
+      // '/api/getSongUrl': {
+      //   target: `https://api.qq.jsososo.com/song/urls`,
+      //   // bypass: function (req, res, proxyOptions) {
+      //   //   req.headers.referer = 'https://c.y.qq.com'
+      //   //   req.headers.host = 'c.y.qq.com'
+      //   // },
+      //   pathRewrite: {
+      //     '^/api/getSongUrl': ''
+      //   }
+      // }
       // '/api/getSingerList': {
       //   target: `https://api.qq.jsososo.com/singer/list`,
       //   // bypass: function (req, res, proxyOptions) {

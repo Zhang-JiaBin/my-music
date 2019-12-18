@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="bg-layer" ref="layer"></div>
-      <div class="list-wrapper">
+      <div class="list-wrapper" ref="listWrapper">
         <div ref="songWrapper" class="list-title">歌曲</div>
         <scroll ref="scrollList" @scroll="scroll" :listen-scroll="this.listenScroll" :probe-type="this.probeType" class="list-scroll" :data="songs">
           <div>
@@ -42,6 +42,7 @@ import Scroll from './scroll'
 import Loading from './loading'
 import { getSongUrl } from '../api/singer'
 import { singerMixin } from '../utils/mixin'
+import song from '../utils/song'
 export default {
   name: 'musicList',
   props: {
@@ -58,16 +59,29 @@ export default {
       default: ''
     }
   },
+  mixins: [singerMixin],
   data () {
     return {
       scrollY: 0
     }
   },
+  // watch: {
+  //   currentPage (newPage) {
+  //     console.log(1)
+  //     console.log('newPage:', newPage)
+  //     if (newPage === 1) {
+  //       this.$refs.listWrapper.style.bottom = `50px`
+  //     } else {
+  //       // this.$refs.mini.style.bottom = `0px`
+  //     }
+  //   }
+  // },
   created () {
     this.probeType = 3
     this.listenScroll = true
   },
   mounted () {
+    this.setCurrentPage(1)
     // this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   components: { Loading, Scroll, SongList },
@@ -96,6 +110,17 @@ export default {
         this.$refs.Image.style.filter = `blur(${-newY / 4}px)`
         // this.$refs.scrollList.$el.style.transform = `translateY(${newY}px)`
         // this.$refs.scrollList.style.transform = `translateY(${newY}px)`
+      } else if (-newY > 85) {
+        this.$refs.content.style.top = `5px`
+        this.$refs.bigTitle.style.opacity = 0
+        this.$refs.smallTitle.style.opacity = 1
+        this.$refs.Image.style.filter = `blur(21px)`
+      }
+    },
+    currentSong () {
+      if (this.currentSong !== undefined) {
+        this.$refs.listWrapper.style.bottom = `50px`
+        this.$refs.scrollList.refresh()
       }
     }
   },
@@ -104,171 +129,166 @@ export default {
       return `background-image:url(${this.bgImage})`
     }
   },
-  mixins: [singerMixin],
   methods: {
     back () {
       this.$router.go(-1)
+      this.setCurrentPage(0)
     },
     scroll (pos) {
       this.scrollY = pos.y
     },
     // 获取歌曲播放地址
     selectItem (item, index) {
-      console.log('index:', index)
-      getSongUrl(item.mid).then(res => {
-        item.url = res.data[item.mid]
-      })
-      console.log(item)
-      this.selectPlay(this.songs, index)
+      this.selectPlay(this.songs, index, item)
     }
   }
 }
 
 </script>
 <style lang="scss" scoped>
-  @import "../assets/style/scss/global";
-  .music-list {
-    position: fixed;
-    z-index: 200;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: white;
-    .back-wrapper{
+@import "../assets/style/scss/global";
+.music-list {
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: white;
+  .back-wrapper {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    z-index: 120;
+    width: 100%;
+    height: 40px;
+    @include justcenter;
+    .icon-back {
+      font-size: $font-size-large-x;
+      color: white;
+    }
+    .back-text {
+      margin-left: 10px;
+      font-size: $font-size-large;
+      color: white;
+      opacity: 0;
+    }
+  }
+  .bg-image {
+    position: relative;
+    width: 100%;
+    height: 0;
+    opacity: 1;
+    padding-top: 100%;
+    transform-origin: top;
+    background-size: cover;
+    transform: translateY(-30px);
+    filter: blur(0);
+    .filter {
       position: absolute;
-      top: 25px;
-      left: 15px;
-      z-index: 120;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 40px;
-      @include justcenter;
-      .icon-back{
+      height: 100%;
+      background: transparent;
+    }
+  }
+  .content-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    .title-wrapper {
+      z-index: 50;
+      width: 100%;
+      height: 60px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include spaceTop;
+      .title-name {
+        color: white;
+        margin-left: 15px;
         font-size: $font-size-large-x;
-        color: white;
       }
-      .back-text{
-        margin-left: 10px;
-        font-size: $font-size-large;
-        color: white;
-        opacity: 0;
+      .attention-wrapper {
+        width: 65px;
+        height: 24px;
+        color: $color-icon;
+        font-weight: bold;
+        background: transparent;
+        border: 1px solid #83838a;
+        border-radius: 12px;
+        margin-right: 14px;
+        @include center;
+        .attention {
+          font-size: $font-size-small;
+        }
       }
     }
-    .bg-image {
+    .bg-layer {
       position: relative;
       width: 100%;
-      height: 0;
-      opacity: 1;
-      padding-top: 100%;
-      transform-origin: top;
-      background-size: cover;
-      transform: translateY(-30px);
-      filter: blur(0);
-      .filter{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-      }
+      top: 60px;
+      height: 100%;
+      z-index: 30;
+      background: white;
+      border-radius: 15px 15px 0 0;
     }
-    .content-wrapper {
+    .list-wrapper {
       position: absolute;
-      width: 100%;
-      top: 90px;
+      top: 60px;
       bottom: 0;
-      left: 0;
-      z-index: 100;
-      .title-wrapper{
-        z-index: 50;
-        width: 100%;
-        height: 60px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        @include spaceTop;
-        .title-name{
-          color: white;
-          margin-left: 15px;
-          font-size: $font-size-large-x;
-        }
-        .attention-wrapper {
-          width: 65px;
-          height: 24px;
-          color: $color-icon;
-          font-weight: bold;
-          background: transparent;
-          border: 1px solid #83838a;
-          border-radius: 12px;
-          margin-right: 14px;
-          @include center;
-          .attention{
-            font-size: $font-size-small;
-          }
-        }
-      }
-      .bg-layer{
-        position: relative;
-        width: 100%;
-        top: 60px;
-        height: 100%;
+      width: 100%;
+      z-index: 30;
+      background: white;
+      border-radius: 15px 15px 0 0;
+      .list-title {
+        height: 40px;
+        font-size: $font-size-medium-x;
+        font-weight: bold;
         z-index: 30;
-        background: white;
-        border-radius: 15px 15px 0 0;
+        @include center;
+        color: $color-icon;
       }
-      .list-wrapper {
+      .list-scroll {
+        width: 100%;
         position: absolute;
-        top: 60px;
+        top: 40px;
         bottom: 0;
-        width: 100%;
         z-index: 30;
+        /*height: 100%;*/
+        overflow: hidden;
         background: white;
-        border-radius: 15px 15px 0 0;
-        .list-title {
+        .list-function-wrapper {
           height: 40px;
-          font-size: $font-size-medium-x;
-          font-weight: bold;
-          z-index: 30;
-          @include center;
-          color: $color-icon;
-        }
-        .list-scroll {
-          width: 100%;
-          position: absolute;
-          top: 40px;
-          bottom: 0;
-          z-index: 30;
-          /*height: 100%;*/
-          overflow: hidden;
-          background: white;
-          .list-function-wrapper{
-            height: 40px;
-            padding:0 15px;
-            box-sizing: border-box;
-            .list-function {
-              height: 100%;
-              @include justcenter;
-              border-bottom: 1px solid #f0f0f0;
-              .icon-play{
-                font-size: 25px;
-                color: $color-icon;
-              }
-              .function-text{
-                font-size: $font-size-medium-x;
-                margin-left: 15px;
-                font-weight: bold;
-              }
+          padding: 0 15px;
+          box-sizing: border-box;
+          .list-function {
+            height: 100%;
+            @include justcenter;
+            border-bottom: 1px solid #f0f0f0;
+            .icon-play {
+              font-size: 25px;
+              color: $color-icon;
+            }
+            .function-text {
+              font-size: $font-size-medium-x;
+              margin-left: 15px;
+              font-weight: bold;
             }
           }
-          .loading-container {
-            position: absolute;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-          }
+        }
+        .loading-container {
+          position: absolute;
+          width: 100%;
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
     }
   }
+}
 </style>

@@ -3,6 +3,9 @@
     <div class="songList-wrapper" @click.prevent="seleteSong(item, index)" v-for="(item,index) in songs" :key="item.id">
       <div class="song-item-wrapper">
         <div class="song-item-all">
+          <div class="item-img-wrapper">
+            <img class="item-img" :src="item.image" alt="">
+          </div>
           <div class="song-item">
             <div class="item-name-wrapper">
               <span class="item-name">{{item.name}}</span>
@@ -12,7 +15,7 @@
               <span class="item-singer">{{item.singer}}  ----  {{item.album}}</span>
             </div>
           </div>
-          <div class="item-playing-wrapper">
+          <div class="item-playing-wrapper" v-show="showPlaying(item)">
             <span class="icon-playing"></span>
           </div>
           <div class="item-playing-wrapper">
@@ -25,6 +28,8 @@
 </template>
 
 <script>
+import { singerMixin } from '../utils/mixin'
+
 export default {
   props: {
     songs: {
@@ -33,16 +38,26 @@ export default {
     }
   },
   name: 'songList',
+  mixins: [singerMixin],
   data () {
     return {
     }
   },
-
+  mounted () {
+  },
   components: {},
 
-  computed: {},
+  computed: {
+
+  },
 
   methods: {
+    showPlaying (item) {
+      if (this.currentSong && this.currentSong.id === item.id) {
+        return true
+      }
+      return false
+    },
     seleteSong (item, index) {
       this.$emit('selete', item, index)
     }
@@ -66,9 +81,22 @@ export default {
           display: flex;
           @include center;
           border-bottom: 1px solid #f0f0f0;
+          .item-img-wrapper {
+            height: 100%;
+            flex: 0 0 50px;
+            width: 50px;
+            @include center;
+            .item-img {
+              width: 40px;
+              height: 40px;
+              border-radius: 5px;
+            }
+          }
           .song-item {
             height: 100%;
             flex: 1;
+            padding-left: 5px;
+            box-sizing: border-box;
             .item-name-wrapper{
               width: 100%;
               height: 50%;

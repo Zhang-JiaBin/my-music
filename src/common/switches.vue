@@ -39,7 +39,7 @@ export default {
 <style lang="scss" scoped>
   @import "../assets/style/scss/global";
   .switches{
-    z-index: 1000;
+    z-index: 100;
     @include justcenter;
     width: 180px;
     margin: 0 auto;

@@ -12,6 +12,8 @@
 // } from 'js-base64'
 
 // 推荐页面指定歌单和排行榜指定榜单所有歌曲的所有歌曲形成的类
+import { getSongUrl } from '../api/singerSong'
+
 export default class Song {
   constructor ({
     id,
@@ -65,6 +67,9 @@ export function createSong (item) {
   //   const vkey = res.req_0.data.midurlinfo[0].purl
   //   url = 'http://ws.stream.qqmusic.qq.com/' + vkey
   //   song.url = url
+  // })
+  // getSongUrl(item.mid).then(res => {
+  //   song.url = res.data[item.mid]
   // })
   return song
 }

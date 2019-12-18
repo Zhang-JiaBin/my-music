@@ -1,7 +1,7 @@
 <template>
-  <div class="singer">
+  <div class="singer" ref="singer">
     <switches class="switches" :switches="switches" @switch="changeIndex" :c-index="cIndex"></switches>
-    <singer-list @select="selectSinger" :singer-list="singerList" v-if="cIndex === 0"></singer-list>
+    <singer-list ref="singerlist" @select="selectSinger" :singer-list="singerList" v-if="cIndex === 0"></singer-list>
     <transition name="slide">
       <router-view></router-view>
     </transition>
@@ -10,7 +10,7 @@
 
 <script>
 import Switches from '../common/switches'
-import { getSingerList, getSongUrl } from '../api/singer'
+import { getSingerList } from '../api/singer'
 import Singer from '../utils/singer'
 import SingerList from '../components/singer/singerList'
 import { singerMixin } from '../utils/mixin'
@@ -33,7 +33,14 @@ export default {
   },
 
   components: { SingerList, Switches },
-
+  watch: {
+    currentSong () {
+      if (this.currentSong !== undefined) {
+        this.$refs.singer.style.bottom = `100px`
+        this.$refs.singerlist.refresh()
+      }
+    }
+  },
   computed: {},
   mounted () {
     this._getSingerList()
@@ -100,12 +107,12 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  @import "../assets/style/scss/global";
-  .singer {
-    position: fixed;
-    top: 50px;
-    bottom: 50px;
-    width: 100%;
-    z-index: 600;
-  }
+@import "../assets/style/scss/global";
+.singer {
+  position: fixed;
+  top: 50px;
+  bottom: 50px;
+  width: 100%;
+  z-index: 600;
+}
 </style>

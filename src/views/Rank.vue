@@ -1,5 +1,5 @@
 <template>
-  <div class="rank">
+  <div class="rank" ref="rank">
     <scroll class="rank-scroll" :data="this.rankGroup" ref="scroll">
       <div>
         <div class="rank-list-wrapper" v-for="item in ThreerankGroup" :key="item.groupId">
@@ -39,7 +39,14 @@ export default {
       return this.rankGroup ? this.rankGroup[3].toplist : []
     }
   },
-
+  watch: {
+    currentSong () {
+      if (this.currentSong !== undefined) {
+        this.$refs.rank.style.bottom = `100px`
+        this.$refs.scroll.refresh()
+      }
+    }
+  },
   methods: {
     showAnother (id) {
       return id === 3

@@ -9,10 +9,10 @@ const actions = {
   }, singer) => {
     return commit('SET_SINGER', singer)
   },
-  setPlaying: ({
+  setPlayering: ({
     commit
-  }, playing) => {
-    return commit('SET_PLAYING', playing)
+  }, playering) => {
+    return commit('SET_PLAYERING', playering)
   },
   setFullScreen: ({
     commit
@@ -38,6 +38,11 @@ const actions = {
     commit
   }, currentIndex) => {
     return commit('SET_CURRENTINDEX', currentIndex)
+  },
+  setCurrentPage: ({
+    commit
+  }, currentPage) => {
+    return commit('SET_CURRENTPAGE', currentPage)
   }
 }
 export default actions

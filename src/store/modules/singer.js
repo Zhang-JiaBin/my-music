@@ -1,13 +1,16 @@
+import { playMode } from '../../utils/config'
+
 const singer = {
   state: {
     rankGroup: [],
     singer: {},
-    playing: false,
+    playering: false,
     fullScreen: true,
     playList: [],
     sequenceList: [],
-    mode: 0, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
-    currentIndex: -1
+    mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
+    currentIndex: -1,
+    currentPage: 0 // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候
   },
   mutations: {
     'SET_RANKGROUP': (state, rankGroup) => {
@@ -16,8 +19,8 @@ const singer = {
     'SET_SINGER': (state, singer) => {
       state.singer = singer
     },
-    'SET_PLAYING': (state, playing) => {
-      state.playing = playing
+    'SET_PLAYERING': (state, playering) => {
+      state.playering = playering
     },
     'SET_FULLSCREEN': (state, fullScreen) => {
       state.fullScreen = fullScreen
@@ -33,6 +36,9 @@ const singer = {
     },
     'SET_CURRENTINDEX': (state, currentIndex) => {
       state.currentIndex = currentIndex
+    },
+    'SET_CURRENTPAGE': (state, currentPage) => {
+      state.currentPage = currentPage
     }
   }
 }

@@ -1,9 +1,7 @@
 <template>
-  <transition name="slide">
-    <div class="singer-detail">
-      <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
-    </div>
-  </transition>
+  <div class="singer-detail">
+    <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
+  </div>
 </template>
 
 <script>
@@ -40,23 +38,33 @@ export default {
         return
       }
       getSingerSongs(this.singer.id).then(res => {
-        this.Songs = this.normalizeSong(res.data.list)
-        // console.log(this.Songs)
+        const list = this.concatList(res.singerSongList.data.songList)
+        this.Songs = this.normalizeSong(list)
+        // this.Songs = this.normalizeSong(res.data.list)
+        console.log(this.Songs)
       })
+    },
+    // 处理一下歌手歌曲数据
+    concatList (list) {
+      let ret = []
+      list.forEach(item => {
+        ret.push(item.songInfo)
+      })
+      return ret
     }
   }
 }
 
 </script>
 <style lang="scss" scoped>
-  .singer-detail{
-    position: fixed;
-    z-index: 1200;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: hidden;
-    background: white;
-  }
+.singer-detail {
+  position: fixed;
+  z-index: 1200;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  background: white;
+}
 </style>

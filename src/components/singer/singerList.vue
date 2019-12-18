@@ -1,5 +1,4 @@
 <template>
-  <div class="singerList">
     <scroll class="singerList-scroll" @scroll="scroll" :data="singerList" ref="singerScroll" :listen-scroll="this.listenScroll" :probe-type="this.probeType">
       <div>
         <div class="singerList-wrapper" ref="listTitle" v-for="(item,index) in singerList" :key="index">
@@ -39,7 +38,6 @@
         <loading></loading>
       </div>
     </scroll>
-  </div>
 </template>
 
 <script>
@@ -134,6 +132,9 @@ export default {
   },
 
   methods: {
+    refresh () {
+      this.$refs.singerScroll.refresh()
+    },
     selectItem (subItem) {
       this.$emit('select', subItem)
     },
@@ -194,14 +195,17 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "../../assets/style/scss/global";
-  .singerList {
-    position: absolute;
-    top: 40px;
-    bottom: 0px;
-    width: 100%;
-    .singerList-scroll{
-      position: relative;
-      height: 100%;
+  /*.singerList {*/
+  /*  position: absolute;*/
+  /*  top: 40px;*/
+  /*  bottom: 0px;*/
+  /*  width: 100%;*/
+  .singerList-scroll{
+      position: absolute;
+      /*height: 100%;*/
+      top: 40px;
+      bottom: 0;
+      width: 100%;
       overflow: hidden;
       .singerList-wrapper {
         display: flex;
@@ -258,6 +262,7 @@ export default {
         }
       }
       .letter-wrapper {
+        z-index: 120;
         position: absolute;
         right: 5px;
         z-index: 100;
@@ -265,7 +270,7 @@ export default {
         width: 30px;
         border-radius: 12px;
         transform: translateY(-50%);
-        padding: 10px 0;
+        padding: 5px 0;
         background: $color-bg-bottom;
         /*font-family: Helvetica;*/
         .letter-item{
@@ -316,5 +321,4 @@ export default {
         transform: translateY(-50%);
       }
     }
-  }
 </style>
