@@ -41,6 +41,7 @@ export const singerMixin = {
       'setCurrentIndex',
       'setCurrentPage'
     ]),
+    // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
       let ret = []
       list.forEach(item => {
@@ -50,6 +51,7 @@ export const singerMixin = {
       })
       return ret
     },
+    // 获取歌曲播放url
     gainSongUrl (song) {
       getSongUrl(song.mid).then(res => {
         const vkey = res.req_0.data.midurlinfo[0].purl
@@ -62,8 +64,14 @@ export const singerMixin = {
         return item.id === song.id
       })
     },
+    // 重新更新当前歌曲的index
+    resetCurrentIndex (list) {
+      let index = this._findIndex(list, this.currentSong)
+      this.setCurrentIndex(index)
+    },
     // 选择歌曲播放
     selectPlay (list, index, item) {
+      this.simpleToast(`歌曲: '${item.name}'`)
       if (!item.url) {
         this.gainSongUrl(item)
       }
@@ -80,9 +88,13 @@ export const singerMixin = {
       }
       this.setCurrentIndex(index)
       this.setPlayering(true)
+      // if (this.myslider) {
+      //   this.myslider.gotoPage(this.currentIndex)
+      // }
       // this.setCurrentPage(1)
       // this.setFullScreen(true)
-      console.log(this.currentSong)
+      // this.$refs.slider.gotoPage(this.currentIndex)
+      // console.log(this.currentSong)
     }
   }
 }

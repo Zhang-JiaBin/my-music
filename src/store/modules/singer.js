@@ -5,12 +5,12 @@ const singer = {
     rankGroup: [],
     singer: {},
     playering: false,
-    fullScreen: true,
+    fullScreen: false,
     playList: [],
     sequenceList: [],
     mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
     currentIndex: -1,
-    currentPage: 0 // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候
+    currentPage: 0 // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
   },
   mutations: {
     'SET_RANKGROUP': (state, rankGroup) => {

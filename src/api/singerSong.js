@@ -15,7 +15,6 @@ import axios from 'axios'
 // import jsonp from '../utils/jsonp'
 import {
   commonParams,
-  options
 } from './config'
 // 获取歌曲的vkey用了拼接歌曲播放url
 export function getSongUrl (songMid) {
@@ -60,7 +59,7 @@ export function getSongUrl (songMid) {
 }
 
 // qq音乐真实接口
-
+// 获取歌手歌曲
 export function getSingerSongs (mid) {
   return axios({
     methods: 'get',
@@ -114,3 +113,27 @@ export function getSingerSongs (mid) {
 //
 //   return jsonp(url, data, options)
 // }
+
+// 获取歌曲歌词
+export function getLyric (songMid) {
+  const url = '/api/getLyric'
+  const data = Object.assign({}, commonParams, {
+    songmid: songMid,
+    g_tk: 5381,
+    pcachetime: +new Date(),
+    loginUin: 2635665603,
+    hostUin: 0,
+    inCharset: 'utf8',
+    outCharset: 'utf8',
+    notice: 0,
+    platform: 'yqq.json',
+    needNewCode: 0,
+    rnd: Math.random(),
+    format: 'json'
+  })
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

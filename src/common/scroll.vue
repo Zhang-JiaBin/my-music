@@ -1,4 +1,3 @@
-import BScroll from 'better-scroll';
 <!--  -->
 <template>
   <div ref="wrapper">
@@ -10,6 +9,22 @@ import BScroll from 'better-scroll';
 import BScroll from 'better-scroll'
 export default {
   props: {
+    top: {
+      type: Boolean,
+      default: true
+    },
+    bottom: {
+      type: Boolean,
+      default: true
+    },
+    left: {
+      type: Boolean,
+      default: true
+    },
+    right: {
+      type: Boolean,
+      default: true
+    },
     probeType: {
       type: Number,
       default: 1
@@ -65,7 +80,13 @@ export default {
       }
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        bounce: {
+          top: this.top,
+          bottom: this.bottom,
+          left: this.left,
+          right: this.right
+        }
       })
       if (this.listenScroll) {
         let me = this

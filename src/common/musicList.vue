@@ -25,7 +25,7 @@
                 <span class="function-text">播放全部 ({{this.songs.length}})</span>
               </div>
             </div>
-            <song-list @selete="selectItem" :songs="songs" class="list-song"></song-list>
+            <song-list ref="scrollItem" @selete="selectItem" :songs="songs" class="list-song"></song-list>
           </div>
           <div class="loading-container" v-show="!this.songs.length">
             <loading></loading>
@@ -40,9 +40,7 @@
 import SongList from './songList'
 import Scroll from './scroll'
 import Loading from './loading'
-import { getSongUrl } from '../api/singer'
 import { singerMixin } from '../utils/mixin'
-import song from '../utils/song'
 export default {
   name: 'musicList',
   props: {
@@ -62,26 +60,17 @@ export default {
   mixins: [singerMixin],
   data () {
     return {
-      scrollY: 0
+      scrollY: 0,
+      ItemArr: []
     }
   },
-  // watch: {
-  //   currentPage (newPage) {
-  //     console.log(1)
-  //     console.log('newPage:', newPage)
-  //     if (newPage === 1) {
-  //       this.$refs.listWrapper.style.bottom = `50px`
-  //     } else {
-  //       // this.$refs.mini.style.bottom = `0px`
-  //     }
-  //   }
-  // },
   created () {
     this.probeType = 3
     this.listenScroll = true
   },
   mounted () {
     this.setCurrentPage(1)
+    this.ItemArr = this.$refs.scrollItem.getRefsSongItem()
     // this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   components: { Loading, Scroll, SongList },
@@ -140,6 +129,11 @@ export default {
     // 获取歌曲播放地址
     selectItem (item, index) {
       this.selectPlay(this.songs, index, item)
+      // 选择歌曲后滚动到相应的位置
+      if (index > 4) {
+        let songEl = this.ItemArr[index]
+        this.$refs.scrollList.scrollToElement(songEl, 1000)
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="songList">
-    <div class="songList-wrapper" @click.prevent="seleteSong(item, index)" v-for="(item,index) in songs" :key="item.id">
+    <div ref="songItem" class="songList-wrapper" @click.prevent="seleteSong(item, index)" v-for="(item,index) in songs" :key="item.id">
       <div class="song-item-wrapper">
         <div class="song-item-all">
           <div class="item-img-wrapper">
@@ -12,7 +12,7 @@
             </div>
             <div class="item-name-wrapper">
               <span class="item-sq">SQ</span>
-              <span class="item-singer">{{item.singer}}  ----  {{item.album}}</span>
+              <span class="item-singer">{{item.singer}} - {{item.album}}</span>
             </div>
           </div>
           <div class="item-playing-wrapper" v-show="showPlaying(item)">
@@ -48,7 +48,6 @@ export default {
   components: {},
 
   computed: {
-
   },
 
   methods: {
@@ -60,6 +59,9 @@ export default {
     },
     seleteSong (item, index) {
       this.$emit('selete', item, index)
+    },
+    getRefsSongItem () {
+      return this.$refs.songItem
     }
   }
 }
@@ -80,6 +82,7 @@ export default {
           height: 100%;
           display: flex;
           @include center;
+          box-sizing: border-box;
           border-bottom: 1px solid #f0f0f0;
           .item-img-wrapper {
             height: 100%;

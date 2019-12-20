@@ -8,7 +8,7 @@ const getters = {
   mode: state => state.singer.mode,
   currentIndex: state => state.singer.currentIndex,
   currentSong: state => state.singer.playList[state.singer.currentIndex],
-  currentPage: state => state.singer.currentPage
+  currentPage: state => state.singer.currentPage,
 }
 
 export default getters

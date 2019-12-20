@@ -41,7 +41,7 @@ export default {
         const list = this.concatList(res.singerSongList.data.songList)
         this.Songs = this.normalizeSong(list)
         // this.Songs = this.normalizeSong(res.data.list)
-        console.log(this.Songs)
+        // console.log(this.Songs)
       })
     },
     // 处理一下歌手歌曲数据

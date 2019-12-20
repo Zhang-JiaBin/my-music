@@ -1,12 +1,11 @@
 <!--  -->
 <template>
-  <div class="progress-circle">
+
     <svg :width="radius" :height="radius" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <circle class="progress-background" r="50" cx="50" cy="50" fill="transparent" />
       <circle class="progress-bar" r="50" cx="50" cy="50" fill="transparent" :stroke-dasharray="dashArray" :stroke-dashoffset="dashOffset" />
     </svg>
-    <slot></slot>
-  </div>
+<!--    <slot></slot>-->
 </template>
 
 <script>
@@ -41,8 +40,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/scss/global";
-.progress-circle {
-  position: relative;
+/*.progress-circle {*/
   circle {
     stroke-width: 8px;
     transform-origin: center;
@@ -50,13 +48,11 @@ export default {
     &.progress-background {
       transform: scale(0.9);
       stroke: transparent;
-      z-index: 1800;
     }
     &.progress-bar {
-      z-index: 1800;
       transform: scale(0.9) rotate(-90deg);
       stroke: $color-icon;
     }
   }
-}
+/*}*/
 </style>

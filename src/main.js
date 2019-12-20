@@ -7,6 +7,7 @@ import './rem'
 import './assets/style/scss/icon.css'
 import './assets/style/scss/global.scss'
 import VueLazyload from 'vue-lazyload'
+import './utils/create-api'
 fastclick.attach(document.body)
 
 Vue.config.productionTip = false

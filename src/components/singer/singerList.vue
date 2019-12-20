@@ -265,7 +265,6 @@ export default {
         z-index: 120;
         position: absolute;
         right: 5px;
-        z-index: 100;
         top: 50%;
         width: 30px;
         border-radius: 12px;
