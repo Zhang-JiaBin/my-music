@@ -7,19 +7,21 @@
         </div>
       </slider>
     </div>
+    <note-beat class="notebeat"></note-beat>
   </div>
 </template>
 
 <script>
 import Slider from '../common/slider'
 import { singerMixin } from '../utils/mixin'
+import NoteBeat from '../common/NoteBeat'
 export default {
   name: 'My',
   data () {
     return {}
   },
   mixins: [singerMixin],
-  components: { Slider },
+  components: { NoteBeat, Slider },
 
   computed: {},
 
@@ -34,6 +36,10 @@ export default {
     top: 50px;
     bottom: 50px;
     width: 100%;
+    .notebeat{
+      width: 40px;
+      height: 40px;
+    }
     .slider-wrapper{
       position: relative;
       height: 150px;

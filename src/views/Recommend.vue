@@ -58,7 +58,7 @@ export default {
       },
       swiperList: [],
       vHotList: [],
-      // rankGroup: [],
+      rankGroup: [],
       newSong: [],
       newSongList: []
     }
@@ -97,13 +97,12 @@ export default {
         console.log(res)
         this.swiperList = res.focus.data.content
         this.vHotList = res.recomPlaylist.data.v_hot
-        this.setRankGroup(res.toplist.data.group)
-        // this.rankGroup = res.toplist.data.group
+        this.rankGroup = res.toplist.data.group
         this.newSong = res.new_song.data.songlist
         // console.log(this.swiperList)
         // console.log(this.vHotList)
-        console.log(this.rankGroup)
-        console.log(this.newSong)
+        // console.log(this.rankGroup)
+        // console.log(this.newSong)
         this.newSongList = randomlist(this.normalizeSong(this.newSong), 15)
         // console.log(this.newSongList)
       })
@@ -114,15 +113,6 @@ export default {
         this.checkLoaded = true
       }
     }
-    // normalizeSong (list) {
-    //   let ret = []
-    //   list.forEach(item => {
-    //     if (item.album.id) {
-    //       ret.push(createSong(item))
-    //     }
-    //   })
-    //   return ret
-    // }
   }
 }
 

@@ -4,7 +4,7 @@
       <div class="song-item-wrapper">
         <div class="song-item-all">
           <div class="item-img-wrapper">
-            <img class="item-img" :src="item.image" alt="">
+            <img class="item-img" v-lazy="item.image" alt="">
           </div>
           <div class="song-item">
             <div class="item-name-wrapper">
@@ -16,7 +16,9 @@
             </div>
           </div>
           <div class="item-playing-wrapper" v-show="showPlaying(item)">
-            <span class="icon-playing"></span>
+            <div class="note-wrapper">
+              <note-beat class="playing-beat"></note-beat>
+            </div>
           </div>
           <div class="item-playing-wrapper">
             <span class="icon-dot"></span>
@@ -29,6 +31,7 @@
 
 <script>
 import { singerMixin } from '../utils/mixin'
+import NoteBeat from './NoteBeat'
 
 export default {
   props: {
@@ -45,7 +48,7 @@ export default {
   },
   mounted () {
   },
-  components: {},
+  components: { NoteBeat },
 
   computed: {
   },
@@ -60,6 +63,7 @@ export default {
     seleteSong (item, index) {
       this.$emit('selete', item, index)
     },
+    // 获取歌曲的dom元素数组
     getRefsSongItem () {
       return this.$refs.songItem
     }
@@ -129,9 +133,13 @@ export default {
             width: 30px;
             @include center;
             margin-right: 10px;
-            .icon-playing{
-              font-size: 25px;
-              color: $color-icon;
+            .note-wrapper{
+              width: 30px;
+              height: 25px;
+              .playing-beat{
+                width: 100%;
+                height: 100%;
+              }
             }
             .icon-dot{
               font-size: 25px;

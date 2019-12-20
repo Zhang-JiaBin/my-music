@@ -6,11 +6,12 @@ const singer = {
     singer: {},
     playering: false,
     fullScreen: false,
-    playList: [],
-    sequenceList: [],
+    playList: [], // 播放列表
+    sequenceList: [], // 顺序列表
     mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
     currentIndex: -1,
-    currentPage: 0 // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
+    currentPage: 0, // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
+    clickMark: false // 是否点击了下一首或者上一首的标志
   },
   mutations: {
     'SET_RANKGROUP': (state, rankGroup) => {
@@ -39,6 +40,9 @@ const singer = {
     },
     'SET_CURRENTPAGE': (state, currentPage) => {
       state.currentPage = currentPage
+    },
+    'SET_CLICKMARK': (state, clickMark) => {
+      state.clickMark = clickMark
     }
   }
 }

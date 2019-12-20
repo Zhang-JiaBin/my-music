@@ -123,7 +123,6 @@ import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
 import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
-import PlayerSlider from '../player/playerSlider'
 
 export default {
   name: 'player',
@@ -239,9 +238,8 @@ export default {
     }
   },
   methods: {
-    // 左滑右画选择上一曲下一曲
+    // 左滑右滑选择上一曲下一曲
     selectNextOrPrev (nextIndex) {
-      console.log('OutPageIndex', nextIndex)
       const sum = this.playList.length
       if (nextIndex === sum - 1 && this.currentIndex === 0) {
         nextIndex = -1
@@ -432,6 +430,8 @@ export default {
         this.setPlayering(true)
         return
       } else {
+        // vuex 确定点击了上一首
+        this.setClickMark(true)
         let index = this.currentIndex - 1
         if (index === -1) {
           index = this.playList.length - 1
@@ -457,6 +457,8 @@ export default {
         this.setPlaying(true)
         return
       } else {
+        // vuex 确定点击了上一首
+        this.setClickMark(true)
         let index = this.currentIndex + 1
         if (index === this.playList.length) {
           index = 0
@@ -773,6 +775,7 @@ export default {
               @include left;
               .text-name {
                 line-height: 16px;
+                @include left;
                 @include ellipsis2(1);
               }
             }
@@ -783,6 +786,7 @@ export default {
               color: #aeaeae;
               .text-lyric {
                 line-height: 14px;
+                @include left;
                 @include ellipsis2(1);
               }
             }
@@ -812,12 +816,6 @@ export default {
             color: #c0c0c0;
           }
         }
-        /*.icon-play {*/
-        /*  font-size: 30px;*/
-        /*}*/
-        /*.icon-pause {*/
-        /*  font-size: 30px;*/
-        /*}*/
       }
       .mini-songList-wrapper {
         flex: 0 0 40px;

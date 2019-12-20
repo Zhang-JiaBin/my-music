@@ -60,8 +60,7 @@ export default {
   mixins: [singerMixin],
   data () {
     return {
-      scrollY: 0,
-      ItemArr: []
+      scrollY: 0
     }
   },
   created () {
@@ -69,37 +68,37 @@ export default {
     this.listenScroll = true
   },
   mounted () {
+    // 设置当前页面在歌手歌曲列表页面
     this.setCurrentPage(1)
-    this.ItemArr = this.$refs.scrollItem.getRefsSongItem()
     // this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   components: { Loading, Scroll, SongList },
   watch: {
+    // 监控scroll组件的滚动 Y 值
     scrollY (newY) {
-      // console.log('newY', newY)
+      // 下滑时，显示大标题，隐藏小标题，content的内容也跟着向下滑动，去除图片的高斯模糊
       if (newY >= 0) {
         this.$refs.content.style.top = `${90 + newY}px`
         this.$refs.bigTitle.style.opacity = 1
         this.$refs.smallTitle.style.opacity = 0
         this.$refs.Image.style.filter = `blur(0px)`
         this.$refs.Image.style.opacity = 1
+        // 图像也跟着下滑30像素
         if (newY <= 30) {
           this.$refs.Image.style.transform = `translateY(${newY - 30}px)`
         }
       }
+      // 上滑时，逐渐显示小标题，逐渐隐藏大标题，背景图片高斯模糊同时透明度为0.5
       if (-newY > 0 && -newY <= 85) {
         // console.log('-newY:', -newY)
         let opacity = (-newY / 85)
         this.$refs.Image.style.opacity = 0.5
-        // console.log('imgO:', imgOpacity)
-        // console.log('opacity:', opacity)
         this.$refs.content.style.top = `${90 + newY}px`
         this.$refs.bigTitle.style.opacity = -newY <= 50 ? `${1 - opacity}` : 0
         this.$refs.smallTitle.style.opacity = -newY <= 60 ? `${opacity}` : 1
         this.$refs.Image.style.filter = `blur(${-newY / 4}px)`
-        // this.$refs.scrollList.$el.style.transform = `translateY(${newY}px)`
-        // this.$refs.scrollList.style.transform = `translateY(${newY}px)`
       } else if (-newY > 85) {
+        // 上滑动超过85像素，固定content的高度，图片高斯模糊
         this.$refs.content.style.top = `5px`
         this.$refs.bigTitle.style.opacity = 0
         this.$refs.smallTitle.style.opacity = 1
@@ -107,9 +106,21 @@ export default {
       }
     },
     currentSong () {
+      // 适配有mini播放器的底部滚动高度
       if (this.currentSong !== undefined) {
         this.$refs.listWrapper.style.bottom = `50px`
         this.$refs.scrollList.refresh()
+      }
+    },
+    clickMark (newMark) {
+      // 点击上一首或下一首时，滚动进度条
+      if (newMark) {
+        const ItemArr = this.$refs.scrollItem.getRefsSongItem()
+        let songEl = ItemArr[this.currentIndex]
+        this.$refs.scrollList.scrollToElement(songEl, 1000)
+        this.setClickMark(false)
+      } else {
+        return
       }
     }
   },
@@ -130,9 +141,10 @@ export default {
     selectItem (item, index) {
       this.selectPlay(this.songs, index, item)
       // 选择歌曲后滚动到相应的位置
+      const ItemArr = this.$refs.scrollItem.getRefsSongItem()
       if (index > 4) {
-        let songEl = this.ItemArr[index]
-        this.$refs.scrollList.scrollToElement(songEl, 1000)
+        let songEl = ItemArr[index]
+        this.$refs.scrollList.scrollToElement(songEl, 1500)
       }
     }
   }

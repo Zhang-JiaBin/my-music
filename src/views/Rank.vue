@@ -22,21 +22,26 @@ import { singerMixin } from '../utils/mixin'
 import Scroll from '../common/scroll'
 import RankAnother from '../common/rankAnother'
 import Loading from '../common/loading'
+import { getRecommend } from '../api/recommend'
+import { randomlist } from '../utils/random'
 export default {
   name: 'rank',
   data () {
-    return {}
+    return {
+      rankGroup: []
+    }
   },
   mixins: [singerMixin],
   components: { Loading, RankAnother, Scroll, RankItem, LittleTitle },
-
+  mounted () {
+    this._getRank()
+  },
   computed: {
     ThreerankGroup () {
       return this.rankGroup.slice(0, 3)
     },
     globalList () {
-      console.log(this.rankGroup[3].toplist)
-      return this.rankGroup ? this.rankGroup[3].toplist : []
+      return this.rankGroup[3] ? this.rankGroup[3].toplist : []
     }
   },
   watch: {
@@ -50,6 +55,12 @@ export default {
   methods: {
     showAnother (id) {
       return id === 3
+    },
+    _getRank () {
+      getRecommend().then(res => {
+        this.rankGroup = res.toplist.data.group
+        console.log(this.rankGroup)
+      })
     }
   }
 }

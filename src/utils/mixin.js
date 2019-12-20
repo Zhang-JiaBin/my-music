@@ -17,7 +17,7 @@ import {
 export const singerMixin = {
   computed: {
     ...mapGetters([
-      'rankGroup',
+      // 'rankGroup',
       'singer',
       'playering',
       'fullScreen',
@@ -26,12 +26,13 @@ export const singerMixin = {
       'mode',
       'currentIndex',
       'currentSong',
-      'currentPage'
+      'currentPage',
+      'clickMark'
     ])
   },
   methods: {
     ...mapActions([
-      'setRankGroup',
+      // 'setRankGroup',
       'setSinger',
       'setPlayering',
       'setFullScreen',
@@ -39,7 +40,8 @@ export const singerMixin = {
       'setSequenceList',
       'setMode',
       'setCurrentIndex',
-      'setCurrentPage'
+      'setCurrentPage',
+      'setClickMark'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {

@@ -43,6 +43,11 @@ const actions = {
     commit
   }, currentPage) => {
     return commit('SET_CURRENTPAGE', currentPage)
+  },
+  setClickMark: ({
+    commit
+  }, clickMark) => {
+    return commit('SET_CLICKMARK', clickMark)
   }
 }
 export default actions
