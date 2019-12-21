@@ -28,7 +28,8 @@ export const singerMixin = {
       'currentPage',
       'clickMark',
       'songSheet',
-      'rankList'
+      'rankList',
+      'routerMark'
     ])
   },
   methods: {
@@ -43,7 +44,8 @@ export const singerMixin = {
       'setCurrentPage',
       'setClickMark',
       'setSongSheet',
-      'setRankList'
+      'setRankList',
+      'setRouterMark'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -75,6 +77,9 @@ export const singerMixin = {
     },
     // 随机选择一首歌播放
     randomPlay (list) {
+      if (!list.length) {
+        return
+      }
       this.setSequenceList(list)
       this.setPlayList(list)
       let ranIndex = Math.floor(Math.random() * list.length)
@@ -83,7 +88,7 @@ export const singerMixin = {
       if (!item.url) {
         this.gainSongUrl(item)
       }
-      console.log(ranIndex)
+      // console.log(ranIndex)
       this.setCurrentIndex(ranIndex)
       this.setPlayering(true)
       this.setClickMark(true)
@@ -107,6 +112,15 @@ export const singerMixin = {
       }
       this.setCurrentIndex(index)
       this.setPlayering(true)
+    },
+    // 监听子组件select,选择了一个的歌单
+    selectSheet (sheet) {
+      this.$router.push({
+        path: `/home/sheet/${sheet.content_id}`
+      })
+      this.simpleToast(`歌单: ${sheet.title}`)
+      // console.log(sheet)
+      this.setSongSheet(sheet)
     },
     // 监听子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
     selectTop (item) {

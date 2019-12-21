@@ -13,6 +13,7 @@ export default class Song {
     id,
     mid,
     singer,
+    singerMid,
     name,
     album,
     duration,
@@ -22,6 +23,7 @@ export default class Song {
     this.id = id
     this.mid = mid
     this.singer = singer
+    this.singerMid = singerMid
     this.name = name
     this.album = album
     this.duration = duration
@@ -51,6 +53,7 @@ export function createSong (item) {
     id: item.id,
     mid: item.mid,
     singer: filterSinger(item.singer),
+    singerMid: item.singer[0].mid,
     name: item.name,
     album: item.album.name,
     duration: item.interval,
@@ -79,3 +82,10 @@ function filterSinger (singer) {
   })
   return ret.join('/')
 }
+
+// function filterSingerMid (singer) {
+//   if (!singer) {
+//     return ''
+//   }
+//   return singer[0].mid
+// }

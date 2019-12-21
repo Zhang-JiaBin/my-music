@@ -27,9 +27,17 @@ export default {
     },
     bgImage () {
       return this.songSheet.cover
+    },
+    contentId () {
+      return this.songSheet.content_id
     }
   },
-
+  watch: {
+    contentId (newContentId) {
+      console.log('newcontentId', newContentId)
+      this._getSheetList()
+    }
+  },
   methods: {
     _getSheetList () {
       if (!this.songSheet.content_id) {

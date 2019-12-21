@@ -14,7 +14,7 @@
               <div class="player-title-name">
                 <span class="song-name">{{SongName}}</span>
               </div>
-              <div class="player-title-name">
+              <div class="player-title-name" @click="goToSingerDetail">
                 <span class="singer-name">{{SongSinger}}</span>
                 <span class="icon-more"></span>
               </div>
@@ -123,6 +123,7 @@ import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
 import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
+import Singer from '../../utils/singer'
 
 export default {
   name: 'player',
@@ -174,6 +175,10 @@ export default {
     // SongAlbum () {
     //   return this.currentSong ? this.currentSong.album : ''
     // },
+    // 歌手mid
+    SingerMid () {
+      return this.currentSong ? this.currentSong.singerMid : ''
+    },
     SongImg () {
       // console.log(this.currentSong)
       return this.currentSong ? this.currentSong.image : ''
@@ -225,6 +230,7 @@ export default {
     },
     // 监控当前页面是否在歌曲列表页面
     currentPage (newPage) {
+      console.log('newPage:', newPage)
       if (newPage === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.3s`
@@ -238,6 +244,22 @@ export default {
     }
   },
   methods: {
+    // 跳转到歌手详情页
+    goToSingerDetail () {
+      if (!this.SingerMid) {
+        return
+      }
+      this.setRouterMark(true)
+      this.$router.push({
+        path: `/home/singer/${this.SingerMid}`
+      })
+      const cSinger = new Singer({
+        id: this.SingerMid,
+        name: this.SongSinger
+      })
+      this.setSinger(cSinger)
+      this.setFullScreen(false)
+    },
     // 左滑右滑选择上一曲下一曲
     selectNextOrPrev (nextIndex) {
       const sum = this.playList.length
@@ -398,6 +420,7 @@ export default {
     },
     // 全屏
     full () {
+      // console.log(this.currentSong)
       this.setFullScreen(true)
     },
     // 更新进度条时间
@@ -410,6 +433,7 @@ export default {
     },
     // 歌曲播放准备，解决连续点击下一曲按钮的报错
     ready () {
+      console.log(this.currentSong)
       this.songReady = true
     },
     // 歌曲播放结束

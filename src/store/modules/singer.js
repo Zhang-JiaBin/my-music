@@ -12,7 +12,8 @@ const singer = {
     currentPage: 0, // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
     clickMark: false, // 是否点击了下一首或者上一首的标志,
     songSheet: {}, // 歌单,
-    rankList: {} // 榜单
+    rankList: {}, // 榜单,
+    routerMark: true // 看是否是跳转到子路由
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -47,6 +48,9 @@ const singer = {
     },
     'SET_RANKLIST': (state, rankList) => {
       state.rankList = rankList
+    },
+    'SET_ROUTERMARK': (state, routerMark) => {
+      state.routerMark = routerMark
     }
   }
 }

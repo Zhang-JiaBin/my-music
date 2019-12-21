@@ -13,11 +13,9 @@
             <div class="swiper-pagination"  slot="pagination"></div>
           </swiper>
         </div>
-        <little-title title="歌单推荐"></little-title>
-        <div class="recommend-list-wrapper">
-          <div class="recomend-list" v-for="item in vHotList" :key="item.content_id">
-            <song-item @select="selectSheet" :sheet="item"></song-item>
-          </div>
+        <little-title title="歌单推荐" @displayMore="gotoSheet"></little-title>
+        <div class="recommend-sheet-wrapper">
+          <song-sheet @select="selectRecomSheet" :sheet-list="vHotList"></song-sheet>
         </div>
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
         <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
@@ -40,12 +38,12 @@ import 'swiper/dist/css/swiper.css'
 import scroll from '../common/scroll'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import LittleTitle from '../common/LittleTitle'
-import SongItem from '../common/SongItem'
 import RecomendRank from '../components/Recommend/RecommendRank'
 import { randomlist } from '../utils/random'
 import RecomendSong from '../components/Recommend/RecommendSong'
 import { singerMixin } from '../utils/mixin'
 import Loading from '../common/loading'
+import SongSheet from '../components/sheet/songSheet'
 export default {
   name: 'Recommend',
   data () {
@@ -70,10 +68,10 @@ export default {
     this._getRecommend()
   },
   components: {
+    SongSheet,
     Loading,
     RecomendSong,
     RecomendRank,
-    SongItem,
     LittleTitle,
     swiper,
     swiperSlide,
@@ -90,14 +88,16 @@ export default {
   computed: {},
   mixins: [singerMixin],
   methods: {
-    // 监听子组件select,选择了一个的歌单
-    selectSheet (sheet) {
+    selectRecomSheet (item) {
+      console.log('RS执行了一次')
+      this.setCurrentPage(1)
+      this.setRouterMark(false)
+      this.selectSheet(item)
+    },
+    gotoSheet () {
       this.$router.push({
-        path: `/home/recommend/${sheet.content_id}`
+        path: 'sheet'
       })
-      this.simpleToast(`歌单: ${sheet.title}`)
-      console.log(sheet)
-      this.setSongSheet(sheet)
     },
     // 跳转到排行榜页面
     gotoRank () {
@@ -113,12 +113,7 @@ export default {
         this.vHotList = res.recomPlaylist.data.v_hot
         this.rankGroup = res.toplist.data.group
         this.newSong = res.new_song.data.songlist
-        // console.log(this.swiperList)
-        // console.log(this.vHotList)
-        // console.log(this.rankGroup)
-        // console.log(this.newSong)
         this.newSongList = randomlist(this.normalizeSong(this.newSong), 15)
-        // console.log(this.newSongList)
       })
     },
     loadImage () {
@@ -165,24 +160,8 @@ export default {
           }
         }
       }
-      .recommend-list-wrapper {
+      .recommend-sheet-wrapper{
         width: 100%;
-        display: flex;
-        flex-flow: row wrap;
-        .recomend-list {
-          flex: 0 0 33.33%;
-          width: 33.33%;
-          box-sizing: border-box;
-          &:nth-child(3n+1) {
-            padding: 0 5px 15px 15px;
-          }
-          &:nth-child(3n+2) {
-            padding: 0 10px 15px 10px;
-          }
-          &:nth-child(3n+3) {
-            padding: 0 15px 15px 5px;
-          }
-        }
       }
       .loading-container {
         position: absolute;

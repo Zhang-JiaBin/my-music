@@ -13,9 +13,9 @@
       <span class="icon icon-singer"></span>
       <span class="tab-text">歌手</span>
     </router-link>
-    <router-link tag="div" class="tab-wrapper" to="/home/my">
+    <router-link tag="div" class="tab-wrapper" to="/home/sheet">
       <span class="icon icon-user"></span>
-      <span class="tab-text">我的</span>
+      <span class="tab-text">歌单</span>
     </router-link>
   </div>
 </template>

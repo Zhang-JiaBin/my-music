@@ -11,6 +11,9 @@
         <little-title title="全球榜" :show-more="false"></little-title>
         <rank-another @select="selectTop" :global-list="globalList"></rank-another>
       </div>
+      <div class="loading-container" v-show="!rankGroup.length">
+        <loading></loading>
+      </div>
     </scroll>
     <transition name="slide">
       <router-view></router-view>

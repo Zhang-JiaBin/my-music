@@ -1,7 +1,9 @@
 <template>
-  <div class="singer-detail">
-    <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
-  </div>
+    <div class="singer-detail">
+      <transition name="slide">
+        <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
+      </transition>
+    </div>
 </template>
 
 <script>
@@ -28,17 +30,28 @@ export default {
     },
     bgImage () {
       return this.singer.pic
+    },
+    Mid () {
+      return this.singer.id
+    }
+  },
+  watch: {
+    Mid (newMid) {
+      console.log('newMid', newMid)
+      this._getSingerSongs()
     }
   },
 
   methods: {
     _getSingerSongs () {
+      // console.log('getSingerSongs')
       if (!this.singer.id) {
         this.$router.push('/home/singer')
         return
       }
       getSingerSongs(this.singer.id).then(res => {
         const list = this.concatList(res.singerSongList.data.songList)
+        // console.log(list)
         this.Songs = this.normalizeSong(list)
         // this.Songs = this.normalizeSong(res.data.list)
         // console.log(this.Songs)

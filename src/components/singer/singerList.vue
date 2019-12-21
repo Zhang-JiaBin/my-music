@@ -44,7 +44,7 @@
 import Scroll from '../../common/scroll'
 import { getData } from '../../utils/dom'
 import Loading from '../../common/loading'
-const HEIGHT = 21
+const HEIGHT = 18
 const TITLE_HEIGHT = 30
 export default {
   props: {
@@ -143,34 +143,26 @@ export default {
     // },
     LetterTouchStart (e) {
       let anchorIndex = getData(e.target, 'index')
-      // console.log('a', anchorIndex)
       let firstTouch = e.touches[0]
-      // console.log('f', firstTouch)
       this.touch.y1 = firstTouch.pageY
       this.touch.anchorIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     LetterTouchMove (e) {
       let firstTouch = e.touches[0]
-      // console.log('fm:',firstTouch)
       this.touch.y2 = firstTouch.pageY
       let delta = (this.touch.y2 - this.touch.y1) / HEIGHT | 0
       let anchorIndex = parseInt(this.touch.anchorIndex) + delta
-      // console.log('fa:', anchorIndex)
       this._scrollTo(anchorIndex)
     },
     // 移动到指定的Dom元素
     _scrollTo (index) {
-      if (!index) {
-        return
-      }
       if (index < 0) {
         index = 0
       } else if (index > this.listHeight.length - 2) {
         index = this.listHeight.length - 2
       }
       this.scrollY = -this.listHeight[index]
-      // console.log('sY:',this.scrollY)
       this.$refs.singerScroll.scrollToElement(this.$refs.listTitle[index], 0)
     },
     scroll (pos) {
@@ -262,21 +254,21 @@ export default {
         }
       }
       .letter-wrapper {
-        z-index: 120;
+        z-index: 300;
         position: absolute;
         right: 5px;
         top: 50%;
         width: 30px;
         border-radius: 12px;
         transform: translateY(-50%);
-        padding: 5px 0;
+        padding-top: 5px;
         background: $color-bg-bottom;
         /*font-family: Helvetica;*/
         .letter-item{
           @include columnTop;
           width: 100%;
-          height: 15px;
-          padding-bottom: 6px;
+          height: 13px;
+          padding-bottom: 5px;
           font-size: $font-size-small;
           &.current {
             color: $color-icon;

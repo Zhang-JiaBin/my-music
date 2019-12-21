@@ -53,6 +53,11 @@ const actions = {
     commit
   }, rankList) => {
     return commit('SET_RANKLIST', rankList)
+  },
+  setRouterMark: ({
+    commit
+  }, routerMark) => {
+    return commit('SET_ROUTERMARK', routerMark)
   }
 }
 export default actions

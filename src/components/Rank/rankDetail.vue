@@ -5,9 +5,9 @@
 </template>
 
 <script>
-  import MusicList from '../../common/musicList'
-  import { singerMixin } from '../../utils/mixin'
-  import { getMusicList } from '../../api/rank'
+import MusicList from '../../common/musicList'
+import { singerMixin } from '../../utils/mixin'
+import { getMusicList } from '../../api/rank'
 export default {
   name: 'rankDetail',
   data () {
@@ -30,9 +30,18 @@ export default {
       if (this.Songs.length) {
         return this.Songs[0].image
       }
+      return this.rankList.frontPicUrl
+    },
+    topId () {
+      return this.rankList.topId
     }
   },
-
+  watch: {
+    topId (newtopId) {
+      // console.log('newtopId', newtopId)
+      this._getRankList()
+    }
+  },
   methods: {
     _getRankList () {
       if (!this.rankList.topId) {

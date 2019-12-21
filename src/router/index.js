@@ -15,11 +15,11 @@ export default new VueRouter({
     children: [{
       path: 'recommend',
       name: 'recommend',
-      component: () => import('../views/Recommend.vue'),
-      children: [{
-        path: ':id',
-        component: () => import('../components/Recommend/SongSheetDetail.vue')
-      }]
+      component: () => import('../views/Recommend.vue')
+      // children: [{
+      //   path: ':id',
+      //   component: () => import('../components/sheet/SongSheetDetail.vue')
+      // }]
     }, {
       path: 'rank',
       name: 'rank',
@@ -37,9 +37,13 @@ export default new VueRouter({
         component: () => import('../components/singer/singerDetail.vue')
       }]
     }, {
-      path: 'my',
-      name: 'my',
-      component: () => import('../views/My.vue')
+      path: 'sheet',
+      name: 'sheet',
+      component: () => import('../views/Sheet.vue'),
+      children: [{
+        path: ':id',
+        component: () => import('../components/sheet/SongSheetDetail.vue')
+      }]
     }]
   }]
 })

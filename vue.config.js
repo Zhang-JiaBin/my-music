@@ -28,6 +28,17 @@ module.exports = {
           '^/api/getRecommend': ''
         }
       },
+      // 获取官方歌单
+      '/api/getSheetList': {
+        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/' // 需要加斜杆
+          req.headers.host = 'y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getSheetList': ''
+        }
+      },
       // 获取指定歌单的歌曲列表
       '/api/getSongList': {
         target: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
