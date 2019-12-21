@@ -2,7 +2,6 @@ import { playMode } from '../../utils/config'
 
 const singer = {
   state: {
-    rankGroup: [],
     singer: {},
     playering: false,
     fullScreen: false,
@@ -11,12 +10,11 @@ const singer = {
     mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
     currentIndex: -1,
     currentPage: 0, // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
-    clickMark: false // 是否点击了下一首或者上一首的标志
+    clickMark: false, // 是否点击了下一首或者上一首的标志,
+    songSheet: {}, // 歌单,
+    rankList: {} // 榜单
   },
   mutations: {
-    'SET_RANKGROUP': (state, rankGroup) => {
-      state.rankGroup = rankGroup
-    },
     'SET_SINGER': (state, singer) => {
       state.singer = singer
     },
@@ -43,6 +41,12 @@ const singer = {
     },
     'SET_CLICKMARK': (state, clickMark) => {
       state.clickMark = clickMark
+    },
+    'SET_SONGSHEET': (state, songSheet) => {
+      state.songSheet = songSheet
+    },
+    'SET_RANKLIST': (state, rankList) => {
+      state.rankList = rankList
     }
   }
 }

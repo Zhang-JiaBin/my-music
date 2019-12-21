@@ -16,7 +16,7 @@
         <little-title title="歌单推荐"></little-title>
         <div class="recommend-list-wrapper">
           <div class="recomend-list" v-for="item in vHotList" :key="item.content_id">
-            <song-item :img-url="item.cover" :songText="item.title"></song-item>
+            <song-item @select="selectSheet" :sheet="item"></song-item>
           </div>
         </div>
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
@@ -28,6 +28,9 @@
         <loading></loading>
       </div>
     </scroll>
+    <transition name="slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -87,14 +90,25 @@ export default {
   computed: {},
   mixins: [singerMixin],
   methods: {
+    // 监听子组件select,选择了一个的歌单
+    selectSheet (sheet) {
+      this.$router.push({
+        path: `/home/recommend/${sheet.content_id}`
+      })
+      this.simpleToast(`歌单: ${sheet.title}`)
+      console.log(sheet)
+      this.setSongSheet(sheet)
+    },
+    // 跳转到排行榜页面
     gotoRank () {
       this.$router.push({
         path: 'rank'
       })
     },
+    // 获取推荐页面数据
     _getRecommend () {
       getRecommend().then(res => {
-        console.log(res)
+        // console.log(res)
         this.swiperList = res.focus.data.content
         this.vHotList = res.recomPlaylist.data.v_hot
         this.rankGroup = res.toplist.data.group
@@ -109,6 +123,7 @@ export default {
     },
     loadImage () {
       if (!this.checkLoaded) {
+        // console.log('loadImage')
         this.$refs.scroll.refresh()
         this.checkLoaded = true
       }
@@ -124,6 +139,7 @@ export default {
     top: 50px;
     bottom: 50px;
     width: 100%;
+    z-index: 600;
     .recommend-content-wrapper{
       height: 100%;
       overflow: hidden;

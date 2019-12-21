@@ -1,25 +1,36 @@
 <template>
   <div class="NoteBeat">
-    <div class="spectrum spectrum1"></div>
-    <div class="spectrum spectrum2"></div>
-    <div class="spectrum spectrum3"></div>
-    <div class="spectrum spectrum4"></div>
-    <div class="spectrum spectrum5"></div>
-    <div class="spectrum spectrum6"></div>
+    <div class="spectrum spectrum1" :class="noteBeatClass"></div>
+    <div class="spectrum spectrum2" :class="noteBeatClass"></div>
+    <div class="spectrum spectrum3" :class="noteBeatClass"></div>
+    <div class="spectrum spectrum4" :class="noteBeatClass"></div>
+    <div class="spectrum spectrum5" :class="noteBeatClass"></div>
+    <div class="spectrum spectrum6" :class="noteBeatClass"></div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    playing: {
+      type: Boolean,
+      default: false
+    }
+  },
   name: 'NoteBeat',
   data () {
     return {
     }
   },
-
+  watch: {
+  },
   components: {},
 
-  computed: {},
+  computed: {
+    noteBeatClass () {
+      return this.playing ? 'play' : 'play pause'
+    }
+  },
 
   methods: {}
 }
@@ -38,10 +49,16 @@ export default {
       height: 80%;
       background: transparent;
       display: inline-block;
-      border-radius: 6px 6px 0 0;
+      border-radius: 10px 10px 0 0;
       transform-origin: bottom;
       animation: dancing 1s ease-in-out infinite;
       background: $color-icon;
+      &.play {
+        animation: dancing 1s ease-in-out infinite;
+      }
+      &.pause {
+        animation-play-state: paused;
+      }
       &.spectrum1 {
         animation-delay: 0.4s;
       }

@@ -17,7 +17,7 @@
           </div>
           <div class="item-playing-wrapper" v-show="showPlaying(item)">
             <div class="note-wrapper">
-              <note-beat class="playing-beat"></note-beat>
+              <note-beat class="playing-beat" :playing="playering"></note-beat>
             </div>
           </div>
           <div class="item-playing-wrapper">

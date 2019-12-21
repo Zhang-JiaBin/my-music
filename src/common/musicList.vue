@@ -10,7 +10,7 @@
     <div class="content-wrapper" ref="content">
       <div class="title-wrapper" ref="bigTitle">
         <span class="title-name">{{this.title}}</span>
-        <div class="attention-wrapper">
+        <div class="attention-wrapper" v-show="false">
           <span class="attention">已关注</span>
         </div>
       </div>
@@ -21,8 +21,8 @@
           <div>
             <div class="list-function-wrapper">
               <div class="list-function">
-                <span class="icon-play"></span>
-                <span class="function-text">播放全部 ({{this.songs.length}})</span>
+                <span class="icon-play" @click="randomPlay(songs)"></span>
+                <span class="function-text">随机播放 ({{this.songs.length}})</span>
               </div>
             </div>
             <song-list ref="scrollItem" @selete="selectItem" :songs="songs" class="list-song"></song-list>
@@ -171,7 +171,7 @@ export default {
     @include justcenter;
     .icon-back {
       font-size: $font-size-large-x;
-      color: white;
+      color: $color-icon;
     }
     .back-text {
       margin-left: 10px;

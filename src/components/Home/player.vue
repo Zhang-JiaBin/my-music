@@ -536,7 +536,7 @@ export default {
           @include right;
           .icon-down {
             font-size: 25px;
-            color: #ffffff;
+            color: $color-icon;
           }
         }
         .player-title-wrapper {

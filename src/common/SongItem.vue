@@ -1,10 +1,10 @@
 <template>
-  <div class="song-item">
+  <div class="song-item" @click="selectItem(sheet)">
     <div class="song-img-wrapper">
-      <img class="song-img" v-lazy="ImgUrl">
+      <img class="song-img" v-lazy="sheet.cover">
     </div>
     <div class="song-text-wrapper">
-      <span class="song-text">{{songText}}</span>
+      <span class="song-text">{{sheet.title}}</span>
     </div>
   </div>
 </template>
@@ -13,8 +13,10 @@
 export default {
   name: 'SongItem',
   props: {
-    ImgUrl: String,
-    songText: String
+    sheet: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -25,7 +27,11 @@ export default {
 
   computed: {},
 
-  methods: {}
+  methods: {
+    selectItem (item) {
+      this.$emit('select', item)
+    }
+  }
 }
 
 </script>

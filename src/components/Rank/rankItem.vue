@@ -1,6 +1,6 @@
 <template>
   <div class="rank-item">
-    <div class="rank-item-wrapper">
+    <div class="rank-item-wrapper" @click="selectItem(rankList)">
       <div class="rank-img-wrapper">
         <img class="rank-img" v-lazy="rankList.frontPicUrl" alt="">
       </div>
@@ -32,12 +32,16 @@ export default {
 
   computed: {},
 
-  methods: {}
+  methods: {
+    selectItem (rankList) {
+      this.$emit('select', rankList)
+    }
+  }
 }
 
 </script>
 <style lang="scss" scoped>
-  @import "../assets/style/scss/global";
+  @import "../../assets/style/scss/global";
   .rank-item{
     width: 100%;
     .rank-item-wrapper {

@@ -5,25 +5,28 @@
         <div class="rank-list-wrapper" v-for="item in ThreerankGroup" :key="item.groupId">
           <little-title :title="item.groupName" :show-more="false"></little-title>
           <div class="rank-list" v-for="(subItem,index) in item.toplist" :key="index">
-            <rank-item :rank-list="subItem" :show-another="showAnother(item.groupId)"></rank-item>
+            <rank-item @select="selectTop" :rank-list="subItem"></rank-item>
           </div>
         </div>
         <little-title title="全球榜" :show-more="false"></little-title>
-        <rank-another :global-list="globalList"></rank-another>
+        <rank-another @select="selectTop" :global-list="globalList"></rank-another>
       </div>
     </scroll>
+    <transition name="slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
 import LittleTitle from '../common/LittleTitle'
-import RankItem from '../common/rankItem'
+import RankItem from '../components/Rank/rankItem'
 import { singerMixin } from '../utils/mixin'
 import Scroll from '../common/scroll'
-import RankAnother from '../common/rankAnother'
+import RankAnother from '../components/Rank/rankAnother'
 import Loading from '../common/loading'
 import { getRecommend } from '../api/recommend'
-import { randomlist } from '../utils/random'
+// import { randomlist } from '../utils/random'
 export default {
   name: 'rank',
   data () {
@@ -53,13 +56,10 @@ export default {
     }
   },
   methods: {
-    showAnother (id) {
-      return id === 3
-    },
     _getRank () {
       getRecommend().then(res => {
         this.rankGroup = res.toplist.data.group
-        console.log(this.rankGroup)
+        // console.log(this.rankGroup)
       })
     }
   }
@@ -73,6 +73,7 @@ export default {
     top: 50px;
     bottom: 50px;
     width: 100%;
+    z-index: 600;
     .rank-scroll {
       height: 100%;
       overflow: hidden;

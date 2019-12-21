@@ -1,9 +1,4 @@
 const actions = {
-  setRankGroup: ({
-    commit
-  }, rankGroup) => {
-    return commit('SET_RANKGROUP', rankGroup)
-  },
   setSinger: ({
     commit
   }, singer) => {
@@ -48,6 +43,16 @@ const actions = {
     commit
   }, clickMark) => {
     return commit('SET_CLICKMARK', clickMark)
+  },
+  setSongSheet: ({
+    commit
+  }, songSheet) => {
+    return commit('SET_SONGSHEET', songSheet)
+  },
+  setRankList: ({
+    commit
+  }, rankList) => {
+    return commit('SET_RANKLIST', rankList)
   }
 }
 export default actions

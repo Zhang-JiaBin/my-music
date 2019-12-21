@@ -1,6 +1,6 @@
 <template>
   <div class="rank-another-wrapper">
-    <div class="rank-another-img-wrapper" v-for="item in globalList" :key="item.listenNum">
+    <div class="rank-another-img-wrapper" @click="selectItem(item)" v-for="item in globalList" :key="item.listenNum">
       <img class="rank-another-img" v-lazy="item.frontPicUrl" alt="">
     </div>
   </div>
@@ -24,12 +24,16 @@ export default {
 
   computed: {},
 
-  methods: {}
+  methods: {
+    selectItem (item) {
+      this.$emit('select', item)
+    }
+  }
 }
 
 </script>
 <style lang="scss" scoped>
-  @import "../assets/style/scss/global";
+  @import "../../assets/style/scss/global";
   .rank-another-wrapper{
     padding: 0 15px;
     box-sizing: border-box;

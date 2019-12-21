@@ -15,11 +15,19 @@ export default new VueRouter({
     children: [{
       path: 'recommend',
       name: 'recommend',
-      component: () => import('../views/Recommend.vue')
+      component: () => import('../views/Recommend.vue'),
+      children: [{
+        path: ':id',
+        component: () => import('../components/Recommend/SongSheetDetail.vue')
+      }]
     }, {
       path: 'rank',
       name: 'rank',
-      component: () => import('../views/Rank.vue')
+      component: () => import('../views/Rank.vue'),
+      children: [{
+        path: ':id',
+        component: () => import('../components/Rank/rankDetail.vue')
+      }]
     }, {
       path: 'singer',
       name: 'singer',

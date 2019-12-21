@@ -1,9 +1,8 @@
 <template>
   <transition name="fade">
     <div class="toast-bg-wrapper" v-show="visible" @click.prevent>
-      <div class="toast-bg">
-        <span class="toast-wrapper" v-html="showText">
-        </span>
+      <div class="toast-bg" v-show="visible">
+        <span class="toast-wrapper" v-html="showText"></span>
       </div>
     </div>
   </transition>
@@ -16,7 +15,7 @@ export default {
     text: [String, Number],
     timeout: {
       type: Number,
-      default: 1200
+      default: 1500
     }
   },
   data () {
@@ -54,13 +53,13 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
   @import "../assets/style/scss/global";
 .toast-bg-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left: 0;*/
   z-index: 2500;
-  width: 100%;
-  height: 100%;
-  background: transparent;
+  /*width: 100%;*/
+  /*height: 100%;*/
+  /*background: transparent;*/
   .toast-bg {
     position: absolute;
     bottom: 20%;
@@ -79,13 +78,7 @@ export default {
       font-weight: bold;
       color: $color-icon;
       text-align: center;
-      /*word-break: break-all;*/
       @include ellipsis2(2);
-      /*<!--.toast {-->*/
-      /*<!--  text-align: center;-->*/
-      /*<!--  !*word-break: break-all;*!-->*/
-      /*<!--  @include ellipsis2(2);-->*/
-      /*<!--}-->*/
     }
   }
 }

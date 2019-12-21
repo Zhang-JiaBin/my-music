@@ -28,6 +28,17 @@ module.exports = {
           '^/api/getRecommend': ''
         }
       },
+      // 获取指定歌单的歌曲列表
+      '/api/getSongList': {
+        target: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/' // 需要加斜杆
+          req.headers.host = 'y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getSongList': ''
+        }
+      },
       // 线上qq音乐API
       '/api/getSingerSongs': {
         target: `https://api.qq.jsososo.com/singer/songs`,
@@ -50,6 +61,18 @@ module.exports = {
           '^/api/getSingerDetail': ''
         }
       },
+      // 获取排行榜指定榜单的歌曲列表
+      '/api/getMusicList': {
+        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/' // 需要加斜杆
+          req.headers.host = 'y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getMusicList': ''
+        }
+      },
+      // 获取Vkey拼接播放地址
       '/api/getSongUrl': {
         target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
         bypass: function (req, res, proxyOptions) {
@@ -60,6 +83,7 @@ module.exports = {
           '^/api/getSongUrl': ''
         }
       },
+      // 获取歌词
       '/api/getLyric': {
         target: 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg',
         bypass: function (req, res, proxyOptions) {

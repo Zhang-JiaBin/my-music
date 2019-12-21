@@ -1,5 +1,4 @@
 const getters = {
-  rankGroup: state => state.singer.rankGroup,
   singer: state => state.singer.singer,
   playering: state => state.singer.playering,
   fullScreen: state => state.singer.fullScreen,
@@ -9,7 +8,9 @@ const getters = {
   currentIndex: state => state.singer.currentIndex,
   currentSong: state => state.singer.playList[state.singer.currentIndex],
   currentPage: state => state.singer.currentPage,
-  clickMark: state => state.singer.clickMark
+  clickMark: state => state.singer.clickMark,
+  songSheet: state => state.singer.songSheet,
+  rankList: state => state.singer.rankList
 }
 
 export default getters

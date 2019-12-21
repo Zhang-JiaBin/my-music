@@ -17,7 +17,6 @@ import {
 export const singerMixin = {
   computed: {
     ...mapGetters([
-      // 'rankGroup',
       'singer',
       'playering',
       'fullScreen',
@@ -27,12 +26,13 @@ export const singerMixin = {
       'currentIndex',
       'currentSong',
       'currentPage',
-      'clickMark'
+      'clickMark',
+      'songSheet',
+      'rankList'
     ])
   },
   methods: {
     ...mapActions([
-      // 'setRankGroup',
       'setSinger',
       'setPlayering',
       'setFullScreen',
@@ -41,7 +41,9 @@ export const singerMixin = {
       'setMode',
       'setCurrentIndex',
       'setCurrentPage',
-      'setClickMark'
+      'setClickMark',
+      'setSongSheet',
+      'setRankList'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -71,7 +73,22 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
-    // 选择歌曲播放
+    // 随机选择一首歌播放
+    randomPlay (list) {
+      this.setSequenceList(list)
+      this.setPlayList(list)
+      let ranIndex = Math.floor(Math.random() * list.length)
+      const item = list[ranIndex]
+      this.simpleToast(`歌曲: '${item.name}'`)
+      if (!item.url) {
+        this.gainSongUrl(item)
+      }
+      console.log(ranIndex)
+      this.setCurrentIndex(ranIndex)
+      this.setPlayering(true)
+      this.setClickMark(true)
+    },
+    // 选择一首歌曲播放
     selectPlay (list, index, item) {
       this.simpleToast(`歌曲: '${item.name}'`)
       if (!item.url) {
@@ -90,13 +107,14 @@ export const singerMixin = {
       }
       this.setCurrentIndex(index)
       this.setPlayering(true)
-      // if (this.myslider) {
-      //   this.myslider.gotoPage(this.currentIndex)
-      // }
-      // this.setCurrentPage(1)
-      // this.setFullScreen(true)
-      // this.$refs.slider.gotoPage(this.currentIndex)
-      // console.log(this.currentSong)
+    },
+    // 监听子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
+    selectTop (item) {
+      this.$router.push({
+        path: `/home/rank/${item.topId}`
+      })
+      this.simpleToast(`榜单: ${item.title}`)
+      this.setRankList(item)
     }
   }
 }

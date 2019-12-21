@@ -3,21 +3,23 @@
     <swiper class="recommendRank-swiper" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <swiper-slide class="recommendRank-swiper-item" v-for="item in topList" :key="item.id">
-        <rank-item :rank-list="item"></rank-item>
+        <rank-item @select="selectTop" :rank-list="item"></rank-item>
       </swiper-slide>
     </swiper>
   </div>
 </template>
 
 <script>
-import RankItem from '../../common/rankItem'
+import RankItem from '../Rank/rankItem'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import { singerMixin } from '../../utils/mixin'
 export default {
   props: {
     rankGroup: Array
   },
   name: 'RecomendRank',
+  mixins: [singerMixin],
   data () {
     return {
       swiperOption: {
@@ -33,14 +35,14 @@ export default {
     swiperSlide,
     swiper
   },
-
   computed: {
     topList () {
       return this.rankGroup[0] ? this.rankGroup[0].toplist : []
     }
   },
 
-  methods: {}
+  methods: {
+  }
 }
 
 </script>
