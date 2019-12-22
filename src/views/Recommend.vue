@@ -15,7 +15,7 @@
         </div>
         <little-title title="歌单推荐" @displayMore="gotoSheet"></little-title>
         <div class="recommend-sheet-wrapper">
-          <song-sheet @select="selectRecomSheet" :sheet-list="vHotList"></song-sheet>
+          <song-sheet @select="selectSheet" :sheet-list="vHotList"></song-sheet>
         </div>
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
         <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
@@ -26,9 +26,6 @@
         <loading></loading>
       </div>
     </scroll>
-    <transition name="slide">
-      <router-view></router-view>
-    </transition>
   </div>
 </template>
 
@@ -88,12 +85,6 @@ export default {
   computed: {},
   mixins: [singerMixin],
   methods: {
-    selectRecomSheet (item) {
-      console.log('RS执行了一次')
-      this.setCurrentPage(1)
-      this.setRouterMark(false)
-      this.selectSheet(item)
-    },
     gotoSheet () {
       this.$router.push({
         path: 'sheet'
@@ -117,11 +108,11 @@ export default {
       })
     },
     loadImage () {
-      if (!this.checkLoaded) {
-        // console.log('loadImage')
-        this.$refs.scroll.refresh()
-        this.checkLoaded = true
-      }
+      // if (!this.checkLoaded) {
+      //   // console.log('loadImage')
+      //   this.$refs.scroll.refresh()
+      //   this.checkLoaded = true
+      // }
     }
   }
 }

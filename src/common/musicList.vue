@@ -68,10 +68,6 @@ export default {
     this.listenScroll = true
   },
   mounted () {
-    // this.$refs.scrollList.refresh()
-    // 设置当前页面在歌手歌曲列表页面
-    this.setCurrentPage(1)
-    // this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   components: { Loading, Scroll, SongList },
   watch: {
@@ -124,21 +120,6 @@ export default {
         return
       }
     }
-    // // 判断是不是子路由跳转，
-    // routerMark (newMark) {
-    //   if (!newMark) {
-    //     console.log(newMark)
-    //     // this.setCurrentPage(0)
-    //     this.setRouterMark(true)
-    //   } else {
-    //     return
-    //   }
-    // },
-  },
-  // 组件销毁之前设置不在musil-list页面
-  beforeDestroy () {
-    console.log('beforeDestory')
-    this.setCurrentPage(0)
   },
   computed: {
     bgStyle () {
@@ -148,12 +129,11 @@ export default {
   methods: {
     back () {
       this.$router.go(-1)
-      if (this.routerMark === false) {
-        this.setCurrentPage(0)
-        this.setRouterMark(true)
-      } else {
-        this.setRouterMark(false)
+      // console.log('返回一次')
+      if (this.pageCount === 0) {
+        return
       }
+      this.setPageCount(this.pageCount - 1)
     },
     scroll (pos) {
       this.scrollY = pos.y

@@ -7,11 +7,11 @@ const getters = {
   mode: state => state.singer.mode,
   currentIndex: state => state.singer.currentIndex,
   currentSong: state => state.singer.playList[state.singer.currentIndex],
-  currentPage: state => state.singer.currentPage,
   clickMark: state => state.singer.clickMark,
   songSheet: state => state.singer.songSheet,
   rankList: state => state.singer.rankList,
-  routerMark: state => state.singer.routerMark
+  pageCount: state => state.singer.pageCount,
+  searchHistory: state => state.singer.searchHistory
 }
 
 export default getters

@@ -3,7 +3,7 @@
     <swiper class="recommendRank-swiper" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <swiper-slide class="recommendRank-swiper-item" v-for="item in topList" :key="item.id">
-        <rank-item @select="selectRecomTop" :rank-list="item"></rank-item>
+        <rank-item @select="selectTop" :rank-list="item"></rank-item>
       </swiper-slide>
     </swiper>
   </div>
@@ -42,12 +42,6 @@ export default {
   },
 
   methods: {
-    selectRecomTop (item) {
-      console.log('RT执行了一次')
-      this.setCurrentPage(1)
-      this.setRouterMark(false)
-      this.selectTop(item)
-    }
   }
 }
 

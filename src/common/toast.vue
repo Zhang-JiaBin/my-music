@@ -56,7 +56,7 @@ export default {
   /*position: absolute;*/
   /*top: 0;*/
   /*left: 0;*/
-  z-index: 2500;
+  z-index: 5000;
   /*width: 100%;*/
   /*height: 100%;*/
   /*background: transparent;*/
@@ -65,7 +65,7 @@ export default {
     bottom: 20%;
     left: 50%;
     margin: 0 0 0 -50%;
-    z-index: 3000;
+    z-index: 5000;
     width: 100%;
     @include center;
     .toast-wrapper {

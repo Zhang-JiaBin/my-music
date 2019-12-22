@@ -1,4 +1,5 @@
 import { playMode } from '../../utils/config'
+import { loadSearch } from '../../utils/localStorage'
 
 const singer = {
   state: {
@@ -9,11 +10,11 @@ const singer = {
     sequenceList: [], // 顺序列表
     mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
     currentIndex: -1,
-    currentPage: 0, // 0表示在底部有Tab组件的时候，1在底部没有Tab组件的时候,
     clickMark: false, // 是否点击了下一首或者上一首的标志,
     songSheet: {}, // 歌单,
     rankList: {}, // 榜单,
-    routerMark: true // 看是否是跳转到子路由
+    pageCount: 0, // 进入musicList组件的次数,
+    searchHistory: loadSearch() // 搜索历史
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -37,9 +38,6 @@ const singer = {
     'SET_CURRENTINDEX': (state, currentIndex) => {
       state.currentIndex = currentIndex
     },
-    'SET_CURRENTPAGE': (state, currentPage) => {
-      state.currentPage = currentPage
-    },
     'SET_CLICKMARK': (state, clickMark) => {
       state.clickMark = clickMark
     },
@@ -49,8 +47,11 @@ const singer = {
     'SET_RANKLIST': (state, rankList) => {
       state.rankList = rankList
     },
-    'SET_ROUTERMARK': (state, routerMark) => {
-      state.routerMark = routerMark
+    'SET_PAGECOUNT': (state, pageCount) => {
+      state.pageCount = pageCount
+    },
+    'SET_SEARCHHISTORY': (state, searchHistory) => {
+      state.searchHistory = searchHistory
     }
   }
 }

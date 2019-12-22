@@ -77,7 +77,6 @@ export default {
       console.log('数据改变后渲染完成的item数目:', this.$refs.sliderGroup.children.length)
     },
     cIndex (newVal) {
-      // console.log('watch-newVal:', newVal)
       this.gotoPage(newVal)
     }
   },
@@ -95,7 +94,6 @@ export default {
         this._initSlide()
         this.slider.refresh()
         this.gotoPage(this.cIndex) // 初始化就要移动到指定的page页面
-        // console.log('初始化渲染完成的item数目:', this.$refs.sliderGroup.children.length)
       }, 20)
     },
     _initSlide () {

@@ -180,7 +180,6 @@ export default {
       return this.currentSong ? this.currentSong.singerMid : ''
     },
     SongImg () {
-      // console.log(this.currentSong)
       return this.currentSong ? this.currentSong.image : ''
     },
     SongName () {
@@ -194,12 +193,8 @@ export default {
     }
   },
   watch: {
-    playList (list) {
-      // console.log(list)
-    },
     // 根据playing状态控制音乐播放
     playering (newPlayering) {
-      // console.log('newPlayering:', newPlayering)
       const myaudio = this.$refs.myaudio
       this.$nextTick(() => {
         newPlayering ? myaudio.play() : myaudio.pause()
@@ -212,7 +207,6 @@ export default {
       const nId = newSong ? newSong.id : ''
       const oId = oldSong ? oldSong.id : ''
       if (nId === oId) {
-        // console.log('1')
         return
       }
       // 解决下一首歌时歌词还在上一首歌的跳动范围
@@ -228,15 +222,12 @@ export default {
         this._getLyric()
       }, 1000)
     },
-    // 监控当前页面是否在歌曲列表页面
-    currentPage (newPage) {
-      console.log('newPage:', newPage)
-      if (newPage === 0) {
+    // 进入一次musicList组件 count + 1,退出 count - 1
+    pageCount (newPageCount) {
+      console.log('newCount', newPageCount)
+      if (newPageCount === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.3s`
-        // setTimeout(() => {
-        //   this.$refs.mini.style.bottom = `50px`
-        // }, 300)
       } else {
         this.$refs.mini.style.transform = `translateY(0px)`
         this.$refs.mini.style.transition = `transform 0.3s`
@@ -249,7 +240,7 @@ export default {
       if (!this.SingerMid) {
         return
       }
-      this.setRouterMark(true)
+      this.setPageCount(this.pageCount + 1)
       this.$router.push({
         path: `/home/singer/${this.SingerMid}`
       })
@@ -269,7 +260,6 @@ export default {
       if (nextIndex === 0 && this.currentIndex === sum - 1) {
         nextIndex = sum
       }
-      // console.log('change', nextIndex)
       if (this.currentIndex < nextIndex) {
         this.next()
       }
@@ -313,12 +303,10 @@ export default {
       }
       const Width = window.innerWidth
       const left = this.currentShow === 'cd' ? 0 : -Width
-      // console.log('left:', left)
       // 表示歌词页向左的偏移量
       const offsetWidth = Math.min(0, Math.max(-Width, left + deltaX))
       // console.log('offsetWidth:', offsetWidth)
       this.touch.percent = Math.abs(offsetWidth / Width)
-      // console.log(this.touch.percent)
       this.$refs.lyricList.$el.style.transform = `translate3d(${offsetWidth}px,0,0)`
       this.$refs.lyricList.$el.style.transitionDuration = 0
       this.$refs.middleL.style.opacity = 1 - this.touch.percent
@@ -326,7 +314,6 @@ export default {
     },
     // 触摸结束
     middleTouchEnd (e) {
-      console.log('percent:', this.touch.percent)
       let offsetWidth
       let opacity
       if (this.currentShow === 'cd') {
@@ -359,7 +346,6 @@ export default {
     // 获取歌词
     _getLyric () {
       this.currentSong.getLyric().then(lyric => {
-        // console.log(lyric)
         if (this.currentSong.lyric !== lyric) {
           return
         }
@@ -376,7 +362,6 @@ export default {
     // 获取歌词后的回调函数，歌词向下滚动
     // 参数对象结构
     handleLyric ({ lineNum, txt }) {
-      // console.log('txt', txt)
       this.currentLineNum = lineNum
       if (lineNum > 5) {
         let lineEl = this.$refs.lyricLine[lineNum - 5]
@@ -420,7 +405,6 @@ export default {
     },
     // 全屏
     full () {
-      // console.log(this.currentSong)
       this.setFullScreen(true)
     },
     // 更新进度条时间
@@ -492,7 +476,6 @@ export default {
         }
         this.setCurrentIndex(index)
         this.simpleToast(`歌曲: ${this.currentSong.name}`)
-        // console.log(this.currentSong)
         if (!this.playering) {
           this.togglePlaying()
         }

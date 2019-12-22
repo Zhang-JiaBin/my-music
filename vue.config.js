@@ -61,7 +61,7 @@ module.exports = {
           '^/api/getSingerSongs': ''
         }
       },
-      // 真实qq音乐API
+      // 真实qq音乐API-歌手歌曲列表
       '/api/getSingerDetail': {
         target: `https://u.y.qq.com/cgi-bin/musicu.fcg`,
         bypass: function (req, res, proxyOptions) {
@@ -104,7 +104,18 @@ module.exports = {
         pathRewrite: {
           '^/api/getLyric': ''
         }
-      }
+      },
+      // 获取官方歌单
+      '/api/getHotSearch': {
+        target: 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/' // 需要加斜杆
+          req.headers.host = 'y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getHotSearch': ''
+        }
+      },
       // '/api/getSongUrl': {
       //   target: `https://api.qq.jsososo.com/song/urls`,
       //   // bypass: function (req, res, proxyOptions) {

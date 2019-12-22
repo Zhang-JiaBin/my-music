@@ -13,6 +13,7 @@
     "better-scroll": "^1.15.2",
     "core-js": "^3.4.3",
     "fastclick": "^1.0.6",
+    "good-storage": "^1.1.0",
     "js-base64": "^2.5.1",
     "jsonp": "^0.2.1",
     "lyric-parser": "^1.0.1",

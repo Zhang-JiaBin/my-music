@@ -1,8 +1,6 @@
 <template>
     <div class="singer-detail">
-      <transition name="slide">
-        <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
-      </transition>
+      <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
     </div>
 </template>
 
@@ -44,7 +42,6 @@ export default {
 
   methods: {
     _getSingerSongs () {
-      // console.log('getSingerSongs')
       if (!this.singer.id) {
         this.$router.push('/home/singer')
         return

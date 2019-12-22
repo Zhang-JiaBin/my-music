@@ -1,9 +1,9 @@
 <template>
   <div class="home-search">
     <div class="home-search-wrapper">
-      <div class="input-wrapper">
+      <div class="input-wrapper" @click="gotoSearch">
         <span class="icon-search"></span>
-        <input class="input-text" placeholder="歌曲" type="text">
+        <input class="input-text" placeholder="歌曲" readonly="readonly" type="text">
       </div>
       <div class="icon-list-wrapper">
         <span class="icon-list"></span>
@@ -13,17 +13,26 @@
 </template>
 
 <script>
+import { singerMixin } from '../../utils/mixin'
+
 export default {
   name: 'HomeSearch',
   data () {
     return {}
   },
-
+  mixins: [singerMixin],
   components: {},
 
   computed: {},
 
-  methods: {}
+  methods: {
+    gotoSearch () {
+      this.$router.push({
+        path: '/home/search'
+      })
+      this.setPageCount(this.pageCount + 1)
+    }
+  }
 }
 
 </script>

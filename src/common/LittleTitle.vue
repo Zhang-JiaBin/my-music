@@ -3,9 +3,10 @@
     <div class="title-text-wrapper">
       <span class="title-text">{{title}}</span>
     </div>
-    <div class="title-more-wrapper" v-if="showMore" @click="displayMore">
-      <span class="title-more">更多</span>
-      <span class="icon-more"></span>
+    <div class="title-more-wrapper" @click="displayMore">
+      <span class="title-more" v-if="showMore">更多</span>
+      <span class="icon-more" v-if="showMore"></span>
+      <span class="icon-deleteAll" v-if="showIcon"></span>
     </div>
   </div>
 </template>
@@ -18,6 +19,10 @@ export default {
     showMore: {
       type: Boolean,
       default: true
+    },
+    showIcon: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -58,6 +63,10 @@ export default {
       color: #3c3c3c;
       font-size: $font-size-small;
       @include space;
+      .icon-deleteAll{
+        font-size: 25px;
+        margin-left: 15px;
+      }
       .title-more {
       }
       .icon-search {

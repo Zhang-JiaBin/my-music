@@ -1,3 +1,6 @@
+import searchHistory from '../components/search/searchHistory'
+import search from '../views/search'
+
 const actions = {
   setSinger: ({
     commit
@@ -34,11 +37,6 @@ const actions = {
   }, currentIndex) => {
     return commit('SET_CURRENTINDEX', currentIndex)
   },
-  setCurrentPage: ({
-    commit
-  }, currentPage) => {
-    return commit('SET_CURRENTPAGE', currentPage)
-  },
   setClickMark: ({
     commit
   }, clickMark) => {
@@ -54,10 +52,15 @@ const actions = {
   }, rankList) => {
     return commit('SET_RANKLIST', rankList)
   },
-  setRouterMark: ({
+  setPageCount: ({
     commit
-  }, routerMark) => {
-    return commit('SET_ROUTERMARK', routerMark)
+  }, pageCount) => {
+    return commit('SET_PAGECOUNT', pageCount)
+  },
+  setSearchHistory: ({
+    commit
+  }, searchHistory) => {
+    return commit('SET_SEARCHHISTORY', searchHistory)
   }
 }
 export default actions

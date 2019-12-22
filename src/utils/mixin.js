@@ -14,6 +14,7 @@ import {
 import {
   getSongUrl
 } from '../api/singerSong'
+import { clearSearch, saveSearch } from './localStorage'
 export const singerMixin = {
   computed: {
     ...mapGetters([
@@ -25,11 +26,11 @@ export const singerMixin = {
       'mode',
       'currentIndex',
       'currentSong',
-      'currentPage',
       'clickMark',
       'songSheet',
       'rankList',
-      'routerMark'
+      'pageCount',
+      'searchHistory'
     ])
   },
   methods: {
@@ -41,11 +42,11 @@ export const singerMixin = {
       'setSequenceList',
       'setMode',
       'setCurrentIndex',
-      'setCurrentPage',
       'setClickMark',
       'setSongSheet',
       'setRankList',
-      'setRouterMark'
+      'setPageCount',
+      'setSearchHistory'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -115,20 +116,30 @@ export const singerMixin = {
     },
     // 监听子组件select,选择了一个的歌单
     selectSheet (sheet) {
+      console.log(sheet)
+      this.setPageCount(this.pageCount + 1)
+      this.simpleToast(`歌单: '${sheet.title}'`)
       this.$router.push({
         path: `/home/sheet/${sheet.content_id}`
       })
-      this.simpleToast(`歌单: ${sheet.title}`)
-      // console.log(sheet)
       this.setSongSheet(sheet)
     },
     // 监听子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
     selectTop (item) {
+      this.setPageCount(this.pageCount + 1)
+      this.simpleToast(`榜单: '${item.title}'`)
       this.$router.push({
         path: `/home/rank/${item.topId}`
       })
-      this.simpleToast(`榜单: ${item.title}`)
       this.setRankList(item)
+    },
+    // 保存搜索结果到localstorage
+    saveSearchHistory (query) {
+      this.setSearchHistory(saveSearch(query))
+    },
+    // 删除搜索历史
+    deleteAllSearchHistory () {
+      this.setSearchHistory(clearSearch())
     }
   }
 }

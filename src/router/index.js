@@ -16,10 +16,6 @@ export default new VueRouter({
       path: 'recommend',
       name: 'recommend',
       component: () => import('../views/Recommend.vue')
-      // children: [{
-      //   path: ':id',
-      //   component: () => import('../components/sheet/SongSheetDetail.vue')
-      // }]
     }, {
       path: 'rank',
       name: 'rank',
@@ -44,6 +40,10 @@ export default new VueRouter({
         path: ':id',
         component: () => import('../components/sheet/SongSheetDetail.vue')
       }]
+    }, {
+      path: 'search',
+      name: 'search',
+      component: () => import('../views/search.vue')
     }]
   }]
 })

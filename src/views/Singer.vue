@@ -50,6 +50,7 @@ export default {
       this.$router.push({
         path: `/home/singer/${singer.id}`
       })
+      this.setPageCount(this.pageCount + 1)
       this.setSinger(singer)
     },
     changeIndex (index) {
