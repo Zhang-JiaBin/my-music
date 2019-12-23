@@ -59,7 +59,11 @@ export default new VueRouter({
     }, {
       path: 'search',
       name: 'search',
-      component: () => import('../views/search.vue')
+      component: () => import('../views/search.vue'),
+      children: [{
+        path: 'singer/:id',
+        component: () => import('../components/singer/singerDetail.vue')
+      }]
     }]
   }]
 })

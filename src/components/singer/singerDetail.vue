@@ -49,6 +49,7 @@ export default {
       getSingerSongs(this.singer.id).then(res => {
         const list = this.concatList(res.singerSongList.data.songList)
         // console.log(list)
+        // console.log(list)
         this.Songs = this.normalizeSong(list)
         // this.Songs = this.normalizeSong(res.data.list)
         // console.log(this.Songs)

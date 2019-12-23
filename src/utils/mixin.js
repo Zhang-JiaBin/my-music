@@ -30,7 +30,7 @@ export const singerMixin = {
       'songSheet',
       'rankList',
       'pageCount',
-      'searchHistory',
+      'searchHistory'
     ])
   },
   methods: {
@@ -46,7 +46,7 @@ export const singerMixin = {
       'setSongSheet',
       'setRankList',
       'setPageCount',
-      'setSearchHistory',
+      'setSearchHistory'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -76,6 +76,38 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
+    insertSong (item) {
+      let len = this.playList.length
+      let playList = this.playList
+      let index = this.currentIndex
+      const fIndex = this._findIndex(playList, item)
+      if (fIndex > -1) {
+        index = fIndex
+      } else {
+        if (index === -1) {
+          playList.unshift(item)
+          index = 0
+        } else {
+          const beforeList = playList.slice(0, index + 1)
+          beforeList.push(item)
+          const afterList = playList.slice(index + 1, len)
+          playList = beforeList.concat(afterList)
+          index++
+        }
+      }
+      if (!item.url) {
+        this.gainSongUrl(item)
+      }
+      this.setCurrentIndex(index)
+      this.setPlayList(playList)
+      this.setSequenceList(playList)
+      this.setPlayering(true)
+      this.setClickMark(true)
+      // console.log('len', len)
+      // console.log('playList', this.playList)
+      // console.log('index', this.currentIndex)
+      // console.log('secquence', this.secquenceList)
+    },
     // 随机选择一首歌播放
     randomPlay (list) {
       if (!list.length) {
@@ -100,7 +132,7 @@ export const singerMixin = {
       if (!item.url) {
         this.gainSongUrl(item)
       }
-      if (index === this.currentIndex) {
+      if (this.currentSong && item.mid === this.currentSong.mid) {
         this.setFullScreen(true)
       }
       this.setSequenceList(list)

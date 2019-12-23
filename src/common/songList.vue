@@ -1,9 +1,9 @@
 <template>
   <div class="songList">
-    <div ref="songItem" class="songList-wrapper" @click.prevent="seleteSong(item, index)" v-for="(item,index) in songs" :key="item.id">
+    <div ref="songItem" class="songList-wrapper" @click.prevent="selectSong(item, index)" v-for="(item,index) in songs" :key="index">
       <div class="song-item-wrapper">
         <div class="song-item-all">
-          <div class="item-img-wrapper">
+          <div class="item-img-wrapper" v-show="showPic">
             <img class="item-img" v-lazy="item.image" alt="">
           </div>
           <div class="song-item">
@@ -38,6 +38,10 @@ export default {
     songs: {
       type: Array,
       default: () => []
+    },
+    showPic: {
+      type: Boolean,
+      default: true
     }
   },
   name: 'songList',
@@ -60,8 +64,8 @@ export default {
       }
       return false
     },
-    seleteSong (item, index) {
-      this.$emit('selete', item, index)
+    selectSong (item, index) {
+      this.$emit('select', item, index)
     },
     // 获取歌曲的dom元素数组
     getRefsSongItem () {

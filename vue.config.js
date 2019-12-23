@@ -116,6 +116,16 @@ module.exports = {
           '^/api/getHotSearch': ''
         }
       },
+      '/api/search': {
+        target: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/' // 需要加斜杆
+          req.headers.host = 'y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/search': ''
+        }
+      }
       // '/api/getSongUrl': {
       //   target: `https://api.qq.jsososo.com/song/urls`,
       //   // bypass: function (req, res, proxyOptions) {

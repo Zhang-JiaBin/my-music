@@ -65,7 +65,7 @@ export default {
       if (!this.slider) {
         return
       }
-      if (newlist[0].id === oldlist[0].id) {
+      if (newlist[0].id === oldlist[0].id && newlist.length === oldlist.length) {
         console.log('进入相同的歌手歌曲列表')
         this._setSlideWidth(true)
         this.slider.refresh()
@@ -142,9 +142,10 @@ export default {
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
-      if (this.loop && !isResize) {
+      if (this.loop && !isResize && this.data.length > 1) {
         width += 2 * sliderWidth
       }
+      console.log('width', width)
       this.$refs.sliderGroup.style.width = width + 'px'
     },
     _play () {

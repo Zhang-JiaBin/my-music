@@ -25,7 +25,7 @@
                 <span class="function-text">{{playTitle}}</span>
               </div>
             </div>
-            <song-list ref="scrollItem" @selete="selectItem" :songs="songs" class="list-song"></song-list>
+            <song-list ref="scrollItem" @select="selectItem" :songs="songs" class="list-song"></song-list>
           </div>
           <div class="loading-container" v-show="!this.songs.length">
             <loading></loading>
@@ -68,6 +68,7 @@ export default {
     this.listenScroll = true
   },
   mounted () {
+    this.changeBottom()
   },
   components: { Loading, Scroll, SongList },
   watch: {
@@ -102,18 +103,24 @@ export default {
         this.$refs.Image.style.filter = `blur(21px)`
       }
     },
+    // pageCount (newPageCount) {
+    //   if (newPageCount === 0 || this.currentSong !== undefined) {
+    //     return
+    //   } else {
+    //     console.log('底部')
+    //     this.$refs.listWrapper.style.bottom = `50px`
+    //     this.$refs.scrollList.refresh()
+    //   }
+    // },
     currentSong () {
-      // 适配有mini播放器的底部滚动高度
-      if (this.currentSong !== undefined) {
-        this.$refs.listWrapper.style.bottom = `50px`
-        this.$refs.scrollList.refresh()
-      }
+      this.changeBottom()
     },
     clickMark (newMark) {
       // 点击上一首或下一首时，滚动进度条
       if (newMark) {
         const ItemArr = this.$refs.scrollItem.getRefsSongItem()
-        let songEl = ItemArr[this.currentIndex]
+        const index = this._findIndex(this.songs, this.currentSong)
+        let songEl = ItemArr[index]
         this.$refs.scrollList.scrollToElement(songEl, 1000)
         this.setClickMark(false)
       } else {
@@ -130,6 +137,13 @@ export default {
     }
   },
   methods: {
+    // 适配有mini播放器的底部滚动高度
+    changeBottom () {
+      if (this.currentSong !== undefined && this.pageCount >= 1) {
+        this.$refs.listWrapper.style.bottom = `50px`
+        this.$refs.scrollList.refresh()
+      }
+    },
     back () {
       this.$router.go(-1)
       // console.log('返回一次')

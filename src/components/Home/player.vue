@@ -229,17 +229,17 @@ export default {
       console.log('newCount', newPageCount)
       if (newPageCount === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
-        this.$refs.mini.style.transition = `transform 0.3s`
+        this.$refs.mini.style.transition = `transform 0.2s`
       } else {
         this.$refs.mini.style.transform = `translateY(0px)`
-        this.$refs.mini.style.transition = `transform 0.3s`
+        this.$refs.mini.style.transition = `transform 0.2s`
       }
     },
     // 监控路由路径变化
     '$route' (to, from) {
-      const fromDepth = from.path.split('/')
+      // const fromDepth = from.path.split('/')
       const toDepth = to.path.split('/')
-      this.SrouterName = fromDepth[2]
+      this.SrouterName = toDepth[2]
       this.TrouterName = toDepth[3]
     }
   },
@@ -477,7 +477,7 @@ export default {
       }
       if (this.playList.length === 1) {
         this.loop()
-        this.setPlaying(true)
+        this.setPlayering(true)
         return
       } else {
         // vuex 确定点击了上一首
