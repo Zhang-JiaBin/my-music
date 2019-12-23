@@ -63,6 +63,9 @@ export default {
   watch: {
     pageCount (newPageCount) {
       this.getFocus()
+      // if (newPageCount === 1) {
+      //   this._getHotSearch()
+      // }
       if (newPageCount === 1 && this.currentSong !== undefined) {
         console.log('123')
         this.$refs.mysearch.style.bottom = `50px`
@@ -151,6 +154,8 @@ export default {
             background-color: transparent;
             border: none;
             caret-color: $color-icon;
+            line-height: 20px;
+            font-size: $font-size-medium-x;
             &:focus {
               outline: none;
             }

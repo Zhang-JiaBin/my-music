@@ -81,6 +81,13 @@ export default {
   computed: {},
 
   methods: {
+    // 监听sheet组件子组件select,选择了一个的歌单
+    selectSheet (sheet) {
+      this.selectSheetItem(sheet)
+      this.$router.push({
+        path: `/home/sheet/${sheet.content_id}`
+      })
+    },
     _getSheetList () {
       getSheetList().then(res => {
         let list = res.playlist.data.v_playlist

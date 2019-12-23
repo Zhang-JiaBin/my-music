@@ -30,7 +30,7 @@ export const singerMixin = {
       'songSheet',
       'rankList',
       'pageCount',
-      'searchHistory'
+      'searchHistory',
     ])
   },
   methods: {
@@ -46,7 +46,7 @@ export const singerMixin = {
       'setSongSheet',
       'setRankList',
       'setPageCount',
-      'setSearchHistory'
+      'setSearchHistory',
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -114,23 +114,16 @@ export const singerMixin = {
       this.setCurrentIndex(index)
       this.setPlayering(true)
     },
-    // 监听子组件select,选择了一个的歌单
-    selectSheet (sheet) {
-      console.log(sheet)
+    // 监听歌单的子组件派发的事件select   跳转到子组件sheetDetail
+    selectSheetItem (sheet) {
       this.setPageCount(this.pageCount + 1)
       this.simpleToast(`歌单: '${sheet.title}'`)
-      this.$router.push({
-        path: `/home/sheet/${sheet.content_id}`
-      })
       this.setSongSheet(sheet)
     },
-    // 监听子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
-    selectTop (item) {
+    // 监听排行榜的子组件派发的事件select   跳转到子组件rankDetail
+    selectTopItem (item) {
       this.setPageCount(this.pageCount + 1)
       this.simpleToast(`榜单: '${item.title}'`)
-      this.$router.push({
-        path: `/home/rank/${item.topId}`
-      })
       this.setRankList(item)
     },
     // 保存搜索结果到localstorage

@@ -13,8 +13,10 @@
 import HomeSearch from '../components/Home/HomeSearch'
 import HomeTab from '../components/Home/HomeTab'
 import player from '../components/Home/player'
+import { singerMixin } from '../utils/mixin'
 export default {
   name: 'home',
+  mixins: [singerMixin],
   components: {
     HomeTab,
     HomeSearch,

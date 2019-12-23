@@ -34,13 +34,14 @@ export default {
     display: flex;
     flex-flow: row wrap;
     .item{
-      padding: 5px 10px;
+      padding: 7px 10px;
       font-size: $font-size-small;
       line-height: 14px;
       background: #f3f3f3;
-      border-radius: 10px;
+      border-radius: 15px;
       margin-right: 8px;
       margin-bottom: 8px;
+      @include ellipsis;
     }
   }
 </style>

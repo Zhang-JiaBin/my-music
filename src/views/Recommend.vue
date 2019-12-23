@@ -15,7 +15,7 @@
         </div>
         <little-title title="歌单推荐" @displayMore="gotoSheet"></little-title>
         <div class="recommend-sheet-wrapper">
-          <song-sheet @select="selectSheet" :sheet-list="vHotList"></song-sheet>
+          <song-sheet @select="selectRSheet" :sheet-list="vHotList"></song-sheet>
         </div>
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
         <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
@@ -26,6 +26,9 @@
         <loading></loading>
       </div>
     </scroll>
+    <transition name="slide">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -94,6 +97,13 @@ export default {
     gotoRank () {
       this.$router.push({
         path: 'rank'
+      })
+    },
+    // 监听Recommend组件的子组件select,选择了一个的歌单
+    selectRSheet (sheet) {
+      this.selectSheetItem(sheet)
+      this.$router.push({
+        path: `/home/recommend/sheet/${sheet.content_id}`
       })
     },
     // 获取推荐页面数据

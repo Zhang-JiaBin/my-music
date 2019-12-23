@@ -3,7 +3,7 @@
     <swiper class="recommendRank-swiper" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <swiper-slide class="recommendRank-swiper-item" v-for="item in topList" :key="item.id">
-        <rank-item @select="selectTop" :rank-list="item"></rank-item>
+        <rank-item @select="selectRTop" :rank-list="item"></rank-item>
       </swiper-slide>
     </swiper>
   </div>
@@ -42,6 +42,13 @@ export default {
   },
 
   methods: {
+    // 监听Recommend组件子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
+    selectRTop (item) {
+      this.selectTopItem(item)
+      this.$router.push({
+        path: `/home/recommend/rank/${item.topId}`
+      })
+    },
   }
 }
 

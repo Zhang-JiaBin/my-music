@@ -22,7 +22,7 @@
             <div class="list-function-wrapper">
               <div class="list-function">
                 <span class="icon-play" @click="randomPlay(songs)"></span>
-                <span class="function-text">随机播放 ({{this.songs.length}})</span>
+                <span class="function-text">{{playTitle}}</span>
               </div>
             </div>
             <song-list ref="scrollItem" @selete="selectItem" :songs="songs" class="list-song"></song-list>
@@ -124,6 +124,9 @@ export default {
   computed: {
     bgStyle () {
       return `background-image:url(${this.bgImage})`
+    },
+    playTitle () {
+      return `随机播放 (共${this.songs.length}首)`
     }
   },
   methods: {

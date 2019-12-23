@@ -135,7 +135,9 @@ export default {
       currentLyric: null,
       currentLineNum: 0,
       currentShow: 'cd',
-      playingLyric: ''
+      playingLyric: '',
+      SrouterName: '',
+      TrouterName: ''
     }
   },
   mixins: [singerMixin],
@@ -232,6 +234,13 @@ export default {
         this.$refs.mini.style.transform = `translateY(0px)`
         this.$refs.mini.style.transition = `transform 0.3s`
       }
+    },
+    // 监控路由路径变化
+    '$route' (to, from) {
+      const fromDepth = from.path.split('/')
+      const toDepth = to.path.split('/')
+      this.SrouterName = fromDepth[2]
+      this.TrouterName = toDepth[3]
     }
   },
   methods: {
@@ -240,16 +249,22 @@ export default {
       if (!this.SingerMid) {
         return
       }
+      this.setFullScreen(false)
+      // 如果二级路由或者三级就是singer直接return，不用跳转
+      console.log('goto:', this.SrouterName, this.TrouterName)
+      if (this.SrouterName === 'singer' || this.TrouterName === 'singer') {
+        return
+      }
+      // 二级路由不是singer,跳转到指定的二级路由的子路由
       this.setPageCount(this.pageCount + 1)
       this.$router.push({
-        path: `/home/singer/${this.SingerMid}`
+        path: `/home/${this.SrouterName}/singer/${this.SingerMid}`
       })
       const cSinger = new Singer({
         id: this.SingerMid,
         name: this.SongSinger
       })
       this.setSinger(cSinger)
-      this.setFullScreen(false)
     },
     // 左滑右滑选择上一曲下一曲
     selectNextOrPrev (nextIndex) {

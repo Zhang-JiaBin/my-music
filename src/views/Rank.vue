@@ -15,7 +15,7 @@
         <loading></loading>
       </div>
     </scroll>
-    <transition name="fade">
+    <transition name="slide">
       <router-view></router-view>
     </transition>
   </div>
@@ -59,6 +59,13 @@ export default {
     }
   },
   methods: {
+    // 监听rank组件的子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
+    selectTop (item) {
+      this.selectTopItem(item)
+      this.$router.push({
+        path: `/home/rank/${item.topId}`
+      })
+    },
     _getRank () {
       getRecommend().then(res => {
         this.rankGroup = res.toplist.data.group

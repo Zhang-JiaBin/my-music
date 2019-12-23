@@ -14,7 +14,7 @@ const singer = {
     songSheet: {}, // 歌单,
     rankList: {}, // 榜单,
     pageCount: 0, // 进入musicList组件的次数,
-    searchHistory: loadSearch() // 搜索历史
+    searchHistory: loadSearch(), // 搜索历史,
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
