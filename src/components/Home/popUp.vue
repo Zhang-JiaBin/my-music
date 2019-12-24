@@ -25,11 +25,13 @@
         <div class="content-bottom" @click="hide">取消</div>
       </div>
       </transition>
+      <show-singer @select="chooseSinger" :singer-group="singerGroup" ref="showSinger" ></show-singer>
     </div>
 </template>
 
 <script>
   import { playerMixin, singerMixin } from '../../utils/mixin'
+  import ShowSinger from './showSinger'
 
 export default {
   name: 'popUp',
@@ -61,11 +63,16 @@ export default {
       }
     }
   },
-  components: {},
+  components: { ShowSinger },
   mounted () {
   },
   computed: {
+    // 歌手组合
+    singerGroup () {
+      return this.selectedSong ? this.selectedSong.allSinger : []
+    },
     showTextList () {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.textList[2].text = `歌手: ${this.SongSinger}`
       if (this.InFavorite) {
         return this.textList
@@ -91,18 +98,33 @@ export default {
     seleteIndex (index) {
       switch (index) {
         case 0:
-          this.insertSong(this.selectedSong, true)
+          this.insert()
           break
         case 1:
-          this.savemyFavorite(this.selectedSong)
+          this.save()
           break
         case 2:
-          this.goToSingerDetail(this.selectedSong)
+          this.showSinger()
           break
         case 3:
-          this.deletemyFavorite(this.selectedSong)
+          this.delete()
           break
       }
+      // this.hide()
+    },
+    // 下一首播放
+    insert () {
+      this.insertSong(this.selectedSong, true)
+      this.hide()
+    },
+    // 添加到收藏
+    save () {
+      this.savemyFavorite(this.selectedSong)
+      this.hide()
+    },
+    // 移出收藏
+    delete () {
+      this.deletemyFavorite(this.selectedSong)
       this.hide()
     },
     hide () {
@@ -110,6 +132,22 @@ export default {
       setTimeout(() => {
         this.setShowPopUp(false)
       }, 200)
+    },
+    // 展示歌手
+    showSinger () {
+      const mysingers = this.selectedSong.allSinger
+      console.log('mysinger:', mysingers)
+      if (mysingers.length === 1) {
+        this.goToSingerDetail(mysingers[0])
+        this.hide()
+      } else {
+        this.$refs.showSinger.show()
+      }
+    },
+    // 接收子组件show-singer的派发select事件
+    chooseSinger (item) {
+      this.goToSingerDetail(item)
+      this.hide()
     }
   }
 }

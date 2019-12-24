@@ -45,6 +45,7 @@ export default {
         return
       }
       getSongList(this.songSheet.content_id).then(res => {
+        // console.log('sheet', res.cdlist[0].songlist)
         this.Songs = this.normalizeSong(res.cdlist[0].songlist)
         // console.log(res.cdlist[0].songlist)
         // console.log(this.Songs)

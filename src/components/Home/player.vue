@@ -14,7 +14,7 @@
               <div class="player-title-name">
                 <span class="song-name">{{SongName}}</span>
               </div>
-              <div class="player-title-name" @click="goToSingerDetail(Songself)">
+              <div class="player-title-name" @click="chooseSinger">
                 <span class="singer-name">{{SongSinger}}</span>
                 <span class="icon-more"></span>
               </div>
@@ -111,6 +111,7 @@
     </transition>
     <!--    <audio ref="audio" :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end" ></audio>-->
     <audio ref="myaudio" autoplay :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+    <show-singer ref="showSinger" @select="chooseOneSinger" :singer-group="singerGroup"></show-singer>
   </div>
 </template>
 
@@ -123,6 +124,7 @@ import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
 import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
+import ShowSinger from './showSinger'
 
 export default {
   name: 'player',
@@ -138,13 +140,17 @@ export default {
     }
   },
   mixins: [singerMixin, playerMixin],
-  components: { Scroll, ProgressCircle, ProgressBar, slider },
+  components: { ShowSinger, Scroll, ProgressCircle, ProgressBar, slider },
   mounted () {
   },
   created () {
     this.touch = {}
   },
   computed: {
+    // 歌手组合
+    singerGroup () {
+      return this.currentSong ? this.currentSong.allSinger : []
+    },
     // 进度条进度
     percent () {
       return this.currentTime / this.SongDuration
@@ -242,6 +248,19 @@ export default {
     }
   },
   methods: {
+    // 接收子组件show-singer的派发select事件
+    chooseOneSinger (item) {
+      this.goToSingerDetail(item)
+    },
+    // 跳转到歌手页面歌手
+    chooseSinger () {
+      const mysingers = this.Songself.allSinger
+      if (mysingers.length === 1) {
+        this.goToSingerDetail(mysingers[0])
+      } else {
+        this.$refs.showSinger.show()
+      }
+    },
     // 点击收藏按钮
     chooseFavorite (Songself) {
       if (this.InFavorite) {

@@ -20,7 +20,7 @@
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
         <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
         <little-title title="精选音乐FM"></little-title>
-        <recomend-song :new-song="newSongList"></recomend-song>
+        <recomend-song @select="insertSong" :new-song="newSongList"></recomend-song>
       </div>
       <div class="loading-container" v-show="!vHotList.length">
         <loading></loading>

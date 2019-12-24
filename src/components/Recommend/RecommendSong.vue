@@ -3,7 +3,7 @@
     <swiper class="RecommendSong-swiper" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <swiper-slide class="RecommendSong-swiper-item" v-for="(page,index) in pages" :key="index">
-        <div class="item-img-wrapper" v-for="item in page" :key="item.id">
+        <div class="item-img-wrapper" v-for="item in page" :key="item.id" @click="selectSong(item)">
           <img class="item-img" v-lazy="item.image" alt="">
           <div class="item-img-text">
             <div class="item-text-wrapper">
@@ -56,7 +56,11 @@ export default {
     }
   },
 
-  methods: {}
+  methods: {
+    selectSong (item) {
+      this.$emit('select', item)
+    }
+  }
 }
 
 </script>

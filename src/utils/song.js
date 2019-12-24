@@ -6,6 +6,7 @@ import {
 } from 'js-base64'
 
 import { getLyric } from '../api/singerSong'
+import Singer from './singer'
 
 // 推荐页面指定歌单和排行榜指定榜单所有歌曲的所有歌曲形成的类
 export default class Song {
@@ -18,7 +19,8 @@ export default class Song {
     album,
     duration,
     image,
-    url
+    url,
+    allSinger
   }) {
     this.id = id
     this.mid = mid
@@ -29,6 +31,7 @@ export default class Song {
     this.duration = duration
     this.image = image
     this.url = url
+    this.allSinger = allSinger
   }
   getLyric () {
     if (this.lyric) {
@@ -54,6 +57,7 @@ export function createSong (item) {
     mid: item.mid,
     singer: filterSinger(item.singer),
     singerMid: item.singer[0].mid,
+    allSinger: getAllSinger(item.singer),
     name: item.name,
     album: item.album.name,
     duration: item.interval,
@@ -71,6 +75,20 @@ export function createSong (item) {
   // })
   return song
 }
+function getAllSinger(singer) {
+  let ret = []
+  if (!singer) {
+    return []
+  }
+  singer.forEach(item => {
+    let mysinger = new Singer({
+      id: item.mid,
+      name: item.name
+    })
+    ret.push(mysinger)
+  })
+  return ret
+}
 
 function filterSinger (singer) {
   let ret = []
@@ -82,10 +100,3 @@ function filterSinger (singer) {
   })
   return ret.join('/')
 }
-
-// function filterSingerMid (singer) {
-//   if (!singer) {
-//     return ''
-//   }
-//   return singer[0].mid
-// }

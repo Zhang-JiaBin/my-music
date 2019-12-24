@@ -216,8 +216,8 @@ export const playerMixin = {
   },
   methods: {
     // 跳转到歌手详情页
-    goToSingerDetail (song) {
-      if (!song.singerMid) {
+    goToSingerDetail (singer) {
+      if (!singer.id) {
         return
       }
       this.setFullScreen(false)
@@ -229,13 +229,13 @@ export const playerMixin = {
       // 二级路由不是singer,跳转到指定的二级路由的子路由
       this.setPageCount(this.pageCount + 1)
       this.$router.push({
-        path: `/home/${this.SrouterName}/singer/${song.singerMid}`
+        path: `/home/${this.SrouterName}/singer/${singer.id}`
       })
-      const cSinger = new Singer({
-        id: song.singerMid,
-        name: song.singer
-      })
-      this.setSinger(cSinger)
+      // const cSinger = new Singer({
+      //   id: song.singerMid,
+      //   name: song.singer
+      // })
+      this.setSinger(singer)
     }
   }
 }
