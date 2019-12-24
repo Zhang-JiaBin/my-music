@@ -78,7 +78,6 @@ export default {
   watch: {
     // 适配有mini播放器的底部滚动高度
     pageCount (newPageCount) {
-      console.log('search', newPageCount)
       this.getFocus()
       this.changeSBottom()
     },

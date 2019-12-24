@@ -14,7 +14,7 @@
               <div class="player-title-name">
                 <span class="song-name">{{SongName}}</span>
               </div>
-              <div class="player-title-name" @click="goToSingerDetail">
+              <div class="player-title-name" @click="goToSingerDetail(Songself)">
                 <span class="singer-name">{{SongSinger}}</span>
                 <span class="icon-more"></span>
               </div>
@@ -68,8 +68,8 @@
             <div class="icon-wrapper" :class="disableClass" @click="next">
               <span class="icon-next"></span>
             </div>
-            <div class="icon-wrapper">
-              <span class="icon-favorite"></span>
+            <div class="icon-wrapper" @click="chooseFavorite(Songself)">
+              <span class="icon-favorite" :class="{'favorite': InFavorite}"></span>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { singerMixin } from '../../utils/mixin'
+import { playerMixin, singerMixin } from '../../utils/mixin'
 import ProgressBar from '../../common/ProgressBar'
 import { playMode } from '../../utils/config'
 import ProgressCircle from '../../common/ProgressCircle'
@@ -123,7 +123,6 @@ import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
 import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
-import Singer from '../../utils/singer'
 
 export default {
   name: 'player',
@@ -135,12 +134,10 @@ export default {
       currentLyric: null,
       currentLineNum: 0,
       currentShow: 'cd',
-      playingLyric: '',
-      SrouterName: '',
-      TrouterName: ''
+      playingLyric: ''
     }
   },
-  mixins: [singerMixin],
+  mixins: [singerMixin, playerMixin],
   components: { Scroll, ProgressCircle, ProgressBar, slider },
   mounted () {
   },
@@ -177,6 +174,10 @@ export default {
     // SongAlbum () {
     //   return this.currentSong ? this.currentSong.album : ''
     // },
+    // 歌曲自己
+    Songself () {
+      return this.currentSong ? this.currentSong : {}
+    },
     // 歌手mid
     SingerMid () {
       return this.currentSong ? this.currentSong.singerMid : ''
@@ -192,6 +193,10 @@ export default {
     },
     SongUrl () {
       return this.currentSong ? this.currentSong.url : ''
+    },
+    InFavorite () {
+      const index = this._findIndex(this.favoriteList, this.Songself)
+      return index > -1
     }
   },
   watch: {
@@ -226,7 +231,7 @@ export default {
     },
     // 进入一次musicList组件 count + 1,退出 count - 1
     pageCount (newPageCount) {
-      console.log('newCount', newPageCount)
+      // console.log('newCount', newPageCount)
       if (newPageCount === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
@@ -234,39 +239,18 @@ export default {
         this.$refs.mini.style.transform = `translateY(0px)`
         this.$refs.mini.style.transition = `transform 0.2s`
       }
-    },
-    // 监控路由路径变化
-    '$route' (to, from) {
-      // const fromDepth = from.path.split('/')
-      const toDepth = to.path.split('/')
-      this.SrouterName = toDepth[2]
-      this.TrouterName = toDepth[3]
     }
   },
   methods: {
-    // 跳转到歌手详情页
-    goToSingerDetail () {
-      if (!this.SingerMid) {
-        return
+    // 点击收藏按钮
+    chooseFavorite (Songself) {
+      if (this.InFavorite) {
+        this.deletemyFavorite(Songself)
+      } else {
+        this.savemyFavorite(Songself)
       }
-      this.setFullScreen(false)
-      // 如果二级路由或者三级就是singer直接return，不用跳转
-      console.log('goto:', this.SrouterName, this.TrouterName)
-      if (this.SrouterName === 'singer' || this.TrouterName === 'singer') {
-        return
-      }
-      // 二级路由不是singer,跳转到指定的二级路由的子路由
-      this.setPageCount(this.pageCount + 1)
-      this.$router.push({
-        path: `/home/${this.SrouterName}/singer/${this.SingerMid}`
-      })
-      const cSinger = new Singer({
-        id: this.SingerMid,
-        name: this.SongSinger
-      })
-      this.setSinger(cSinger)
     },
-    // 左滑右滑选择上一曲下一曲
+    // 判断slider滑动向左选择上一曲或者向右选择下一曲
     selectNextOrPrev (nextIndex) {
       const sum = this.playList.length
       if (nextIndex === sum - 1 && this.currentIndex === 0) {
@@ -742,6 +726,11 @@ export default {
           }
           .icon-pause {
             font-size: 45px;
+          }
+          .icon-favorite{
+            &.favorite {
+              color: $color-icon;
+            }
           }
         }
       }

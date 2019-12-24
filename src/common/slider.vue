@@ -145,7 +145,7 @@ export default {
       if (this.loop && !isResize && this.data.length > 1) {
         width += 2 * sliderWidth
       }
-      console.log('width', width)
+      // console.log('width', width)
       this.$refs.sliderGroup.style.width = width + 'px'
     },
     _play () {

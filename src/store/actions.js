@@ -61,6 +61,21 @@ const actions = {
     commit
   }, searchHistory) => {
     return commit('SET_SEARCHHISTORY', searchHistory)
+  },
+  setShowPopUp: ({
+    commit
+  }, showPopUp) => {
+    return commit('SET_SHOWPOPUP', showPopUp)
+  },
+  setSelectedSong: ({
+    commit
+  }, selectedSong) => {
+    return commit('SET_SELECTEDSONG', selectedSong)
+  },
+  setFavoriteList: ({
+    commit
+  }, favoriteList) => {
+    return commit('SET_FAVORITELIST', favoriteList)
   }
 }
 export default actions

@@ -103,15 +103,6 @@ export default {
         this.$refs.Image.style.filter = `blur(21px)`
       }
     },
-    // pageCount (newPageCount) {
-    //   if (newPageCount === 0 || this.currentSong !== undefined) {
-    //     return
-    //   } else {
-    //     console.log('底部')
-    //     this.$refs.listWrapper.style.bottom = `50px`
-    //     this.$refs.scrollList.refresh()
-    //   }
-    // },
     currentSong () {
       this.changeBottom()
     },
@@ -119,7 +110,8 @@ export default {
       // 点击上一首或下一首时，滚动进度条
       if (newMark) {
         const ItemArr = this.$refs.scrollItem.getRefsSongItem()
-        const index = this._findIndex(this.songs, this.currentSong)
+        // const index = this._findIndex(this.songs, this.currentSong)
+        const index = this.currentIndex
         let songEl = ItemArr[index]
         this.$refs.scrollList.scrollToElement(songEl, 1000)
         this.setClickMark(false)

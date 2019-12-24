@@ -6,6 +6,7 @@
       <router-view></router-view>
     </keep-alive>
     <player></player>
+    <pop-up></pop-up>
   </div>
 </template>
 
@@ -14,10 +15,12 @@ import HomeSearch from '../components/Home/HomeSearch'
 import HomeTab from '../components/Home/HomeTab'
 import player from '../components/Home/player'
 import { singerMixin } from '../utils/mixin'
+import PopUp from '../components/Home/popUp'
 export default {
   name: 'home',
   mixins: [singerMixin],
   components: {
+    PopUp,
     HomeTab,
     HomeSearch,
     player

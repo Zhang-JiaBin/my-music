@@ -12,6 +12,9 @@ const getters = {
   rankList: state => state.singer.rankList,
   pageCount: state => state.singer.pageCount,
   searchHistory: state => state.singer.searchHistory,
+  showPopUp: state => state.singer.showPopUp,
+  selectedSong: state => state.singer.selectedSong,
+  favoriteList: state => state.singer.favoriteList
 }
 
 export default getters

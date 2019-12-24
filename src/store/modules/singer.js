@@ -1,11 +1,11 @@
 import { playMode } from '../../utils/config'
-import { loadSearch } from '../../utils/localStorage'
+import { loadFavorite, loadSearch } from '../../utils/localStorage'
 
 const singer = {
   state: {
-    singer: {},
-    playering: false,
-    fullScreen: false,
+    singer: {}, // 当前歌手
+    playering: false, // 播放状态
+    fullScreen: false, // 播放器全屏显示
     playList: [], // 播放列表
     sequenceList: [], // 顺序列表
     mode: playMode.sequence, // 0 表示顺序播放 1 表示循环播放 2 表示随机播放
@@ -15,6 +15,9 @@ const singer = {
     rankList: {}, // 榜单,
     pageCount: 0, // 进入musicList组件的次数,
     searchHistory: loadSearch(), // 搜索历史,
+    showPopUp: false, // 弹出框
+    selectedSong: {}, // 点击songList组件的 dot Icon选中的歌曲
+    favoriteList: loadFavorite() // 收藏的歌曲的列表
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -52,6 +55,15 @@ const singer = {
     },
     'SET_SEARCHHISTORY': (state, searchHistory) => {
       state.searchHistory = searchHistory
+    },
+    'SET_SHOWPOPUP': (state, showPopUp) => {
+      state.showPopUp = showPopUp
+    },
+    'SET_SELECTEDSONG': (state, selectedSong) => {
+      state.selectedSong = selectedSong
+    },
+    'SET_FAVORITELIST': (state, favoriteList) => {
+      state.favoriteList = favoriteList
     }
   }
 }

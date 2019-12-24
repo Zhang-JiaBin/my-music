@@ -14,7 +14,8 @@ import {
 import {
   getSongUrl
 } from '../api/singerSong'
-import { clearSearch, saveSearch } from './localStorage'
+import { clearFavorite, clearSearch, deleteFavorite, saveFavorite, saveSearch } from './localStorage'
+import Singer from './singer'
 export const singerMixin = {
   computed: {
     ...mapGetters([
@@ -30,7 +31,10 @@ export const singerMixin = {
       'songSheet',
       'rankList',
       'pageCount',
-      'searchHistory'
+      'searchHistory',
+      'showPopUp',
+      'selectedSong',
+      'favoriteList'
     ])
   },
   methods: {
@@ -46,7 +50,10 @@ export const singerMixin = {
       'setSongSheet',
       'setRankList',
       'setPageCount',
-      'setSearchHistory'
+      'setSearchHistory',
+      'setShowPopUp',
+      'setSelectedSong',
+      'setFavoriteList'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -76,13 +83,23 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
-    insertSong (item) {
+    // 插入歌曲进行播放，next 为true 时表示下一首播放
+    insertSong (item, next = false) {
       let len = this.playList.length
       let playList = this.playList
       let index = this.currentIndex
+      const orginIndex = index
       const fIndex = this._findIndex(playList, item)
       if (fIndex > -1) {
         index = fIndex
+        if (next) {
+          index = orginIndex
+          let nextIndex = orginIndex + 1 === len ? 0 : orginIndex + 1 // 当前播放歌曲的下一个索引
+          const Nextsong = playList[nextIndex] // 当前播放歌曲的下一首歌曲
+          const Targetsong = playList[fIndex] // 要添加到下一首的歌曲
+          playList[fIndex] = Nextsong // 两者互换位置
+          playList[nextIndex] = Targetsong
+        }
       } else {
         if (index === -1) {
           playList.unshift(item)
@@ -92,7 +109,7 @@ export const singerMixin = {
           beforeList.push(item)
           const afterList = playList.slice(index + 1, len)
           playList = beforeList.concat(afterList)
-          index++
+          index = next ? index : index + 1
         }
       }
       if (!item.url) {
@@ -103,10 +120,9 @@ export const singerMixin = {
       this.setSequenceList(playList)
       this.setPlayering(true)
       this.setClickMark(true)
-      // console.log('len', len)
-      // console.log('playList', this.playList)
-      // console.log('index', this.currentIndex)
-      // console.log('secquence', this.secquenceList)
+      if (next) {
+        this.simpleToast('添加到下一首')
+      }
     },
     // 随机选择一首歌播放
     randomPlay (list) {
@@ -162,9 +178,64 @@ export const singerMixin = {
     saveSearchHistory (query) {
       this.setSearchHistory(saveSearch(query))
     },
-    // 删除搜索历史
+    // 删除全部搜索历史
     deleteAllSearchHistory () {
       this.setSearchHistory(clearSearch())
+    },
+    // 保存收藏歌曲列表到localstorage
+    savemyFavorite (song) {
+      this.setFavoriteList(saveFavorite(song))
+      this.simpleToast('已收藏')
+    },
+    deletemyFavorite (song) {
+      this.setFavoriteList(deleteFavorite(song))
+      this.simpleToast('已删除')
+    },
+    deletemyAllFavorite () {
+      this.setFavoriteList(clearFavorite())
+    }
+  }
+}
+
+export const playerMixin = {
+  data () {
+    return {
+      SrouterName: '',
+      TrouterName: ''
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      // const fromDepth = from.path.split('/')
+      const toDepth = to.path.split('/')
+      // console.log('from', fromDepth)
+      // console.log('to', toDepth)
+      this.SrouterName = toDepth[2]
+      this.TrouterName = toDepth[3]
+    }
+  },
+  methods: {
+    // 跳转到歌手详情页
+    goToSingerDetail (song) {
+      if (!song.singerMid) {
+        return
+      }
+      this.setFullScreen(false)
+      // 如果二级路由或者三级就是singer直接return，不用跳转
+      console.log('goto:', this.SrouterName, this.TrouterName)
+      if (this.SrouterName === 'singer' || this.TrouterName === 'singer') {
+        return
+      }
+      // 二级路由不是singer,跳转到指定的二级路由的子路由
+      this.setPageCount(this.pageCount + 1)
+      this.$router.push({
+        path: `/home/${this.SrouterName}/singer/${song.singerMid}`
+      })
+      const cSinger = new Singer({
+        id: song.singerMid,
+        name: song.singer
+      })
+      this.setSinger(cSinger)
     }
   }
 }

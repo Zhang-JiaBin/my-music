@@ -20,7 +20,7 @@
               <note-beat class="playing-beat" :playing="playering"></note-beat>
             </div>
           </div>
-          <div class="item-playing-wrapper">
+          <div class="item-playing-wrapper" @click.prevent.stop="showPop(item)">
             <span class="icon-dot"></span>
           </div>
         </div>
@@ -70,6 +70,11 @@ export default {
     // 获取歌曲的dom元素数组
     getRefsSongItem () {
       return this.$refs.songItem
+    },
+    showPop (item) {
+      this.setSelectedSong(item)
+      this.setShowPopUp(true)
+      console.log(this.selectedSong)
     }
   }
 }
@@ -113,13 +118,14 @@ export default {
               height: 50%;
               @include justcenter;
               .item-name{
+                line-height: 18px;
                 font-size: $font-size-medium-x;
                 @include ellipsis2(1);
               }
               .item-sq{
                 font-size: $font-size-small;
                 color: $color-icon;
-                padding: 1px 3px;
+                padding: 1px 2px;
                 border: solid 1px $color-icon;
                 border-radius: 5px;
               }
