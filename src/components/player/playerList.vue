@@ -8,26 +8,27 @@
         <div class="playerList-top-wrapper">
           <div class="icon-down" @click="hide"></div>
           <div class="playerList-function">
-            <div class="icon-wrapper">
+            <div class="icon-wrapper" @click="changeMode">
               <span :class="iconMode"></span>
             </div>
             <div class="text-wrapper">
               <span class="text">{{ModeText}}</span>
             </div>
-            <div class="icon-wrapper">
+            <div class="icon-wrapper" @click="showConfirm">
               <span class="icon-deleteAll"></span>
             </div>
           </div>
         </div>
         <div class="scroll-wrapper" ref="scrollWrapper">
-          <scroll :probe-type="this.probetype" :data="this.sequenceList" ref="myscroll" class="playerList-scroll">
+          <scroll :data="this.playList" ref="myscroll" class="playerList-scroll">
             <div class="song-item-wrapper">
-              <song-list @delete="deleteOneSong" :songs="this.sequenceList" :show-dot="false" :show-pic="false"></song-list>
+              <song-list ref="scrollItem" @delete="deleteOneSong" :songs="this.playList" :show-dot="false" :show-pic="false"></song-list>
             </div>
           </scroll>
         </div>
       </div>
     </transition>
+    <confirm ref="confirm" @confirm="deleteAllSong" text="确定清空歌曲播放列表内容"></confirm>
   </div>
 </template>
 
@@ -36,6 +37,7 @@ import { singerMixin } from '../../utils/mixin'
 import { playMode } from '../../utils/config'
 import Scroll from '../../common/scroll'
 import SongList from '../../common/songList'
+import Confirm from '../../common/confirm'
 
 export default {
   name: 'playerList',
@@ -45,6 +47,31 @@ export default {
       showContent: false
     }
   },
+  watch: {
+    playList (newList) {
+      // console.log('数据改变')
+      this.$refs.myscroll.refresh()
+      setTimeout(() => {
+        this.scrollToSong(this.currentSong)
+      })
+      if (newList.length === 0) {
+        this.hide()
+      }
+    },
+    mode (newMode) {
+      if (newMode === 2 || newMode === 0) {
+        this.scrollToSong(this.currentSong)
+      }
+    },
+    currentSong (newSong, oldSong) {
+      const nId = newSong ? newSong.id : ''
+      const oId = oldSong ? oldSong.id : ''
+      if (!this.showContent || nId === oId) {
+        return
+      }
+      this.scrollToSong(newSong)
+    }
+  },
   created () {
     this.probetype = 3
   },
@@ -52,7 +79,7 @@ export default {
     this.$refs.scrollWrapper.style.top = `${this.ScrollTop}px`
   },
   mixins: [singerMixin],
-  components: { SongList, Scroll },
+  components: { Confirm, SongList, Scroll },
   computed: {
     ModeText () {
       const text = this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.loop ? '单曲循环' : '随机播放'
@@ -63,16 +90,10 @@ export default {
       return top
     }
   },
-  watch: {
-    // showlist (newVal) {
-    //   if (newVal) {
-    //     setTimeout(() => {
-    //       this.showContent = true
-    //     })
-    //   }
-    // }
-  },
   methods: {
+    showConfirm () {
+      this.$refs.confirm.show()
+    },
     show () {
       this.showlist = true
       setTimeout(() => {
@@ -81,6 +102,9 @@ export default {
       setTimeout(() => {
         this.$refs.myscroll.refresh()
       }, 40)
+      setTimeout(() => {
+        this.scrollToSong(this.currentSong)
+      }, 100)
     },
     hide () {
       this.showContent = false
@@ -90,7 +114,20 @@ export default {
     },
     deleteOneSong (item) {
       this.deleteFromSongs(item)
-      console.log(item)
+      // console.log(item)
+    },
+    scrollToSong (current) {
+      const ItemArr = this.$refs.scrollItem.getRefsSongItem()
+      const index = this._findIndex(this.playList, current)
+      if (index === -1) {
+        return
+      }
+      let songEl = ItemArr[index]
+      if (this.playList.length < 5) {
+        return
+      } else {
+        this.$refs.myscroll.scrollToElement(songEl, 1000)
+      }
     }
   }
 }
@@ -106,12 +143,12 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 4000;
+    z-index: 3000;
     background: rgba(0,0,0,0.3);
     .playerList-bg{
       width: 100%;
       height: 100%;
-      z-index: 4000;
+      z-index: 3000;
     }
     .playerList-content {
       position: absolute;
@@ -119,7 +156,7 @@ export default {
       left: 0;
       width: 100%;
       height: 60%;
-      z-index: 4000;
+      z-index: 3000;
       background: #ffffff;
       border-radius: 12px 12px 0 0;
       .playerList-top-wrapper {

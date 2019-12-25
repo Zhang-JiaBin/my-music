@@ -38,6 +38,9 @@ export default {
       if (this.currentSong !== undefined) {
         this.$refs.singer.style.bottom = `100px`
         this.$refs.singerlist.refresh()
+      } else {
+        this.$refs.singer.style.bottom = `50px`
+        this.$refs.singerlist.refresh()
       }
     }
   },

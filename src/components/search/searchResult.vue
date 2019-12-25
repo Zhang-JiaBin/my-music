@@ -89,7 +89,7 @@ export default {
     selectSong (item) {
       this.simpleToast(`歌曲 '${item.name}'`)
       this.insertSong(item)
-      console.log(item)
+      // console.log(item)
     },
     listScroll () {
       this.$emit('listScroll')

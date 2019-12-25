@@ -33,7 +33,8 @@ export const singerMixin = {
       'searchHistory',
       'showPopUp',
       'selectedSong',
-      'favoriteList'
+      'favoriteList',
+      'homeMark'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -55,7 +56,8 @@ export const singerMixin = {
       'setSearchHistory',
       'setShowPopUp',
       'setSelectedSong',
-      'setFavoriteList'
+      'setFavoriteList',
+      'setHomeMark'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -85,39 +87,90 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
+    deleteSongFromList (item, list, difindex) {
+      let len = list.length
+      let retList = list
+      let index = difindex
+      const fIndex = this._findIndex(list, item)
+      if (fIndex === -1) {
+        return
+      }
+      const beforeList = list.slice(0, fIndex)
+      const afterList = list.slice(fIndex + 1, len)
+      retList = beforeList.concat(afterList)
+      return retList
+    },
     // 从列表中删除歌曲
     deleteFromSongs (item) {
-      let len = this.playList.length
-      let playList = this.playList
-      const fpIndex = this._findIndex(playList, item)
-      console.log('fp', fpIndex)
-      let index = this.currentIndex
-      console.log('in', index)
-      const beforeList = playList.slice(0, fpIndex)
-      const afterList = playList.slice(fpIndex + 1, len)
-      playList = beforeList.concat(afterList)
-      if (fpIndex === index && index === len - 1) {
-        index = 0
-        const song = playList[index]
-        if (!song.url) {
-          this.gainSongUrl(item)
-        }
-      }
-      this.setPlayList(playList)
-      this.setCurrentIndex(index)
-      this.setSequenceList(playList)
-      this.setClickMark(true)
-      console.log(this.playList)
-    },
-    // 插入歌曲进行播放，next 为true 时表示下一首播放
-    insertSong (item, next = false) {
       let len = this.playList.length
       let playList = this.playList
       let sequenceList = this.sequenceList
       let index = this.currentIndex
       const orginIndex = index
+      const SorginIndex = this._findIndex(sequenceList, item)
       const fIndex = this._findIndex(playList, item)
-      const sIndex = this._findIndex(sequenceList, item)
+      if (fIndex === -1) {
+        return
+      }
+      if (fIndex > index) {
+        index = orginIndex
+      } else if (fIndex === index) {
+        let nextIndex = orginIndex + 1 === len ? 0 : orginIndex + 1
+        index = orginIndex + 1 === len ? 0 : orginIndex
+        if (!playList[nextIndex].url) {
+          this.gainSongUrl(playList[nextIndex])
+        }
+      } else if (fIndex < index) {
+        index--
+      }
+      this.setPlayList(this.deleteSongFromList(item, playList, this.currentIndex))
+      this.setSequenceList(this.deleteSongFromList(item, sequenceList, SorginIndex))
+      this.setClickMark(true)
+      if (this.playList.length === 0) {
+        this.setPlayList([])
+        this.setSequenceList([])
+        this.setPlayering(false)
+        this.setCurrentIndex(-1)
+        // this.setPageCount(0)
+        return
+      }
+      this.setCurrentIndex(index)
+      this.setPlayering(true)
+    },
+    deleteAllSong () {
+      this.setPlayList([])
+      this.setSequenceList([])
+      this.setCurrentIndex(-1)
+      this.setPlayering(false)
+    },
+    // 插入歌曲到列表中
+    insertSongToList (item, list, difindex) {
+      let len = list.length
+      let retList = list
+      let index = difindex
+      const fIndex = this._findIndex(list, item)
+      if (fIndex > -1) {
+        return retList
+      } else {
+        if (index === -1) {
+          retList.unshift(item)
+        } else {
+          const beforeList = list.slice(0, index + 1)
+          beforeList.push(item)
+          const afterList = list.slice(index + 1, len)
+          retList = beforeList.concat(afterList)
+        }
+        return retList
+      }
+    },
+    // 插入歌曲进行播放，next 为true 时表示下一首播放
+    insertSong (item, next = false) {
+      // 播放列表的添加
+      let len = this.playList.length
+      let playList = this.playList
+      let index = this.currentIndex
+      const orginIndex = index
+      const fIndex = this._findIndex(playList, item)
       if (fIndex > -1) {
         index = fIndex
         if (next) {
@@ -130,22 +183,33 @@ export const singerMixin = {
         }
       } else {
         if (index === -1) {
-          playList.unshift(item)
           index = 0
+          console.log('第一首歌')
         } else {
-          const beforeList = playList.slice(0, index + 1)
-          beforeList.push(item)
-          const afterList = playList.slice(index + 1, len)
-          playList = beforeList.concat(afterList)
           index = next ? index : index + 1
+        }
+      }
+      // 对顺序列表的添加
+      let Slen = this.sequenceList.length
+      let sequenceList = this.sequenceList
+      const SorginIndex = this._findIndex(sequenceList, this.currentSong)
+      const Sindex = this._findIndex(sequenceList, item)
+      if (Sindex > -1) {
+        if (next) {
+          let SnextIndex = SorginIndex + 1 === Slen ? 0 : SorginIndex + 1
+          const SnextSong = sequenceList[SnextIndex]
+          const StargetSong = sequenceList[Sindex]
+          sequenceList[Sindex] = SnextSong
+          sequenceList[SnextIndex] = StargetSong
         }
       }
       if (!item.url) {
         this.gainSongUrl(item)
       }
+      this.setPlayList(this.insertSongToList(item, this.playList, this.currentIndex))
+      this.setSequenceList(this.insertSongToList(item, this.sequenceList, SorginIndex))
       this.setCurrentIndex(index)
-      this.setPlayList(playList)
-      this.setSequenceList(playList)
+      console.log('此时的index:',index)
       this.setPlayering(true)
       this.setClickMark(true)
       if (next) {
@@ -189,6 +253,21 @@ export const singerMixin = {
       }
       this.setCurrentIndex(index)
       this.setPlayering(true)
+    },
+    // 修改播放模式
+    changeMode () {
+      const mode = (this.mode + 1) % 3
+      this.setMode(mode)
+      const text = this.mode === playMode.sequence ? '列表循环' : this.mode === playMode.loop ? '单曲循环' : '随机播放'
+      this.simpleToast(text)
+      let list = []
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList)
+      } else {
+        list = this.sequenceList
+      }
+      this.resetCurrentIndex(list)
+      this.setPlayList(list)
     },
     // 监听歌单的子组件派发的事件select   跳转到子组件sheetDetail
     selectSheetItem (sheet) {

@@ -109,7 +109,6 @@
         </div>
       </div>
     </transition>
-    <!--    <audio ref="audio" :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end" ></audio>-->
     <audio ref="myaudio" autoplay :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
     <show-singer ref="showSinger" @select="chooseOneSinger" :singer-group="singerGroup"></show-singer>
     <player-list ref="PlayerList"></player-list>
@@ -123,7 +122,7 @@ import { playMode } from '../../utils/config'
 import ProgressCircle from '../../common/ProgressCircle'
 import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
-import { shuffle } from '../../utils/util'
+// import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
 import ShowSinger from './showSinger'
 import PlayerList from '../player/playerList'
@@ -144,6 +143,10 @@ export default {
   mixins: [singerMixin, playerMixin],
   components: { PlayerList, ShowSinger, Scroll, ProgressCircle, ProgressBar, slider },
   mounted () {
+    // if (this.pageCount === 0) {
+    //   this.$refs.mini.style.transform = `translateY(-50px)`
+    //   this.$refs.mini.style.transition = `transform 0.2s`
+    // }
   },
   created () {
     this.touch = {}
@@ -215,6 +218,12 @@ export default {
         newPlayering ? myaudio.play() : myaudio.pause()
       })
     },
+    homeMark (newHomeMark) {
+      if (newHomeMark === 1) {
+        this.$refs.mini.style.transform = `translateY(-50px)`
+        this.$refs.mini.style.transition = `transform 0.2s`
+      }
+    },
     currentSong (newSong, oldSong) {
       if (newSong === undefined) {
         return
@@ -238,8 +247,8 @@ export default {
       }, 1000)
     },
     // 进入一次musicList组件 count + 1,退出 count - 1
-    pageCount (newPageCount) {
-      // console.log('newCount', newPageCount)
+    pageCount (newPageCount, oldPageCount) {
+      console.log('newPageCount', newPageCount)
       if (newPageCount === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
@@ -290,21 +299,6 @@ export default {
       if (this.currentIndex > nextIndex) {
         this.prev()
       }
-    },
-    // 修改播放模式
-    changeMode () {
-      const mode = (this.mode + 1) % 3
-      this.setMode(mode)
-      const text = this.mode === playMode.sequence ? '列表循环' : this.mode === playMode.loop ? '单曲循环' : '随机播放'
-      this.simpleToast(text)
-      let list = []
-      if (mode === playMode.random) {
-        list = shuffle(this.sequenceList)
-      } else {
-        list = this.sequenceList
-      }
-      this.resetCurrentIndex(list)
-      this.setPlayList(list)
     },
     // 触摸开始
     middleTouchStart (e) {
@@ -369,6 +363,9 @@ export default {
     },
     // 获取歌词
     _getLyric () {
+      if (!this.currentSong) {
+        return
+      }
       this.currentSong.getLyric().then(lyric => {
         if (this.currentSong.lyric !== lyric) {
           return
@@ -441,7 +438,7 @@ export default {
     },
     // 歌曲播放准备，解决连续点击下一曲按钮的报错
     ready () {
-      console.log(this.currentSong)
+      // console.log(this.currentSong)
       this.songReady = true
     },
     // 歌曲播放结束

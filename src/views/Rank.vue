@@ -55,6 +55,9 @@ export default {
       if (this.currentSong !== undefined) {
         this.$refs.rank.style.bottom = `100px`
         this.$refs.scroll.refresh()
+      } else {
+        this.$refs.rank.style.bottom = `50px`
+        this.$refs.scroll.refresh()
       }
     }
   },

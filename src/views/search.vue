@@ -76,6 +76,11 @@ export default {
     this.changeSBottom()
   },
   watch: {
+    currentSong (newSong) {
+      if (newSong === undefined) {
+        this.changeSBottom()
+      }
+    },
     // 适配有mini播放器的底部滚动高度
     pageCount (newPageCount) {
       this.getFocus()
@@ -98,6 +103,10 @@ export default {
       if (this.currentSong !== undefined && this.pageCount >= 1) {
         this.$refs.mysearch.style.bottom = `50px`
         this.$refs.myresult.style.bottom = '50px'
+        this.$refs.scroll.refresh()
+      } else {
+        this.$refs.mysearch.style.bottom = `0px`
+        this.$refs.myresult.style.bottom = '0px'
         this.$refs.scroll.refresh()
       }
     },

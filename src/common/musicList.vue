@@ -134,6 +134,9 @@ export default {
       if (this.currentSong !== undefined && this.pageCount >= 1) {
         this.$refs.listWrapper.style.bottom = `50px`
         this.$refs.scrollList.refresh()
+      } else {
+        this.$refs.listWrapper.style.bottom = `0px`
+        this.$refs.scrollList.refresh()
       }
     },
     back () {

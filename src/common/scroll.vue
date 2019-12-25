@@ -113,6 +113,9 @@ export default {
     disable () {
       this.scroll && this.scroll.disable()
     },
+    destroy () {
+      this.scroll && this.scroll.destroy()
+    },
     refresh () {
       this.scroll && this.scroll.refresh()
     },

@@ -76,6 +76,11 @@ const actions = {
     commit
   }, favoriteList) => {
     return commit('SET_FAVORITELIST', favoriteList)
+  },
+  setHomeMark: ({
+    commit
+  }, homeMark) => {
+    return commit('SET_HOMEMARK', homeMark)
   }
 }
 export default actions

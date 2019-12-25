@@ -17,7 +17,8 @@ const singer = {
     searchHistory: loadSearch(), // 搜索历史,
     showPopUp: false, // 弹出框
     selectedSong: {}, // 点击songList组件的 dot Icon选中的歌曲
-    favoriteList: loadFavorite() // 收藏的歌曲的列表
+    favoriteList: loadFavorite(), // 收藏的歌曲的列表,
+    homeMark: 0 // 控制推荐页面的播放器上移标志
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -64,6 +65,9 @@ const singer = {
     },
     'SET_FAVORITELIST': (state, favoriteList) => {
       state.favoriteList = favoriteList
+    },
+    'SET_HOMEMARK': (state, homeMark) => {
+      state.homeMark = homeMark
     }
   }
 }

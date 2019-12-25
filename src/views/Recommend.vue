@@ -20,7 +20,7 @@
         <little-title title="排行榜" @displayMore="gotoRank"></little-title>
         <recomend-rank :rank-group="this.rankGroup"></recomend-rank>
         <little-title title="精选音乐FM"></little-title>
-        <recomend-song @select="insertSong" :new-song="newSongList"></recomend-song>
+        <recomend-song @select="startPlaying" :new-song="newSongList"></recomend-song>
       </div>
       <div class="loading-container" v-show="!vHotList.length">
         <loading></loading>
@@ -82,12 +82,21 @@ export default {
       if (this.currentSong !== undefined) {
         this.$refs.recommend.style.bottom = `100px`
         this.$refs.scroll.refresh()
+      } else {
+        this.$refs.recommend.style.bottom = `50px`
+        this.$refs.scroll.refresh()
       }
     }
   },
   computed: {},
   mixins: [singerMixin],
   methods: {
+    // 点击推荐页面的私人 FM 进行播放
+    startPlaying (item) {
+      this.setHomeMark(1)
+      this.insertSong(item)
+    },
+    // 跳转到歌单页面
     gotoSheet () {
       this.$router.push({
         path: 'sheet'

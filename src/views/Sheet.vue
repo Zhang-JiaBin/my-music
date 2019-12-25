@@ -75,6 +75,9 @@ export default {
       if (this.currentSong !== undefined) {
         this.$refs.sheet.style.bottom = `100px`
         this.$refs.scroll.refresh()
+      } else {
+        this.$refs.sheet.style.bottom = `50px`
+        this.$refs.scroll.refresh()
       }
     }
   },
