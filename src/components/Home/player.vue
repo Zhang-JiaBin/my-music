@@ -76,10 +76,10 @@
       </div>
     </transition>
     <transition name="popup-slide-up">
-      <div class="mini-player" ref="mini" @click="full" v-show="!fullScreen">
+      <div class="mini-player" ref="mini" @click="full" v-show="Songself">
         <div class="mini-wrapper">
-          <div class="slider-wrapper" v-if="playList.length > 0">
-            <slider :data="this.playList" :c-index="this.currentIndex" @scrollnext="selectNextOrPrev" ref="slider">
+          <div class="slider-wrapper" v-show="playList.length > 0">
+            <slider class="slider-itself" :data="this.playList" :mode="this.mode" :c-index="this.currentIndex" @scrollnext="selectNextOrPrev" ref="slider">
               <div class="mini-slider-wrapper" v-for="item in playList" :key="item.id" ref="sliderItem">
                 <div class="mini-img-wrapper">
                   <img :class="cdClass" class="mini-img" :src="item.image" alt="">
@@ -103,7 +103,7 @@
               <span :class="miniplayIcon" class="icon-mini"></span>
             </div>
           </div>
-          <div class="mini-songList-wrapper">
+          <div class="mini-songList-wrapper" @click.stop="showPlayerList">
             <span class="icon-songList"></span>
           </div>
         </div>
@@ -112,6 +112,7 @@
     <!--    <audio ref="audio" :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end" ></audio>-->
     <audio ref="myaudio" autoplay :src="SongUrl" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
     <show-singer ref="showSinger" @select="chooseOneSinger" :singer-group="singerGroup"></show-singer>
+    <player-list ref="PlayerList"></player-list>
   </div>
 </template>
 
@@ -125,6 +126,7 @@ import Scroll from '../../common/scroll'
 import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
 import ShowSinger from './showSinger'
+import PlayerList from '../player/playerList'
 
 export default {
   name: 'player',
@@ -140,7 +142,7 @@ export default {
     }
   },
   mixins: [singerMixin, playerMixin],
-  components: { ShowSinger, Scroll, ProgressCircle, ProgressBar, slider },
+  components: { PlayerList, ShowSinger, Scroll, ProgressCircle, ProgressBar, slider },
   mounted () {
   },
   created () {
@@ -167,9 +169,9 @@ export default {
     cdClass () {
       return this.playering ? 'play' : 'play pause'
     },
-    iconMode () {
-      return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
-    },
+    // iconMode () {
+    //   return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
+    // },
     // 点击播放按钮时更换图标样式
     playIcon () {
       return this.playering ? 'icon-pause' : 'icon-play'
@@ -248,6 +250,10 @@ export default {
     }
   },
   methods: {
+    // 展示播放列表
+    showPlayerList () {
+      this.$refs.PlayerList.show()
+    },
     // 接收子组件show-singer的派发select事件
     chooseOneSinger (item) {
       this.goToSingerDetail(item)
@@ -526,7 +532,7 @@ export default {
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 1500;
+    z-index: 1600;
     background: white;
     .background-wrapper {
       position: absolute;
@@ -770,54 +776,59 @@ export default {
       @include justcenter;
       padding: 0 10px;
       box-sizing: border-box;
+      display: flex;
       .slider-wrapper{
+        flex: 0 0 75%;
         width: 75%;
         height: 100%;
         overflow: hidden;
-        .mini-slider-wrapper{
+        .slider-itself{
           width: 100%;
           height: 100%;
-          display: flex;
-          .mini-img-wrapper {
-            flex: 0 0 40px;
-            width: 40px;
+          .mini-slider-wrapper{
             height: 100%;
-            @include center;
-            .mini-img {
-              width: 100%;
-              border-radius: 50%;
-              &.play {
-                animation: rotate 20s linear infinite;
-              }
-              // animation-play-state: paused; 无法使动画暂停，改为这个
-              &.pause {
-                animation-play-state: paused;
+            display: flex;
+            .mini-img-wrapper {
+              flex: 0 0 40px;
+              width: 40px;
+              height: 100%;
+              @include center;
+              .mini-img {
+                width: 100%;
+                border-radius: 50%;
+                &.play {
+                  animation: rotate 20s linear infinite;
+                }
+                // animation-play-state: paused; 无法使动画暂停，改为这个
+                &.pause {
+                  animation-play-state: paused;
+                }
               }
             }
-          }
-          .mini-text-wrapper {
-            flex: 1;
-            height: 100%;
-            margin-left: 10px;
-            .mini-text-name {
-              height: 50%;
-              font-size: $font-size-medium;
-              @include left;
-              .text-name {
-                line-height: 16px;
+            .mini-text-wrapper {
+              flex: 1;
+              height: 100%;
+              margin-left: 10px;
+              .mini-text-name {
+                height: 50%;
+                font-size: $font-size-medium;
                 @include left;
-                @include ellipsis2(1);
+                .text-name {
+                  line-height: 16px;
+                  @include left;
+                  @include ellipsis2(1);
+                }
               }
-            }
-            .mini-text-lyric {
-              height: 50%;
-              font-size: $font-size-small;
-              @include left;
-              color: #aeaeae;
-              .text-lyric {
-                line-height: 14px;
+              .mini-text-lyric {
+                height: 50%;
+                font-size: $font-size-small;
                 @include left;
-                @include ellipsis2(1);
+                color: #aeaeae;
+                .text-lyric {
+                  line-height: 14px;
+                  @include left;
+                  @include ellipsis2(1);
+                }
               }
             }
           }

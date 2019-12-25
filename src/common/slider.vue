@@ -15,6 +15,10 @@ import { addClass } from '../utils/dom'
 export default {
   name: 'slider',
   props: {
+    mode: {
+      type: Number,
+      default: 0
+    },
     cIndex: {
       type: Number,
       default: 0
@@ -44,7 +48,7 @@ export default {
   data () {
     return {
       dots: [],
-      currentPageIndex: 0
+      currentPageIndex: 0,
     }
   },
   mounted () {
@@ -60,12 +64,11 @@ export default {
   },
   watch: {
     data (newlist, oldlist) {
-      // console.log('watch-newPlayList', newlist)
-      // 进入相同的歌单都会触发每次进入
+      console.log(newlist)
       if (!this.slider) {
         return
       }
-      if (newlist[0].id === oldlist[0].id && newlist.length === oldlist.length) {
+      if (this.compareList(newlist, oldlist)) {
         console.log('进入相同的歌手歌曲列表')
         this._setSlideWidth(true)
         this.slider.refresh()
@@ -74,9 +77,9 @@ export default {
         console.log('进入不同的歌手歌曲列表')
         this._initlize()
       }
-      console.log('数据改变后渲染完成的item数目:', this.$refs.sliderGroup.children.length)
     },
     cIndex (newVal) {
+      console.log('newVal', newVal)
       this.gotoPage(newVal)
     }
   },
@@ -88,6 +91,19 @@ export default {
   computed: {},
 
   methods: {
+    compareList (newlist, oldlist) {
+      const nlen = newlist.length
+      const olen = oldlist.length
+      if (nlen !== olen) {
+        return false
+      }
+      for (let i = 0; i < nlen; i++) {
+        if (newlist[i].id !== oldlist[i].id) {
+          return false
+        }
+      }
+      return true
+    },
     _initlize () {
       setTimeout(() => {
         this._setSlideWidth()
@@ -117,14 +133,19 @@ export default {
         probeType: 2
       })
       this.slider.on('scrollEnd', () => {
-        // let pageIndex = this.slider.getCurrentPage().pageX
         this.currentPageIndex = this.slider.getCurrentPage().pageX
         this.$emit('scrollnext', this.currentPageIndex)
       })
-      if (this.autoPlay) {
-        clearTimeout(this.timer)
-        this._play()
-      }
+      // if (this.autoPlay) {
+      //   clearTimeout(this.timer)
+      //   this._play()
+      // }
+    },
+    refresh () {
+      this.slider && this.slider.refresh()
+    },
+    destory () {
+      this.slider && this.slider.destroy()
     },
     gotoPage (x, y = 0, t = 1000) {
       this.slider && this.slider.goToPage(x, y, 1000)
@@ -136,6 +157,7 @@ export default {
       this.children = this.$refs.sliderGroup.children
       let width = 0
       let sliderWidth = this.$refs.slider.clientWidth
+      // console.log('sliderWidth', sliderWidth)
       for (let i = 0; i < this.children.length; i++) {
         let child = this.children[i]
         addClass(child, 'slider-item')
@@ -145,7 +167,6 @@ export default {
       if (this.loop && !isResize && this.data.length > 1) {
         width += 2 * sliderWidth
       }
-      // console.log('width', width)
       this.$refs.sliderGroup.style.width = width + 'px'
     },
     _play () {

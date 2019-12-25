@@ -5,25 +5,25 @@
       </transition>
       <transition name="popup-slide-up">
         <div v-show="visible" class="popUp-content" @click.stop>
-        <div class="content-top">
-          <div class="img-wrapper">
-            <img class="top-img" :src="ImgUrl" alt="">
+          <div class="content-top">
+            <div class="img-wrapper">
+              <img class="top-img" :src="ImgUrl" alt="">
+            </div>
+            <div class="text-wrapper">
+              <div class="song-text">歌曲: {{SongName}}</div>
+              <div class="singer-text">{{SongSinger}}</div>
+            </div>
           </div>
-          <div class="text-wrapper">
-            <div class="song-text">歌曲: {{SongName}}</div>
-            <div class="singer-text">{{SongSinger}}</div>
+          <div class="content-item" @click="seleteIndex(index, item)" v-for="(item, index) in showTextList" :key="index">
+            <div class="icon-wrapper">
+              <span :class="item.icon" class="icon"></span>
+            </div>
+            <div class="text-wrapper">
+              <span class="iconText">{{item.text}}</span>
+            </div>
           </div>
+          <div class="content-bottom" @click="hide">取消</div>
         </div>
-        <div class="content-item" @click="seleteIndex(index, item)" v-for="(item, index) in showTextList" :key="index">
-          <div class="icon-wrapper">
-            <span :class="item.icon" class="icon"></span>
-          </div>
-          <div class="text-wrapper">
-            <span class="iconText">{{item.text}}</span>
-          </div>
-        </div>
-        <div class="content-bottom" @click="hide">取消</div>
-      </div>
       </transition>
       <show-singer @select="chooseSinger" :singer-group="singerGroup" ref="showSinger" ></show-singer>
     </div>
@@ -136,7 +136,6 @@ export default {
     // 展示歌手
     showSinger () {
       const mysingers = this.selectedSong.allSinger
-      console.log('mysinger:', mysingers)
       if (mysingers.length === 1) {
         this.goToSingerDetail(mysingers[0])
         this.hide()

@@ -15,7 +15,6 @@ import {
   getSongUrl
 } from '../api/singerSong'
 import { clearFavorite, clearSearch, deleteFavorite, saveFavorite, saveSearch } from './localStorage'
-import Singer from './singer'
 export const singerMixin = {
   computed: {
     ...mapGetters([
@@ -35,7 +34,10 @@ export const singerMixin = {
       'showPopUp',
       'selectedSong',
       'favoriteList'
-    ])
+    ]),
+    iconMode () {
+      return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
+    }
   },
   methods: {
     ...mapActions([
@@ -83,13 +85,39 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
+    // 从列表中删除歌曲
+    deleteFromSongs (item) {
+      let len = this.playList.length
+      let playList = this.playList
+      const fpIndex = this._findIndex(playList, item)
+      console.log('fp', fpIndex)
+      let index = this.currentIndex
+      console.log('in', index)
+      const beforeList = playList.slice(0, fpIndex)
+      const afterList = playList.slice(fpIndex + 1, len)
+      playList = beforeList.concat(afterList)
+      if (fpIndex === index && index === len - 1) {
+        index = 0
+        const song = playList[index]
+        if (!song.url) {
+          this.gainSongUrl(item)
+        }
+      }
+      this.setPlayList(playList)
+      this.setCurrentIndex(index)
+      this.setSequenceList(playList)
+      this.setClickMark(true)
+      console.log(this.playList)
+    },
     // 插入歌曲进行播放，next 为true 时表示下一首播放
     insertSong (item, next = false) {
       let len = this.playList.length
       let playList = this.playList
+      let sequenceList = this.sequenceList
       let index = this.currentIndex
       const orginIndex = index
       const fIndex = this._findIndex(playList, item)
+      const sIndex = this._findIndex(sequenceList, item)
       if (fIndex > -1) {
         index = fIndex
         if (next) {

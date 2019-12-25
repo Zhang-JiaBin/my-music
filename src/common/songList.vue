@@ -20,8 +20,11 @@
               <note-beat class="playing-beat" :playing="playering"></note-beat>
             </div>
           </div>
-          <div class="item-playing-wrapper" @click.prevent.stop="showPop(item)">
-            <span class="icon-dot"></span>
+          <div class="item-playing-wrapper" v-show="showDot" @click.prevent.stop="showPop(item)">
+            <span class="icon-dot icon"></span>
+          </div>
+          <div class="item-playing-wrapper" v-show="!showDot" @click.prevent.stop="deleteItem(item)">
+            <span class="icon-delete icon"></span>
           </div>
         </div>
       </div>
@@ -35,6 +38,10 @@ import NoteBeat from './NoteBeat'
 
 export default {
   props: {
+    showDot: {
+      type: Boolean,
+      default: true
+    },
     songs: {
       type: Array,
       default: () => []
@@ -74,7 +81,10 @@ export default {
     showPop (item) {
       this.setSelectedSong(item)
       this.setShowPopUp(true)
-      console.log(this.selectedSong)
+      // console.log(this.selectedSong)
+    },
+    deleteItem (item) {
+      this.$emit('delete', item)
     }
   }
 }
@@ -151,9 +161,14 @@ export default {
                 height: 100%;
               }
             }
-            .icon-dot{
+            .icon {
               font-size: 25px;
               margin-left: 10px;
+            }
+            .icon-dot{
+            }
+            .icon-delete{
+              font-size: 20px;
             }
           }
         }
