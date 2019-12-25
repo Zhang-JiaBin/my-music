@@ -22,7 +22,7 @@
         <div class="scroll-wrapper" ref="scrollWrapper">
           <scroll :data="this.playList" ref="myscroll" class="playerList-scroll">
             <div class="song-item-wrapper">
-              <song-list ref="scrollItem" @delete="deleteOneSong" :songs="this.playList" :show-dot="false" :show-pic="false"></song-list>
+              <song-list @select="chooseSong" ref="scrollItem" @delete="deleteOneSong" :songs="this.playList" :show-dot="false" :show-pic="false"></song-list>
             </div>
           </scroll>
         </div>
@@ -91,6 +91,9 @@ export default {
     }
   },
   methods: {
+    chooseSong (item, index) {
+      this.insertSong(item)
+    },
     showConfirm () {
       this.$refs.confirm.show()
     },

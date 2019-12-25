@@ -454,6 +454,9 @@ export default {
       if (!this.songReady) {
         return
       }
+      if (this.playList.length === 0) {
+        return
+      }
       if (this.playList.length === 1) {
         this.loop()
         this.setPlayering(true)
@@ -479,6 +482,9 @@ export default {
     // 下一曲
     next () {
       if (!this.songReady) {
+        return
+      }
+      if (this.playList.length === 0) {
         return
       }
       if (this.playList.length === 1) {

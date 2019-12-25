@@ -27,10 +27,10 @@ export default {
       type: Array,
       default: null
     },
-    loop: {
-      type: Boolean,
-      default: true
-    },
+    // loop: {
+    //   type: Boolean,
+    //   default: true
+    // },
     autoPlay: {
       type: Boolean,
       default: false
@@ -49,11 +49,12 @@ export default {
     return {
       dots: [],
       currentPageIndex: 0,
-      mark: false
+      loop: true
     }
   },
   mounted () {
-    this._initlize()
+    console.log('mounted')
+    // this._initlize()
     window.addEventListener('resize', () => {
       console.log('window')
       if (!this.slider) {
@@ -65,19 +66,19 @@ export default {
   },
   watch: {
     data (newlist, oldlist) {
-      if (newlist.length > 1) {
-        this.mark = true
-      } else {
-        this.mark = false
-      }
-      if (newlist.length === 0) {
-        this.refresh()
-        console.log('destroy1111')
-        this.destroy()
-      }
-      if (!this.slider) {
-        return
-      }
+      // if (newlist.length === 1) {
+      //   this.loop = false
+      // } else {
+      //   this.loop = true
+      // }
+      // if (newlist.length === 0) {
+      //   this.refresh()
+      //   console.log('destroy1111')
+      //   this.destroy()
+      // }
+      // if (!this.slider) {
+      //   return
+      // }
       if (this.compareList(newlist, oldlist)) {
         console.log('进入相同的歌手歌曲列表')
         this._setSlideWidth(true)
@@ -86,7 +87,12 @@ export default {
         this.refresh()
         this.destroy()
         console.log('进入不同的歌手歌曲列表')
-        this._initlize()
+        if (newlist.length === 1) {
+          console.log('yes')
+          this._NoSlider()
+        } else {
+          this._initlize()
+        }
       }
     },
     cIndex (newVal) {
@@ -125,6 +131,13 @@ export default {
         this.gotoPage(this.cIndex) // 初始化就要移动到指定的page页面
       }, 40)
     },
+    _NoSlider () {
+      this.refresh()
+      this.$refs.sliderGroup.style.width = `266px`
+      this.$refs.sliderGroup.style.transform = 'none'
+      // this._setSlideWidth(true)
+      console.log('123')
+    },
     _initSlide () {
       this.slider = new BScroll(this.$refs.slider, {
         scrollX: true,
@@ -149,33 +162,6 @@ export default {
         this.currentPageIndex = this.slider.getCurrentPage().pageX
         this.$emit('scrollnext', this.currentPageIndex)
       })
-      // this.slider = new BScroll(this.$refs.slider, {
-      //   scrollX: true,
-      //   scrollY: false,
-      //   snap: {
-      //     loop: this.loop,
-      //     threshold: 0.1,
-      //     easing: {
-      //       style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-      //       fn: function (t) {
-      //         return t * (2 - t)
-      //       }
-      //     }
-      //   },
-      //   click: true,
-      //   momentum: false,
-      //   bounce: false,
-      //   stopPropagation: true,
-      //   probeType: 2
-      // })
-      // this.slider.on('scrollEnd', () => {
-      //   this.currentPageIndex = this.slider.getCurrentPage().pageX
-      //   this.$emit('scrollnext', this.currentPageIndex)
-      // })
-      // if (this.autoPlay) {
-      //   clearTimeout(this.timer)
-      //   this._play()
-      // }
     },
     refresh () {
       this.slider && this.slider.refresh()
@@ -228,8 +214,6 @@ export default {
       position: relative;
       overflow: hidden;
       white-space: nowrap;
-      /*display: flex;*/
-      /*flex-flow: row nowrap;*/
       .slider-item {
         float: left;
         box-sizing: border-box;
