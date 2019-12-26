@@ -64,6 +64,10 @@ export default new VueRouter({
         path: 'singer/:id',
         component: () => import('../components/singer/singerDetail.vue')
       }]
+    }, {
+      path: 'user',
+      name: 'user',
+      component: () => import('../views/user.vue')
     }]
   }]
 })

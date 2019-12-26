@@ -67,6 +67,7 @@ export default {
 
 </script>
 <style lang="scss" scoped>
+  @import "../../assets/style/scss/global";
 .singer-detail {
   position: fixed;
   z-index: 1200;

@@ -143,10 +143,6 @@ export default {
   mixins: [singerMixin, playerMixin],
   components: { PlayerList, ShowSinger, Scroll, ProgressCircle, ProgressBar, slider },
   mounted () {
-    // if (this.pageCount === 0) {
-    //   this.$refs.mini.style.transform = `translateY(-50px)`
-    //   this.$refs.mini.style.transition = `transform 0.2s`
-    // }
   },
   created () {
     this.touch = {}
@@ -222,9 +218,11 @@ export default {
       if (newHomeMark === 1) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
+        this.setHomeMark(0)
       }
     },
     currentSong (newSong, oldSong) {
+      console.log('newSong', newSong)
       if (newSong === undefined) {
         return
       }
@@ -277,11 +275,11 @@ export default {
       }
     },
     // 点击收藏按钮
-    chooseFavorite (Songself) {
+    chooseFavorite () {
       if (this.InFavorite) {
-        this.deletemyFavorite(Songself)
+        this.deletemyFavorite(this.currentSong)
       } else {
-        this.savemyFavorite(Songself)
+        this.savemyFavorite(this.currentSong)
       }
     },
     // 判断slider滑动向左选择上一曲或者向右选择下一曲
@@ -363,11 +361,9 @@ export default {
     },
     // 获取歌词
     _getLyric () {
-      if (!this.currentSong) {
-        return
-      }
-      this.currentSong.getLyric().then(lyric => {
-        if (this.currentSong.lyric !== lyric) {
+      const playIngSong = this.currentSong
+      playIngSong.getLyric().then(lyric => {
+        if (playIngSong.lyric !== lyric) {
           return
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)

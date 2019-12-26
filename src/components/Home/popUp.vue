@@ -43,14 +43,11 @@ export default {
         icon: 'icon-nextSong',
         text: '下一首播放'
       }, {
-        icon: 'icon-add',
-        text: '添加到收藏'
+        icon: '',
+        text: '添加至我的喜欢'
       }, {
         icon: 'icon-singer',
         text: ``
-      }, {
-        icon: 'icon-moveOut',
-        text: '从收藏中删除'
       }]
     }
   },
@@ -72,12 +69,17 @@ export default {
       return this.selectedSong ? this.selectedSong.allSinger : []
     },
     showTextList () {
+      let myText = this.textList.slice(0)
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.textList[2].text = `歌手: ${this.SongSinger}`
+      myText[2].text = `歌手: ${this.SongSinger}`
       if (this.InFavorite) {
-        return this.textList
+        myText[1].icon = 'icon-moveOut'
+        myText[1].text = '取消喜欢'
+      } else {
+        myText[1].icon = 'icon-add'
+        myText[1].text = '添加至我的喜欢'
       }
-      return this.textList.slice(0, 3)
+      return myText
     },
     InFavorite () {
       const index = this._findIndex(this.favoriteList, this.selectedSong)
@@ -101,13 +103,10 @@ export default {
           this.insert()
           break
         case 1:
-          this.save()
+          this.chooseSaveOrDelete()
           break
         case 2:
           this.showSinger()
-          break
-        case 3:
-          this.delete()
           break
       }
       // this.hide()
@@ -117,16 +116,24 @@ export default {
       this.insertSong(this.selectedSong, true)
       this.hide()
     },
-    // 添加到收藏
-    save () {
-      this.savemyFavorite(this.selectedSong)
+    // 添加到喜欢或者取消喜欢
+    chooseSaveOrDelete () {
+      if (this.InFavorite) {
+        this.deletemyFavorite(this.selectedSong)
+      } else {
+        this.savemyFavorite(this.selectedSong)
+      }
       this.hide()
     },
-    // 移出收藏
-    delete () {
-      this.deletemyFavorite(this.selectedSong)
-      this.hide()
-    },
+    // save () {
+    //   this.savemyFavorite(this.selectedSong)
+    //   this.hide()
+    // },
+    // // 移出收藏
+    // delete () {
+    //   this.deletemyFavorite(this.selectedSong)
+    //   this.hide()
+    // },
     hide () {
       this.visible = false
       setTimeout(() => {
@@ -227,6 +234,9 @@ export default {
           @include center;
           .icon{
             font-size: 25px;
+            &.icon-moveOut {
+              color: $color-icon;
+            }
           }
         }
         .text-wrapper{

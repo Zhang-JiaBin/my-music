@@ -24,7 +24,7 @@
       </div>
       <div class="song-wrapper" v-show="this.songs.length">
         <little-title title="单曲" :show-more="false"></little-title>
-        <song-list @select="selectSong" :songs="songs" :show-pic="false"></song-list>
+        <song-list @select="selectMixSong" :songs="songs" :show-pic="false"></song-list>
       </div>
       <loading v-show="hasMore && songs.length"></loading>
     </div>
@@ -74,7 +74,6 @@ export default {
   methods: {
     // 选择歌手，跳转到歌手页面
     selectSinger () {
-      // console.log(this.searchSinger)
       if (!this.searchSinger.id) {
         return
       }
@@ -86,10 +85,9 @@ export default {
       this.setSinger(this.searchSinger)
     },
     // 选择歌曲，进行播放
-    selectSong (item) {
+    selectMixSong (item, index) {
       this.simpleToast(`歌曲 '${item.name}'`)
       this.insertSong(item)
-      // console.log(item)
     },
     listScroll () {
       this.$emit('listScroll')

@@ -39,7 +39,7 @@ export function saveSearch (query) {
 }
 
 // 读取存储的搜索结果
-export function loadSearch() {
+export function loadSearch () {
   return storage.get(SEARCH_KEY, [])
 }
 
@@ -62,7 +62,9 @@ export function clearSearch () {
 // 保存收藏的歌曲
 export function saveFavorite (song) {
   let songs = storage.get(FAVORITE_KEY, [])
-  inserArray(songs, song, item => item.id === song.id, FAVORITE_MAX_LENGTH)
+  inserArray(songs, song, item => {
+    return song.id === item.id
+  }, FAVORITE_MAX_LENGTH)
   storage.set(FAVORITE_KEY, songs)
   return songs
 }
@@ -70,7 +72,9 @@ export function saveFavorite (song) {
 // 删除收藏的歌曲
 export function deleteFavorite (song) {
   let songs = storage.get(FAVORITE_KEY, [])
-  deleteFromArray(songs, item => item.mid === song.mid)
+  deleteFromArray(songs, item => {
+    return item.id === song.id
+  })
   storage.set(FAVORITE_KEY, songs)
   return songs
 }

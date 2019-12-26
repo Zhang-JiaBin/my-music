@@ -103,12 +103,11 @@ export default {
       if (this.currentSong !== undefined && this.pageCount >= 1) {
         this.$refs.mysearch.style.bottom = `50px`
         this.$refs.myresult.style.bottom = '50px'
-        this.$refs.scroll.refresh()
       } else {
         this.$refs.mysearch.style.bottom = `0px`
         this.$refs.myresult.style.bottom = '0px'
-        this.$refs.scroll.refresh()
       }
+      this.$refs.scroll.refresh()
     },
     showDeleteConfrim () {
       this.$refs.confirm.show()
@@ -210,6 +209,7 @@ export default {
       })
       ret = this.normalizeSong(list)
       this.Songs = this.Songs.concat(ret)
+      console.log(this.Songs)
       // console.log(this.Songs)
     }
   }

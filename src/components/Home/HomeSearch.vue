@@ -6,7 +6,7 @@
         <input class="input-text" placeholder="歌曲" readonly="readonly" type="text">
       </div>
       <div class="icon-list-wrapper">
-        <span class="icon-list"></span>
+        <span class="icon-list" @click.stop="gotoUser"></span>
       </div>
     </div>
   </div>
@@ -29,6 +29,12 @@ export default {
     gotoSearch () {
       this.$router.push({
         path: '/home/search'
+      })
+      this.setPageCount(this.pageCount + 1)
+    },
+    gotoUser () {
+      this.$router.push({
+        path: '/home/user'
       })
       this.setPageCount(this.pageCount + 1)
     }

@@ -51,13 +51,19 @@ export default {
       default: true
     }
   },
+  watch: {
+    songs (newSongs) {
+      console.log('newSongs', newSongs)
+    }
+  },
+  mounted () {
+    console.log('songlist', this.songs)
+  },
   name: 'songList',
   mixins: [singerMixin],
   data () {
     return {
     }
-  },
-  mounted () {
   },
   components: { NoteBeat },
 
@@ -79,6 +85,7 @@ export default {
       return this.$refs.songItem
     },
     showPop (item) {
+      console.log(item)
       this.setSelectedSong(item)
       this.setShowPopUp(true)
       // console.log(this.selectedSong)
