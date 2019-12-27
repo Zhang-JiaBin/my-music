@@ -122,7 +122,6 @@ import { playMode } from '../../utils/config'
 import ProgressCircle from '../../common/ProgressCircle'
 import Lyric from 'lyric-parser'
 import Scroll from '../../common/scroll'
-// import { shuffle } from '../../utils/util'
 import slider from '../../common/slider'
 import ShowSinger from './showSinger'
 import PlayerList from '../player/playerList'
@@ -168,10 +167,6 @@ export default {
     cdClass () {
       return this.playering ? 'play' : 'play pause'
     },
-    // iconMode () {
-    //   return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
-    // },
-    // 点击播放按钮时更换图标样式
     playIcon () {
       return this.playering ? 'icon-pause' : 'icon-play'
     },
@@ -199,6 +194,12 @@ export default {
       return this.currentSong ? this.currentSong.singer : ''
     },
     SongUrl () {
+      const beforeUrl = 'http://ws.stream.qqmusic.qq.com/'
+      if (this.currentSong && this.currentSong.url === beforeUrl) {
+        this.simpleToast('抱歉!无法获取歌曲播放地址')
+        this.setPlayering(false)
+        return ''
+      }
       return this.currentSong ? this.currentSong.url : ''
     },
     InFavorite () {
@@ -209,9 +210,12 @@ export default {
   watch: {
     // 根据playing状态控制音乐播放
     playering (newPlayering) {
-      const myaudio = this.$refs.myaudio
       this.$nextTick(() => {
-        newPlayering ? myaudio.play() : myaudio.pause()
+        if (newPlayering) {
+          this.gotoplay()
+        } else {
+          this.gotopause()
+        }
       })
     },
     homeMark (newHomeMark) {
@@ -222,7 +226,6 @@ export default {
       }
     },
     currentSong (newSong, oldSong) {
-      console.log('newSong', newSong)
       if (newSong === undefined) {
         return
       }
@@ -257,6 +260,12 @@ export default {
     }
   },
   methods: {
+    gotoplay () {
+      this.$refs.myaudio.play()
+    },
+    gotopause () {
+      this.$refs.myaudio.pause()
+    },
     // 展示播放列表
     showPlayerList () {
       this.$refs.PlayerList.show()
@@ -361,9 +370,8 @@ export default {
     },
     // 获取歌词
     _getLyric () {
-      const playIngSong = this.currentSong
-      playIngSong.getLyric().then(lyric => {
-        if (playIngSong.lyric !== lyric) {
+      this.gainLyric(this.currentSong).then(lyric => {
+        if (this.currentSong.lyric !== lyric) {
           return
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
@@ -387,6 +395,7 @@ export default {
         this.$refs.lyricList.scrollTo(0, 0, 1000)
       }
       this.playingLyric = txt
+      // console.log(this.playingLyric)
     },
     // 监听子组件progress-bar的percent进度改变，触发歌曲播放进度改变
     onProgressBarChange (percent) {
@@ -435,6 +444,7 @@ export default {
     // 歌曲播放准备，解决连续点击下一曲按钮的报错
     ready () {
       // console.log(this.currentSong)
+      this.savemyHistory(this.currentSong)
       this.songReady = true
     },
     // 歌曲播放结束
@@ -464,9 +474,10 @@ export default {
         if (index === -1) {
           index = this.playList.length - 1
         }
-        if (!this.playList[index].url) {
-          this.gainSongUrl(this.playList[index])
-        }
+        this.playList[index].gainSongUrl()
+        // if (!this.playList[index].url) {
+        //   this.gainSongUrl(this.playList[index])
+        // }
         this.setCurrentIndex(index)
         this.simpleToast(`歌曲: ${this.currentSong.name}`)
         if (!this.playering) {
@@ -494,9 +505,10 @@ export default {
         if (index === this.playList.length) {
           index = 0
         }
-        if (!this.playList[index].url) {
-          this.gainSongUrl(this.playList[index])
-        }
+        this.playList[index].gainSongUrl()
+        // if (!this.playList[index].url) {
+        //   this.gainSongUrl(this.playList[index])
+        // }
         this.setCurrentIndex(index)
         this.simpleToast(`歌曲: ${this.currentSong.name}`)
         if (!this.playering) {

@@ -5,7 +5,7 @@ import {
   Base64
 } from 'js-base64'
 
-import { getLyric } from '../api/singerSong'
+import { getLyric, getSongUrl } from '../api/singerSong'
 import Singer from './singer'
 
 // 推荐页面指定歌单和排行榜指定榜单所有歌曲的所有歌曲形成的类
@@ -20,7 +20,8 @@ export default class Song {
     duration,
     image,
     url,
-    allSinger
+    allSinger,
+    lyric
   }) {
     this.id = id
     this.mid = mid
@@ -32,6 +33,16 @@ export default class Song {
     this.image = image
     this.url = url
     this.allSinger = allSinger
+    this.lyric = lyric
+  }
+  // 获取歌曲播放url
+  gainSongUrl () {
+    if (!this.url) {
+      getSongUrl(this.mid).then(res => {
+        const vkey = res.req_0.data.midurlinfo[0].purl
+        this.url = 'http://ws.stream.qqmusic.qq.com/' + vkey
+      })
+    }
   }
   getLyric () {
     if (this.lyric) {

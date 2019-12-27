@@ -81,6 +81,11 @@ const actions = {
     commit
   }, homeMark) => {
     return commit('SET_HOMEMARK', homeMark)
+  },
+  setHistoryList: ({
+    commit
+  }, historyList) => {
+    return commit('SET_HISTORYLIST', historyList)
   }
 }
 export default actions

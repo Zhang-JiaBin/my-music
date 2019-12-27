@@ -12,9 +12,20 @@ import {
   shuffle
 } from './util'
 import {
-  getSongUrl
+  getLyric
 } from '../api/singerSong'
-import { clearFavorite, clearSearch, deleteFavorite, saveFavorite, saveSearch } from './localStorage'
+import {
+  Base64
+} from 'js-base64'
+import {
+  clearFavorite, clearHistory,
+  clearSearch,
+  deleteFavorite,
+  deleteHistory,
+  saveFavorite,
+  saveHitory,
+  saveSearch
+} from './localStorage'
 export const singerMixin = {
   computed: {
     ...mapGetters([
@@ -34,7 +45,8 @@ export const singerMixin = {
       'showPopUp',
       'selectedSong',
       'favoriteList',
-      'homeMark'
+      'homeMark',
+      'historyList'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -57,7 +69,8 @@ export const singerMixin = {
       'setShowPopUp',
       'setSelectedSong',
       'setFavoriteList',
-      'setHomeMark'
+      'setHomeMark',
+      'setHistoryList'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -69,11 +82,21 @@ export const singerMixin = {
       })
       return ret
     },
-    // 获取歌曲播放url
-    gainSongUrl (song) {
-      getSongUrl(song.mid).then(res => {
-        const vkey = res.req_0.data.midurlinfo[0].purl
-        song.url = 'http://ws.stream.qqmusic.qq.com/' + vkey
+    // 获取歌词
+    gainLyric (song) {
+      if (song.lyric) {
+        return Promise.resolve(song.lyric)
+      }
+      return new Promise((resolve, reject) => {
+        getLyric(song.mid).then((res) => {
+          if (res.retcode === 0) {
+            song.lyric = Base64.decode(res.lyric)
+            resolve(song.lyric)
+          } else {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject('no lyric')
+          }
+        })
       })
     },
     // 从list中查找song的索引
@@ -87,10 +110,10 @@ export const singerMixin = {
       let index = this._findIndex(list, this.currentSong)
       this.setCurrentIndex(index)
     },
-    deleteSongFromList (item, list, difindex) {
+
+    deleteSongFromList (item, list) {
       let len = list.length
       let retList = list
-      let index = difindex
       const fIndex = this._findIndex(list, item)
       if (fIndex === -1) {
         return
@@ -107,7 +130,6 @@ export const singerMixin = {
       let sequenceList = this.sequenceList
       let index = this.currentIndex
       const orginIndex = index
-      const SorginIndex = this._findIndex(sequenceList, item)
       const fIndex = this._findIndex(playList, item)
       if (fIndex === -1) {
         return
@@ -117,14 +139,12 @@ export const singerMixin = {
       } else if (fIndex === index) {
         let nextIndex = orginIndex + 1 === len ? 0 : orginIndex + 1
         index = orginIndex + 1 === len ? 0 : orginIndex
-        if (!playList[nextIndex].url) {
-          this.gainSongUrl(playList[nextIndex])
-        }
+        this.playList[nextIndex].gainSongUrl()
       } else if (fIndex < index) {
         index--
       }
-      this.setPlayList(this.deleteSongFromList(item, playList, this.currentIndex))
-      this.setSequenceList(this.deleteSongFromList(item, sequenceList, SorginIndex))
+      this.setPlayList(this.deleteSongFromList(item, playList))
+      this.setSequenceList(this.deleteSongFromList(item, sequenceList))
       this.setClickMark(true)
       if (this.playList.length === 0) {
         this.setPlayList([])
@@ -165,13 +185,17 @@ export const singerMixin = {
     },
     // 插入歌曲进行播放，next 为true 时表示下一首播放
     insertSong (item, next = false) {
+      item.gainSongUrl()
       // 播放列表的添加
       let len = this.playList.length
       let playList = this.playList
       let index = this.currentIndex
       const orginIndex = index
       const fIndex = this._findIndex(playList, item)
-      if (fIndex > -1) {
+      if (fIndex !== orginIndex) {
+        this.setPlayering(false)
+      }
+      if (fIndex !== -1) {
         index = fIndex
         if (next) {
           index = orginIndex
@@ -184,9 +208,8 @@ export const singerMixin = {
       } else {
         if (index === -1) {
           index = 0
-          console.log('第一首歌')
         } else {
-          index = next ? index : index + 1
+          index = next ? orginIndex : orginIndex + 1
         }
       }
       // 对顺序列表的添加
@@ -203,13 +226,12 @@ export const singerMixin = {
           sequenceList[SnextIndex] = StargetSong
         }
       }
-      if (!item.url) {
-        this.gainSongUrl(item)
-      }
+      // if (!item.url) {
+      //   this.gainSongUrl(item)
+      // }
       this.setPlayList(this.insertSongToList(item, this.playList, this.currentIndex))
       this.setSequenceList(this.insertSongToList(item, this.sequenceList, SorginIndex))
       this.setCurrentIndex(index)
-      console.log('此时的index:',index)
       this.setPlayering(true)
       this.setClickMark(true)
       if (next) {
@@ -225,10 +247,11 @@ export const singerMixin = {
       this.setPlayList(list)
       let ranIndex = Math.floor(Math.random() * list.length)
       const item = list[ranIndex]
+      item.gainSongUrl()
       this.simpleToast(`歌曲: '${item.name}'`)
-      if (!item.url) {
-        this.gainSongUrl(item)
-      }
+      // if (!item.url) {
+      //   this.gainSongUrl(item)
+      // }
       // console.log(ranIndex)
       this.setCurrentIndex(ranIndex)
       this.setPlayering(true)
@@ -237,9 +260,6 @@ export const singerMixin = {
     // 选择一首歌曲播放
     selectPlay (list, index, item) {
       this.simpleToast(`歌曲: '${item.name}'`)
-      if (!item.url) {
-        this.gainSongUrl(item)
-      }
       if (this.currentSong && item.mid === this.currentSong.mid) {
         this.setFullScreen(true)
       }
@@ -252,6 +272,7 @@ export const singerMixin = {
         this.setPlayList(list)
       }
       this.setCurrentIndex(index)
+      this.currentSong.gainSongUrl()
       this.setPlayering(true)
     },
     // 修改播放模式
@@ -294,12 +315,28 @@ export const singerMixin = {
       this.setFavoriteList(saveFavorite(song))
       this.simpleToast('已收藏')
     },
+    // 删除收藏的歌曲
     deletemyFavorite (song) {
       this.setFavoriteList(deleteFavorite(song))
       this.simpleToast('已删除')
     },
+    // 清空收藏的歌曲
     deletemyAllFavorite () {
       this.setFavoriteList(clearFavorite())
+      this.simpleToast('已全部清空')
+    },
+    // 保存歌曲到播放历史
+    savemyHistory (song) {
+      this.setHistoryList(saveHitory(song))
+    },
+    // 从播放历史中删除歌曲
+    deletemyHistory (song) {
+      this.setHistoryList(deleteHistory(song))
+    },
+    // 清空播放历史
+    deletemyAllHistory () {
+      this.setHistoryList(clearHistory())
+      this.simpleToast('已全部清空')
     }
   }
 }

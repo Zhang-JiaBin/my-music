@@ -209,7 +209,6 @@ export default {
       })
       ret = this.normalizeSong(list)
       this.Songs = this.Songs.concat(ret)
-      console.log(this.Songs)
       // console.log(this.Songs)
     }
   }

@@ -22,7 +22,7 @@
         <div class="scroll-wrapper" ref="scrollWrapper">
           <scroll :data="this.playList" ref="myscroll" class="playerList-scroll">
             <div class="song-item-wrapper">
-              <song-list @select="chooseSong" ref="scrollItem" @delete="deleteOneSong" :songs="this.playList" :show-dot="false" :show-pic="false"></song-list>
+              <song-list @select="chooseSong" ref="scrollItem" @delete="deleteOneSong" :songs="this.playList" :show-delete="true" :show-dot="false" :show-pic="false"></song-list>
             </div>
           </scroll>
         </div>

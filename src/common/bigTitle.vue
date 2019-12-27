@@ -8,7 +8,7 @@
         <span class="title-text">{{title}}</span>
       </div>
       <div class="delete-wrapper" v-show="showDelete">
-        <span class="delete-text">{{deleteText}}</span>
+        <span class="delete-text" @click="clearsomething">{{deleteText}}</span>
       </div>
     </div>
   </div>
@@ -42,6 +42,9 @@ export default {
   methods: {
     back () {
       this.$emit('back')
+    },
+    clearsomething () {
+      this.$emit('clear')
     }
   }
 }

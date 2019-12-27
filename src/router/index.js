@@ -67,7 +67,14 @@ export default new VueRouter({
     }, {
       path: 'user',
       name: 'user',
-      component: () => import('../views/user.vue')
+      component: () => import('../views/user.vue'),
+      children: [{
+        path: 'history',
+        component: () => import('../components/user/playhistory.vue')
+      }, {
+        path: 'like',
+        component: () => import('../components/user/userMylike.vue')
+      }]
     }]
   }]
 })

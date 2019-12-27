@@ -23,7 +23,7 @@
           <div class="item-playing-wrapper" v-show="showDot" @click.prevent.stop="showPop(item)">
             <span class="icon-dot icon"></span>
           </div>
-          <div class="item-playing-wrapper" v-show="!showDot" @click.prevent.stop="deleteItem(item)">
+          <div class="item-playing-wrapper" v-show="showDelete" @click.prevent.stop="deleteItem(item)">
             <span class="icon-delete icon"></span>
           </div>
         </div>
@@ -38,6 +38,10 @@ import NoteBeat from './NoteBeat'
 
 export default {
   props: {
+    showDelete: {
+      type: Boolean,
+      default: false
+    },
     showDot: {
       type: Boolean,
       default: true
@@ -50,14 +54,6 @@ export default {
       type: Boolean,
       default: true
     }
-  },
-  watch: {
-    songs (newSongs) {
-      console.log('newSongs', newSongs)
-    }
-  },
-  mounted () {
-    console.log('songlist', this.songs)
   },
   name: 'songList',
   mixins: [singerMixin],
@@ -85,7 +81,6 @@ export default {
       return this.$refs.songItem
     },
     showPop (item) {
-      console.log(item)
       this.setSelectedSong(item)
       this.setShowPopUp(true)
       // console.log(this.selectedSong)

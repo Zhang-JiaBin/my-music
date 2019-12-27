@@ -15,7 +15,8 @@ const getters = {
   showPopUp: state => state.singer.showPopUp,
   selectedSong: state => state.singer.selectedSong,
   favoriteList: state => state.singer.favoriteList,
-  homeMark: state => state.singer.homeMark
+  homeMark: state => state.singer.homeMark,
+  historyList: state => state.singer.historyList
 }
 
 export default getters

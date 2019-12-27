@@ -88,7 +88,6 @@ export default {
         this.destroy()
         console.log('进入不同的歌手歌曲列表')
         if (newlist.length === 1) {
-          console.log('yes')
           this._NoSlider()
         } else {
           this._initlize()
@@ -96,7 +95,7 @@ export default {
       }
     },
     cIndex (newVal) {
-      console.log('slider接收的当前的currentIndex', newVal)
+      // console.log('slider接收的当前的currentIndex', newVal)
       this.gotoPage(newVal)
     }
   },
@@ -136,7 +135,6 @@ export default {
       this.$refs.sliderGroup.style.width = `266px`
       this.$refs.sliderGroup.style.transform = 'none'
       // this._setSlideWidth(true)
-      console.log('123')
     },
     _initSlide () {
       this.slider = new BScroll(this.$refs.slider, {

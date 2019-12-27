@@ -36,7 +36,9 @@
           </div>
         </div>
       </div>
-      <user-mylike ref="userMylike" :songs="this.favoriteList"></user-mylike>
+      <transition name="slide">
+        <router-view></router-view>
+      </transition>
     </div>
   </transition>
 </template>
@@ -44,7 +46,6 @@
 <script>
 import BigTitle from '../common/bigTitle'
 import { singerMixin } from '../utils/mixin'
-import UserMylike from '../components/user/userMylike'
 export default {
   name: 'user',
   data () {
@@ -62,16 +63,17 @@ export default {
         title: '我的收藏',
         num: 0
       }],
-      title: '个人中心',
+      title: '个人中心'
     }
   },
 
-  components: { UserMylike, BigTitle },
+  components: { BigTitle },
 
   computed: {
     showText () {
       let littleText = this.littleList.slice(0)
       littleText[1].num = this.favoriteList.length
+      littleText[0].num = this.historyList.length
       return littleText
     }
   },
@@ -84,13 +86,20 @@ export default {
     },
     // 跳转到我的喜欢
     gotoMylike () {
-      this.$refs.userMylike.show()
+      this.$router.push({
+        path: '/home/user/like'
+      })
+    },
+    gotohistory () {
+      this.$router.push({
+        path: '/home/user/history'
+      })
     },
     // 选择一项进行操作
     selectOne (index) {
       switch (index) {
         case 0:
-          console.log('最近播放')
+          this.gotohistory()
           break
         case 1:
           this.gotoMylike()

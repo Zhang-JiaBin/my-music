@@ -1,6 +1,6 @@
 <template>
-  <div class="user-mylike">
-    <Mylike @define="deletemyAllFavorite" @deleteOne="deletemyFavorite" :songs="this.favoriteList" :title="title" :text="text"/>
+  <div class="play-history">
+    <Mylike @define="deletemyAllHistory" :songs="this.historyList" @deleteOne="deletemyHistory" :title="title" :text="text"/>
   </div>
 </template>
 
@@ -11,8 +11,8 @@ export default {
   name: 'playhistory',
   data () {
     return {
-      title: '我的喜欢',
-      text: '清空所有我喜欢的歌曲?'
+      title: '播放历史',
+      text: '清空所有播放历史?'
     }
   },
   mixins: [singerMixin],
@@ -26,7 +26,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "../../assets/style/scss/global";
-  .user-mylike{
+  .play-history{
     position: absolute;
     top: 0;
     bottom: 0;
