@@ -1,6 +1,6 @@
 <template>
   <div class="rankDetail">
-    <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
+    <music-list @attention="addToRanks"  :songs="Songs" :bg-image="bgImage" :attention="collectText" :title="title"></music-list>
   </div>
 </template>
 
@@ -23,6 +23,15 @@ export default {
     this._getRankList()
   },
   computed: {
+    InRanks () {
+      const index = this.collectRanks.findIndex(item => {
+        return item.topId === this.rankList.topId
+      })
+      return index > -1
+    },
+    collectText () {
+      return this.InRanks ? '已收藏' : '收藏'
+    },
     title () {
       return this.rankList.title
     },
@@ -43,6 +52,13 @@ export default {
     }
   },
   methods: {
+    addToRanks () {
+      if (this.InRanks) {
+        this.deletemyRanks(this.rankList)
+      } else {
+        this.savemyRanks(this.rankList)
+      }
+    },
     _getRankList () {
       if (!this.rankList.topId) {
         this.$router.push('home/rank')

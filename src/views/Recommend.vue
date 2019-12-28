@@ -34,9 +34,9 @@
 
 <script>
 import { getRecommend } from '../api/recommend'
-import 'swiper/dist/css/swiper.css'
+// import 'swiper/dist/css/swiper.css'
 import scroll from '../common/scroll'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+// import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import LittleTitle from '../common/LittleTitle'
 import RecomendRank from '../components/Recommend/RecommendRank'
 import { randomlist } from '../utils/random'
@@ -73,8 +73,8 @@ export default {
     RecomendSong,
     RecomendRank,
     LittleTitle,
-    swiper,
-    swiperSlide,
+    // swiper,
+    // swiperSlide,
     scroll
   },
   watch: {

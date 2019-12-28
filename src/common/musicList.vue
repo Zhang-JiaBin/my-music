@@ -10,8 +10,8 @@
     <div class="content-wrapper" ref="content">
       <div class="title-wrapper" ref="bigTitle">
         <span class="title-name">{{this.title}}</span>
-        <div class="attention-wrapper" v-show="false">
-          <span class="attention">已关注</span>
+        <div class="attention-wrapper" v-show="attention" @click="clickAttention">
+          <span class="attention">{{attention}}</span>
         </div>
       </div>
       <div class="bg-layer" ref="layer"></div>
@@ -44,6 +44,10 @@ import { singerMixin } from '../utils/mixin'
 export default {
   name: 'musicList',
   props: {
+    attention: {
+      type: String,
+      default: ''
+    },
     songs: {
       type: Array,
       default: () => []
@@ -129,6 +133,10 @@ export default {
     }
   },
   methods: {
+    // 点击了关注按钮
+    clickAttention () {
+      this.$emit('attention')
+    },
     // 适配有mini播放器的底部滚动高度
     changeBottom () {
       if (this.currentSong !== undefined && this.pageCount >= 1) {

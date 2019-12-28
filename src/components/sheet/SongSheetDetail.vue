@@ -1,6 +1,6 @@
 <template>
   <div class="SongSheet-detail">
-    <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
+    <music-list @attention="addToSheets" :songs="Songs" :bg-image="bgImage" :title="title" :attention="collectText"></music-list>
   </div>
 </template>
 
@@ -22,6 +22,15 @@ export default {
   components: { MusicList },
 
   computed: {
+    InSheets () {
+      const index = this.collectSheets.findIndex(item => {
+        return item.content_id === this.songSheet.content_id
+      })
+      return index > -1
+    },
+    collectText () {
+      return this.InSheets ? '已收藏' : '收藏'
+    },
     title () {
       return this.songSheet.title
     },
@@ -39,6 +48,14 @@ export default {
     }
   },
   methods: {
+    // 选择收藏还是删除
+    addToSheets () {
+      if (this.InSheets) {
+        this.deletemySheets(this.songSheet)
+      } else {
+        this.savemySheets(this.songSheet)
+      }
+    },
     _getSheetList () {
       if (!this.songSheet.content_id) {
         this.$router.push('/home/recommend')

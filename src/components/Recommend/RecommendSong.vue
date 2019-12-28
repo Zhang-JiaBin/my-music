@@ -20,8 +20,6 @@
 </template>
 
 <script>
-  import { swiper, swiperSlide } from 'vue-awesome-swiper'
-  import 'swiper/dist/css/swiper.css'
 export default {
   name: 'RecomendSong',
   props: {
@@ -38,8 +36,6 @@ export default {
   },
 
   components: {
-    swiper,
-    swiperSlide
   },
 
   computed: {

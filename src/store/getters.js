@@ -16,7 +16,10 @@ const getters = {
   selectedSong: state => state.singer.selectedSong,
   favoriteList: state => state.singer.favoriteList,
   homeMark: state => state.singer.homeMark,
-  historyList: state => state.singer.historyList
+  historyList: state => state.singer.historyList,
+  collectSingers: state => state.singer.collectSingers,
+  collectSheets: state => state.singer.collectSheets,
+  collectRanks: state => state.singer.collectRanks
 }
 
 export default getters

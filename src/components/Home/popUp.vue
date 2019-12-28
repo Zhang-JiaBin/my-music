@@ -30,8 +30,8 @@
 </template>
 
 <script>
-  import { playerMixin, singerMixin } from '../../utils/mixin'
-  import ShowSinger from './showSinger'
+import { playerMixin, singerMixin } from '../../utils/mixin'
+import ShowSinger from './showSinger'
 
 export default {
   name: 'popUp',
@@ -125,15 +125,6 @@ export default {
       }
       this.hide()
     },
-    // save () {
-    //   this.savemyFavorite(this.selectedSong)
-    //   this.hide()
-    // },
-    // // 移出收藏
-    // delete () {
-    //   this.deletemyFavorite(this.selectedSong)
-    //   this.hide()
-    // },
     hide () {
       this.visible = false
       setTimeout(() => {

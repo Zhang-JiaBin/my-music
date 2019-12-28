@@ -2,10 +2,22 @@ import storage from 'good-storage'
 import Song from './song'
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15
+
 const FAVORITE_KEY = '__favorite__'
 const FAVORITE_MAX_LENGTH = 200
+
 const HISTORY_KEY = '__history__'
 const HISTORY_MAX_LENGTH = 200
+
+const SINGERS_KEY = '__singers__'
+const SINGERS_MAX_LENGTH = 200
+
+const SHEETS_KEY = '__sheets__'
+const SHEETS_MAX_LENGTH = 80
+
+const RANKS_KEY = '__ranks__'
+const RANKS_MAX_LENGTH = 40
+
 // 插入数据进行比较，如果有，则删掉此数据，并把val插入到第一个位置，如果数组长度大于maxLen,则把数组最后一个数据pop出去
 function inserArray (arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
@@ -140,5 +152,105 @@ export function loadHistory () {
 // 清空播放历史的歌曲
 export function clearHistory () {
   storage.remove(HISTORY_KEY)
+  return []
+}
+
+// 保存关注的歌手
+export function saveSingers (singer) {
+  let singers = storage.get(SINGERS_KEY, [])
+  inserArray(singers, singer, item => {
+    return item.id === singer.id
+  }, SINGERS_MAX_LENGTH)
+  storage.set(SINGERS_KEY, singers)
+  return singers
+}
+
+// 取消关注的歌手
+export function deleteSingers (singer) {
+  let singers = storage.get(SINGERS_KEY, [])
+  deleteFromArray(singers, item => {
+    return item.id === singer.id
+  })
+  storage.set(SINGERS_KEY, singers)
+  return singers
+}
+
+// 加载关注的歌手
+export function loadSingers () {
+  let singers = storage.get(SINGERS_KEY, [])
+  // let songlist = songs.map(item => {
+  //   item = new Song(item)
+  //   return item
+  // })
+  return singers
+}
+
+// 取消全部关注歌手
+export function clearSingers () {
+  storage.remove(SINGERS_KEY)
+  return []
+}
+
+// 收藏已经存在的歌单
+export function saveSheets (sheet) {
+  let sheets = storage.get(SHEETS_KEY, [])
+  inserArray(sheets, sheet, item => {
+    return item.content_id === sheet.content_id
+  }, SHEETS_MAX_LENGTH)
+  storage.set(SHEETS_KEY, sheets)
+  return sheets
+}
+
+// 删除收藏的歌单
+export function deleteSheets (sheet) {
+  let sheets = storage.get(SHEETS_KEY, [])
+  deleteFromArray(sheets, item => {
+    return item.content_id === sheet.content_id
+  })
+  storage.set(SHEETS_KEY, sheets)
+  return sheets
+}
+
+// 加载已收藏的歌单
+export function loadSheets () {
+  let sheets = storage.get(SHEETS_KEY, [])
+  return sheets
+}
+
+// 删除全部已收藏的歌单
+export function clearSheets () {
+  storage.remove(SHEETS_KEY)
+  return []
+}
+
+// 收藏已经存在的榜单
+export function saveRanks (rank) {
+  let ranks = storage.get(RANKS_KEY, [])
+  inserArray(ranks, rank, item => {
+    return item.topId === rank.topId
+  }, RANKS_MAX_LENGTH)
+  storage.set(RANKS_KEY, ranks)
+  return ranks
+}
+
+// 删除收藏的榜单
+export function deleteRanks (rank) {
+  let ranks = storage.get(RANKS_KEY, [])
+  deleteFromArray(ranks, item => {
+    return item.topId === rank.topId
+  })
+  storage.set(RANKS_KEY, ranks)
+  return ranks
+}
+
+// 加载已收藏的榜单
+export function loadRanks () {
+  let ranks = storage.get(RANKS_KEY, [])
+  return ranks
+}
+
+// 删除全部已收藏的榜单
+export function clearRanks () {
+  storage.remove(RANKS_KEY)
   return []
 }

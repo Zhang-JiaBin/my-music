@@ -18,13 +18,13 @@ import {
   Base64
 } from 'js-base64'
 import {
-  clearFavorite, clearHistory,
-  clearSearch,
+  clearFavorite, clearHistory, clearRanks,
+  clearSearch, clearSheets, clearSingers,
   deleteFavorite,
-  deleteHistory,
+  deleteHistory, deleteRanks, deleteSheets, deleteSingers,
   saveFavorite,
-  saveHitory,
-  saveSearch
+  saveHitory, saveRanks,
+  saveSearch, saveSheets, saveSingers
 } from './localStorage'
 export const singerMixin = {
   computed: {
@@ -46,10 +46,16 @@ export const singerMixin = {
       'selectedSong',
       'favoriteList',
       'homeMark',
-      'historyList'
+      'historyList',
+      'collectSingers',
+      'collectSheets',
+      'collectRanks'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
+    },
+    attentionText () {
+      return this.InSingers ? '已关注' : '关注'
     }
   },
   methods: {
@@ -70,7 +76,10 @@ export const singerMixin = {
       'setSelectedSong',
       'setFavoriteList',
       'setHomeMark',
-      'setHistoryList'
+      'setHistoryList',
+      'setCollectSingers',
+      'setCollectSheets',
+      'setCollectRanks'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -337,6 +346,42 @@ export const singerMixin = {
     deletemyAllHistory () {
       this.setHistoryList(clearHistory())
       this.simpleToast('已全部清空')
+    },
+    // 关注歌手
+    savemySingers (singer) {
+      this.setCollectSingers(saveSingers(singer))
+    },
+    // 取消关注歌手
+    deletemySingers (singer) {
+      this.setCollectSingers(deleteSingers(singer))
+    },
+    // 取消关注全部歌手
+    deletemyAllSingers () {
+      this.setCollectSingers(clearSingers())
+    },
+    // 保存收藏的歌单
+    savemySheets (sheet) {
+      this.setCollectSheets(saveSheets(sheet))
+    },
+    // 删除收藏的歌单
+    deletemySheets (sheet) {
+      this.setCollectSheets(deleteSheets(sheet))
+    },
+    // 删除全部收藏的歌单
+    deletemyAllSheets () {
+      this.setCollectSheets(clearSheets())
+    },
+    // 保存收藏的榜单
+    savemyRanks (rank) {
+      this.setCollectRanks(saveRanks(rank))
+    },
+    // 删除收藏的榜单
+    deletemyRanks (rank) {
+      this.setCollectRanks(deleteRanks(rank))
+    },
+    // 删除全部收藏的榜单
+    deletemyAllRanks () {
+      this.setCollectRanks(clearRanks())
     }
   }
 }
@@ -350,10 +395,7 @@ export const playerMixin = {
   },
   watch: {
     '$route' (to, from) {
-      // const fromDepth = from.path.split('/')
       const toDepth = to.path.split('/')
-      // console.log('from', fromDepth)
-      // console.log('to', toDepth)
       this.SrouterName = toDepth[2]
       this.TrouterName = toDepth[3]
     }

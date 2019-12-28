@@ -1,5 +1,6 @@
 import searchHistory from '../components/search/searchHistory'
 import search from '../views/search'
+import collectSinger from '../components/user/collectSinger'
 
 const actions = {
   setSinger: ({
@@ -86,6 +87,21 @@ const actions = {
     commit
   }, historyList) => {
     return commit('SET_HISTORYLIST', historyList)
+  },
+  setCollectSingers: ({
+    commit
+  }, collectSingers) => {
+    return commit('SET_COLLECTSINGERS', collectSingers)
+  },
+  setCollectSheets: ({
+    commit
+  }, collectSheets) => {
+    return commit('SET_COLLECTSHEETS', collectSheets)
+  },
+  setCollectRanks: ({
+    commit
+  }, collectRanks) => {
+    return commit('SET_COLLECTRANKS', collectRanks)
   }
 }
 export default actions

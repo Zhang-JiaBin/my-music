@@ -74,6 +74,18 @@ export default new VueRouter({
       }, {
         path: 'like',
         component: () => import('../components/user/userMylike.vue')
+      }, {
+        path: 'collection',
+        component: () => import('../components/user/collection.vue')
+      }, {
+        path: 'singer/:id',
+        component: () => import('../components/singer/singerDetail.vue')
+      }, {
+        path: 'sheet/:id',
+        component: () => import('../components/sheet/SongSheetDetail.vue')
+      }, {
+        path: 'rank/:id',
+        component: () => import('../components/Rank/rankDetail.vue')
       }]
     }]
   }]

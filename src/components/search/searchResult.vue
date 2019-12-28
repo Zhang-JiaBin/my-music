@@ -9,17 +9,7 @@
       <div class="singer-wrapper" v-show="this.searchSinger.id">
         <little-title title="歌手" :show-more="false"></little-title>
         <div class="singerItem" @click="selectSinger()">
-          <div class="singer-img">
-            <img class="circleImg" v-lazy="searchSinger.pic" alt="">
-          </div>
-          <div class="singer-detail">
-            <div class="singer-name">
-              <span class="name">{{searchSinger.name}}</span>
-            </div>
-            <div class="singer-attention">
-              <span class="attention">关注</span>
-            </div>
-          </div>
+          <singer-item :mysinger="searchSinger"></singer-item>
         </div>
       </div>
       <div class="song-wrapper" v-show="this.songs.length">
@@ -40,6 +30,7 @@ import SongList from '../../common/songList'
 import Scroll from '../../common/scroll'
 import Loading from '../../common/loading'
 import { singerMixin } from '../../utils/mixin'
+import SingerItem from '../../common/singerItem'
 export default {
   name: 'searchResult',
   props: {
@@ -67,7 +58,7 @@ export default {
     }
   },
   mixins: [singerMixin],
-  components: { Loading, Scroll, SongList, LittleTitle },
+  components: { SingerItem, Loading, Scroll, SongList, LittleTitle },
 
   computed: {},
 
@@ -112,39 +103,6 @@ export default {
           display: flex;
           padding: 10px 15px 10px 15px;
           box-sizing: border-box;
-          .singer-img{
-            flex: 0 0 50px;
-            width: 50px;
-            .circleImg {
-              width: 100%;
-              border-radius: 50%;
-            }
-          }
-          .singer-detail {
-            flex: 1;
-            display: flex;
-            font-size: $font-size-medium;
-            margin-left: 20px;
-            border-bottom: 1px solid #e8e8e8;
-            .singer-name {
-              flex: 1;
-              @include justcenter;
-              .name {
-                @include ellipsis2(1);
-              }
-            }
-            .singer-attention {
-              flex: 0 0 80px;
-              width: 60px;
-              @include center;
-              .attention{
-                color: #f5315a;
-                padding: 5px 18px;
-                border-radius: 12px;
-                background: #f2f2f2;
-              }
-            }
-          }
         }
       }
       .song-wrapper {

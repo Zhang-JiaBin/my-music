@@ -6,17 +6,7 @@
             <span class="title">{{item.title}}</span>
           </div>
           <div class="singerItem" @click="selectItem(subItem)" v-for="subItem in item.items" :key="subItem.id">
-            <div class="singer-img">
-              <img class="circleImg" v-lazy="subItem.pic" alt="">
-            </div>
-            <div class="singer-detail">
-              <div class="singer-name">
-                <span class="name">{{subItem.name}}</span>
-              </div>
-              <div class="singer-attention">
-                <span class="attention">关注</span>
-              </div>
-            </div>
+            <singer-item :mysinger="subItem"></singer-item>
           </div>
         </div>
       </div>
@@ -44,6 +34,7 @@
 import Scroll from '../../common/scroll'
 import { getData } from '../../utils/dom'
 import Loading from '../../common/loading'
+import SingerItem from '../../common/singerItem'
 const HEIGHT = 18
 const TITLE_HEIGHT = 30
 export default {
@@ -68,7 +59,7 @@ export default {
     this.listenScroll = true
     this.probeType = 3
   },
-  components: { Loading, Scroll },
+  components: { SingerItem, Loading, Scroll },
   watch: {
     singerList () {
       // console.log('监控')
@@ -218,39 +209,6 @@ export default {
           display: flex;
           padding: 10px 40px 10px 15px;
           box-sizing: border-box;
-          .singer-img{
-            flex: 0 0 50px;
-            width: 50px;
-            .circleImg {
-              width: 100%;
-              border-radius: 50%;
-            }
-          }
-          .singer-detail {
-            flex: 1;
-            display: flex;
-            font-size: $font-size-medium;
-            margin-left: 20px;
-            border-bottom: 1px solid #e8e8e8;
-            .singer-name {
-              flex: 1;
-              @include justcenter;
-              .name {
-                @include ellipsis2(1);
-              }
-            }
-            .singer-attention {
-              flex: 0 0 80px;
-              width: 60px;
-              @include center;
-              .attention{
-                color: #f5315a;
-                padding: 5px 18px;
-                border-radius: 12px;
-                background: #f2f2f2;
-              }
-            }
-          }
         }
       }
       .letter-wrapper {

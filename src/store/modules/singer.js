@@ -1,5 +1,5 @@
 import { playMode } from '../../utils/config'
-import { loadFavorite, loadHistory, loadSearch } from '../../utils/localStorage'
+import { loadFavorite, loadHistory, loadRanks, loadSearch, loadSheets, loadSingers } from '../../utils/localStorage'
 
 const singer = {
   state: {
@@ -19,7 +19,10 @@ const singer = {
     selectedSong: {}, // 点击songList组件的 dot Icon选中的歌曲
     favoriteList: loadFavorite(), // 收藏的歌曲的列表,
     homeMark: 0, // 控制推荐页面的播放器上移标志
-    historyList: loadHistory() // 播放历史
+    historyList: loadHistory(), // 播放历史
+    collectSingers: loadSingers(), // 收藏的歌手
+    collectSheets: loadSheets(), // 收藏的歌单
+    collectRanks: loadRanks() // 收藏的榜单
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -72,6 +75,15 @@ const singer = {
     },
     'SET_HISTORYLIST': (state, historyList) => {
       state.historyList = historyList
+    },
+    'SET_COLLECTSINGERS': (state, collectSingers) => {
+      state.collectSingers = collectSingers
+    },
+    'SET_COLLECTSHEETS': (state, collectSheets) => {
+      state.collectSheets = collectSheets
+    },
+    'SET_COLLECTRANKS': (state, collcetRanks) => {
+      state.collectRanks = collcetRanks
     }
   }
 }

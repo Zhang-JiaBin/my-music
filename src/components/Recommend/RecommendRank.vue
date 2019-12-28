@@ -11,8 +11,8 @@
 
 <script>
 import RankItem from '../Rank/rankItem'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+// import { swiper, swiperSlide } from 'vue-awesome-swiper'
+// import 'swiper/dist/css/swiper.css'
 import { singerMixin } from '../../utils/mixin'
 export default {
   props: {
@@ -31,9 +31,7 @@ export default {
   },
 
   components: {
-    RankItem,
-    swiperSlide,
-    swiper
+    RankItem
   },
   computed: {
     topList () {
@@ -48,7 +46,7 @@ export default {
       this.$router.push({
         path: `/home/recommend/rank/${item.topId}`
       })
-    },
+    }
   }
 }
 

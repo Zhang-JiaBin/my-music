@@ -1,6 +1,6 @@
 <template>
     <div class="singer-detail">
-      <music-list :songs="Songs" :bg-image="bgImage" :title="title"></music-list>
+      <music-list @attention="addToSingers" :songs="Songs" :bg-image="bgImage" :title="title" :attention="attentionText"></music-list>
     </div>
 </template>
 
@@ -23,6 +23,10 @@ export default {
   components: { MusicList },
 
   computed: {
+    InSingers () {
+      const index = this._findIndex(this.collectSingers, this.singer)
+      return index > -1
+    },
     title () {
       return this.singer.name
     },
@@ -41,6 +45,14 @@ export default {
   },
 
   methods: {
+    // 添加收藏
+    addToSingers () {
+      if (this.InSingers) {
+        this.deletemySingers(this.singer)
+      } else {
+        this.savemySingers(this.singer)
+      }
+    },
     _getSingerSongs () {
       if (!this.singer.id) {
         this.$router.push('/home/singer')

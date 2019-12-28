@@ -72,6 +72,7 @@ export default {
   computed: {
     showText () {
       let littleText = this.littleList.slice(0)
+      littleText[2].num = this.collectRanks.length + this.collectSheets.length + this.collectRanks.length
       littleText[1].num = this.favoriteList.length
       littleText[0].num = this.historyList.length
       return littleText
@@ -90,9 +91,16 @@ export default {
         path: '/home/user/like'
       })
     },
+    // 跳转到播放历史页面
     gotohistory () {
       this.$router.push({
         path: '/home/user/history'
+      })
+    },
+    // 跳转到收藏页面
+    gotocollection () {
+      this.$router.push({
+        path: '/home/user/collection'
       })
     },
     // 选择一项进行操作
@@ -105,7 +113,7 @@ export default {
           this.gotoMylike()
           break
         case 2:
-          console.log('我的收藏')
+          this.gotocollection()
       }
     }
   }
