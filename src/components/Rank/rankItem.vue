@@ -1,11 +1,14 @@
 <template>
   <div class="rank-item">
-    <div class="rank-item-wrapper" @click="selectItem(rankList)">
+    <div class="rank-item-wrapper" @click="selectItem(rankTop)">
       <div class="rank-img-wrapper">
-        <img class="rank-img" v-lazy="rankList.frontPicUrl" alt="">
+        <img class="rank-img" v-lazy="rankTop.frontPicUrl" alt="">
+        <div class="play-wrapper" @click.prevent.stop="clickRankPlay(rankTop)">
+          <span :class="getRankIcon(rankTop)"></span>
+        </div>
       </div>
       <div class="rank-song-wrapper">
-        <div class="rank-song-item" v-for="subItem in rankList.song" :key="subItem.id">
+        <div class="rank-song-item" v-for="subItem in rankTop.song" :key="subItem.id">
           <div class="rank-index">{{subItem.rank}}</div>
           <div class="rank-song">
             <span class="song-name">{{subItem.title}}</span>
@@ -18,23 +21,25 @@
 </template>
 
 <script>
+import { singerMixin } from '../../utils/mixin'
+
 export default {
   name: 'rankItem',
   props: {
-    rankList: Object,
+    rankTop: Object
   },
   data () {
     return {
     }
   },
-
+  mixins: [singerMixin],
   components: {},
 
   computed: {},
 
   methods: {
-    selectItem (rankList) {
-      this.$emit('select', rankList)
+    selectItem (rankTop) {
+      this.$emit('select', rankTop)
     }
   }
 }
@@ -52,9 +57,24 @@ export default {
       .rank-img-wrapper{
         flex: 0 0 35%;
         width: 35%;
+        position: relative;
         .rank-img{
           border-radius: 10px;
           width: 100%;
+        }
+        .play-wrapper {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          right: 2px;
+          bottom: 12px;
+          font-size: 16px;
+          background: rgba(255,255,255,0.5);
+          border-radius: 50%;
+          @include center;
+          color: #f0f0f0;
+          .icon-play{
+          }
         }
       }
       .rank-song-wrapper{
@@ -88,20 +108,6 @@ export default {
               @include ellipsis2(1)
             }
           }
-        }
-      }
-    }
-    .rank-another-wrapper{
-      padding-left: 15px;
-      box-sizing: border-box;
-      display: flex;
-      height: 160px;
-      .rank-another-img-wrapper{
-        flex: 0 0 50%;
-        width: 50%;
-        .rank-another-img{
-          border-radius: 10px;
-          width: 100%;
         }
       }
     }

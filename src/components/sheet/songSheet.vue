@@ -4,6 +4,9 @@
       <div class="song-item" @click="selectItem(item)">
         <div class="song-img-wrapper">
           <img class="song-img" v-lazy="item.cover">
+          <div class="play-wrapper" @click.prevent.stop="clickplay(item)">
+            <span :class="getSheetIcon(item)"></span>
+          </div>
         </div>
         <div class="song-text-wrapper">
           <span class="song-text">{{item.title}}</span>
@@ -14,6 +17,8 @@
 </template>
 
 <script>
+import { singerMixin } from '../../utils/mixin'
+
 export default {
   name: 'songSheet',
   props: {
@@ -22,6 +27,7 @@ export default {
       default: () => []
     }
   },
+  mixins: [singerMixin],
   data () {
     return {
     }
@@ -30,7 +36,8 @@ export default {
   },
   components: {},
 
-  computed: {},
+  computed: {
+  },
 
   methods: {
     selectItem (item) {
@@ -63,9 +70,24 @@ export default {
         @include columnCenter;
         .song-img-wrapper {
           width: 100%;
+          position: relative;
           .song-img {
             width: 100%;
             border-radius: 10px;
+          }
+          .play-wrapper {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            right: 2px;
+            bottom: 8px;
+            font-size: 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            @include center;
+            color: #f0f0f0;
+            .icon-play{
+            }
           }
         }
         .song-text-wrapper {

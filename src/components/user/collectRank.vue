@@ -3,7 +3,7 @@
     <scroll class="ranks-scroll" ref="ranksScroll" :data="this.collectRanks">
       <div class="scroll-item">
         <div class="rank-wrapper" v-for="item in this.collectRanks" :key="item.topId">
-          <rank-item @select="selectRank" :rank-list="item"></rank-item>
+          <rank-item @select="selectRank" :rank-top="item"></rank-item>
         </div>
       </div>
     </scroll>
@@ -22,7 +22,7 @@ export default {
     }
   },
   mixins: [singerMixin],
-  components: { RankItem, Scroll  },
+  components: { RankItem, Scroll },
 
   computed: {},
 

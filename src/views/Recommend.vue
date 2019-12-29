@@ -65,6 +65,7 @@ export default {
     }
   },
   mounted () {
+    this.setHomeMark(1)
     this._getRecommend()
   },
   components: {
@@ -93,7 +94,6 @@ export default {
   methods: {
     // 点击推荐页面的私人 FM 进行播放
     startPlaying (item) {
-      this.setHomeMark(1)
       this.insertSong(item)
     },
     // 跳转到歌单页面

@@ -10,6 +10,9 @@
                 <div class="item-img">
                   <img class="Img" :src="item.cover" alt="">
                 </div>
+                <div class="play-wrapper" @click.prevent.stop="clickplay(item)">
+                  <span :class="getSheetIcon(item)"></span>
+                </div>
                 <div class="item-text">
                   <span class="text">{{item.title}}</span>
                 </div>
@@ -19,7 +22,7 @@
         </div>
         <little-title title="官方歌单" :show-more="false"></little-title>
         <div class="sheet-wrapper">
-          <song-sheet @select="selectSheet" :sheet-list="this.sheetList"></song-sheet>
+          <song-sheet @select="selectSheet" @play="gotoPlay" :sheet-list="this.sheetList"></song-sheet>
         </div>
       </div>
       <div class="loading-container" v-show="!sheetList.length">
@@ -33,14 +36,15 @@
 </template>
 
 <script>
-import 'swiper/dist/css/swiper.css'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+// import 'swiper/dist/css/swiper.css'
+// import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { singerMixin } from '../utils/mixin'
 import { getSheetList } from '../api/sheet'
 import LittleTitle from '../common/LittleTitle'
 import SongSheet from '../components/sheet/songSheet'
 import Scroll from '../common/scroll'
 import Loading from '../common/loading'
+import { getSongList } from '../api/recommend'
 
 export default {
   name: 'sheet',
@@ -69,7 +73,7 @@ export default {
     this._getSheetList()
   },
   mixins: [singerMixin],
-  components: { Loading, Scroll, SongSheet, LittleTitle, swiper, swiperSlide },
+  components: { Loading, Scroll, SongSheet, LittleTitle },
   watch: {
     currentSong () {
       if (this.currentSong !== undefined) {
@@ -84,6 +88,9 @@ export default {
   computed: {},
 
   methods: {
+    gotoPlay (item) {
+      console.log(item)
+    },
     // 监听sheet组件子组件select,选择了一个的歌单
     selectSheet (sheet) {
       this.selectSheetItem(sheet)
@@ -97,9 +104,6 @@ export default {
         this.solveList(list)
         this.swiperList = list.slice(0, 5)
         this.sheetList = list.slice(5)
-        // console.log(this.swiperList)
-        // console.log(this.sheetList)
-        // console.log(res)
       })
     },
     solveList (list) {
@@ -139,6 +143,7 @@ export default {
               width: 100%;
               height: 190px;
               border-radius: 10px;
+              position: relative;
               @include columnCenter;
               .item-img{
                 width: 150px;
@@ -147,6 +152,20 @@ export default {
                   border-radius: 10px 10px 0 0;
                   width: 100%;
                   height: 100%;
+                }
+              }
+              .play-wrapper {
+                position: absolute;
+                width: 22px;
+                height: 22px;
+                right: -8px;
+                bottom: 44px;
+                font-size: 16px;
+                background: rgba(0,0,0,0.2);
+                border-radius: 50%;
+                @include center;
+                color: #f0f0f0;
+                .icon-play{
                 }
               }
               .item-text{

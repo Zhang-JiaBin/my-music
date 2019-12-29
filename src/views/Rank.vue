@@ -5,7 +5,7 @@
         <div class="rank-list-wrapper" v-for="item in ThreerankGroup" :key="item.groupId">
           <little-title :title="item.groupName" :show-more="false"></little-title>
           <div class="rank-list" v-for="(subItem,index) in item.toplist" :key="index">
-            <rank-item @select="selectTop" :rank-list="subItem"></rank-item>
+            <rank-item @select="selectTop" :rank-top="subItem"></rank-item>
           </div>
         </div>
         <little-title title="全球榜" :show-more="false"></little-title>

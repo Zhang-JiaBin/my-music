@@ -59,6 +59,7 @@ export default {
   },
   mixins: [singerMixin, playerMixin],
   mounted () {
+    this.setHomeMark(0)
     this.swiper = this.$refs.mySwiper.swiper
     this.swiper.slideTo(this.cIndex)
     this.changeCoBottom()
@@ -76,7 +77,6 @@ export default {
         this.tabText = '歌手'
         this.tabnum = `(共${this.collectSingers.length}位)`
         this.Icon = 'icon-singer'
-        // this.$route.query.index = 0
         this.confirmText = '确定取消关注所有歌手?'
       } else if (newVal === 1) {
         this.tabText = '歌单'

@@ -3,7 +3,7 @@
     <swiper class="recommendRank-swiper" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <swiper-slide class="recommendRank-swiper-item" v-for="item in topList" :key="item.id">
-        <rank-item @select="selectRTop" :rank-list="item"></rank-item>
+        <rank-item @select="selectRTop" :rank-top="item"></rank-item>
       </swiper-slide>
     </swiper>
   </div>

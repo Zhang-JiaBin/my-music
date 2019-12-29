@@ -6,7 +6,7 @@
         <input class="input-text" placeholder="歌曲" readonly="readonly" type="text">
       </div>
       <div class="icon-list-wrapper">
-        <span class="icon-list" @click.stop="gotoUser"></span>
+        <span class="icon-my" @click.stop="gotoUser"></span>
       </div>
     </div>
   </div>
@@ -96,8 +96,9 @@ export default {
         width: 40px;
         height: 40px;
         @include right;
-        .icon-list {
+        .icon-my {
           font-size: 25px;
+          color: $color-icon;
         }
       }
     }

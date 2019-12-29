@@ -1,7 +1,3 @@
-import searchHistory from '../components/search/searchHistory'
-import search from '../views/search'
-import collectSinger from '../components/user/collectSinger'
-
 const actions = {
   setSinger: ({
     commit

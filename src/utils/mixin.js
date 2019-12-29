@@ -26,6 +26,8 @@ import {
   saveHitory, saveRanks,
   saveSearch, saveSheets, saveSingers
 } from './localStorage'
+import { getSongList } from '../api/recommend'
+import { getMusicList } from '../api/rank'
 export const singerMixin = {
   computed: {
     ...mapGetters([
@@ -265,6 +267,76 @@ export const singerMixin = {
       this.setCurrentIndex(ranIndex)
       this.setPlayering(true)
       this.setClickMark(true)
+    },
+    // songSheet 页面点击播放按钮
+    selectSheetPlay (list, index, sheet) {
+      this.setSequenceList(list)
+      if (this.mode === playMode.random) {
+        let randomList = shuffle(list)
+        this.setPlayList(randomList)
+        index = this._findIndex(randomList, list[index])
+      } else {
+        this.setPlayList(list)
+      }
+      this.setCurrentIndex(index)
+      this.currentSong.gainSongUrl()
+      if (!this.playering) {
+        this.setPlayering(!this.playering)
+      }
+      this.setSongSheet(sheet)
+    },
+    // 获取播放的图标
+    getSheetIcon (item) {
+      if (this.playering && this.songSheet.content_id === item.content_id) {
+        return 'icon-sheet-pause'
+      } else {
+        return 'icon-sheet-play'
+      }
+    },
+    // 点击每个歌单图片上的播放按钮
+    clickplay (item) {
+      if (this.songSheet.content_id === item.content_id) {
+        this.setPlayering(!this.playering)
+      } else {
+        getSongList(item.content_id).then(res => {
+          let songs = this.normalizeSong(res.cdlist[0].songlist)
+          this.selectSheetPlay(songs, 0, item)
+        })
+      }
+    },
+    // rankItem 排行榜图片上的点击播放按钮
+    selectRankPlay (list, index, rank) {
+      this.setSequenceList(list)
+      if (this.mode === playMode.random) {
+        let randomList = shuffle(list)
+        this.setPlayList(randomList)
+        index = this._findIndex(randomList, list[index])
+      } else {
+        this.setPlayList(list)
+      }
+      this.setCurrentIndex(index)
+      this.currentSong.gainSongUrl()
+      if (!this.playering) {
+        this.setPlayering(!this.playering)
+      }
+      this.setRankList(rank)
+    },
+    getRankIcon (item) {
+      if (this.playering && this.rankList.topId === item.topId) {
+        return 'icon-sheet-pause'
+      } else {
+        return 'icon-sheet-play'
+      }
+    },
+    clickRankPlay (item) {
+      if (this.rankList.topId === item.topId) {
+        this.setPlayering(!this.playering)
+      } else {
+        getMusicList(item.topId).then(res => {
+          let songs = this.normalizeSong(res.detail.data.songInfoList)
+          this.selectRankPlay(songs, 0, item)
+        })
+      }
     },
     // 选择一首歌曲播放
     selectPlay (list, index, item) {

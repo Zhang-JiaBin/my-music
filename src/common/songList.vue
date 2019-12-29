@@ -1,35 +1,33 @@
 <template>
-  <div class="songList">
-    <div ref="songItem" class="songList-wrapper" @click.prevent="selectSong(item, index)" v-for="(item,index) in songs" :key="index">
-      <div class="song-item-wrapper">
-        <div class="song-item-all">
-          <div class="item-img-wrapper" v-show="showPic">
-            <img class="item-img" v-lazy="item.image" alt="">
+  <transition-group name="list" tag="div" class="songList">
+    <div class="song-item-wrapper" ref="songItem" @click.prevent="selectSong(item, index)" v-for="(item,index) in songs" :key="item.id">
+      <div class="song-item-all">
+        <div class="item-img-wrapper" v-show="showPic">
+          <img class="item-img" v-lazy="item.image" alt="">
+        </div>
+        <div class="song-item">
+          <div class="item-name-wrapper">
+            <span class="item-name">{{item.name}}</span>
           </div>
-          <div class="song-item">
-            <div class="item-name-wrapper">
-              <span class="item-name">{{item.name}}</span>
-            </div>
-            <div class="item-name-wrapper">
-              <span class="item-sq">SQ</span>
-              <span class="item-singer">{{item.singer}} - {{item.album}}</span>
-            </div>
+          <div class="item-name-wrapper">
+            <span class="item-sq">SQ</span>
+            <span class="item-singer">{{item.singer}} - {{item.album}}</span>
           </div>
-          <div class="item-playing-wrapper" v-show="showPlaying(item)">
-            <div class="note-wrapper">
-              <note-beat class="playing-beat" :playing="playering"></note-beat>
-            </div>
+        </div>
+        <div class="item-playing-wrapper" v-show="showPlaying(item)">
+          <div class="note-wrapper">
+            <note-beat class="playing-beat" :playing="playering"></note-beat>
           </div>
-          <div class="item-playing-wrapper" v-show="showDot" @click.prevent.stop="showPop(item)">
-            <span class="icon-dot icon"></span>
-          </div>
-          <div class="item-playing-wrapper" v-show="showDelete" @click.prevent.stop="deleteItem(item)">
-            <span class="icon-delete icon"></span>
-          </div>
+        </div>
+        <div class="item-playing-wrapper" v-show="showDot" @click.prevent.stop="showPop(item)">
+          <span class="icon-dot icon"></span>
+        </div>
+        <div class="item-playing-wrapper" v-show="showDelete" @click.prevent.stop="deleteItem(item)">
+          <span class="icon-delete icon"></span>
         </div>
       </div>
     </div>
-  </div>
+  </transition-group>
 </template>
 
 <script>
@@ -97,12 +95,20 @@ export default {
   .songList{
     width: 100%;
     height: 100%;
-    .songList-wrapper{
-      .song-item-wrapper{
+    /*.songList-wrapper{*/
+    .song-item-wrapper{
         height: 60px;
         width: 100%;
         padding: 5px 15px;
         box-sizing: border-box;
+        &.list-leave-active {
+          transition: all 0.3s;
+        }
+        &.list-enter,
+        &.list-leave-to{
+          opacity: 0;
+          transform: translateX(-100%)
+        }
         .song-item-all{
           height: 100%;
           display: flex;
@@ -175,6 +181,6 @@ export default {
           }
         }
       }
-    }
+    /*}*/
   }
 </style>

@@ -219,11 +219,12 @@ export default {
       })
     },
     homeMark (newHomeMark) {
-      if (newHomeMark === 1) {
+      console.log('newHomeMark', newHomeMark)
+      if (newHomeMark >= 1) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
-        this.setHomeMark(0)
       }
+      this.setHomeMark(0)
     },
     currentSong (newSong, oldSong) {
       if (newSong === undefined) {
