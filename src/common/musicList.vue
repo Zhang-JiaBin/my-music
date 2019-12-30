@@ -153,6 +153,7 @@ export default {
       if (this.pageCount === 0) {
         return
       }
+      this.setInMySheet(false)
       this.setPageCount(this.pageCount - 1)
     },
     scroll (pos) {

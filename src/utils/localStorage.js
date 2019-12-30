@@ -18,6 +18,9 @@ const SHEETS_MAX_LENGTH = 80
 const RANKS_KEY = '__ranks__'
 const RANKS_MAX_LENGTH = 40
 
+const USER_SHEET_KEY = '__userSheet__'
+const USER_SHEET_MAX_LENGTH = 200
+
 // 插入数据进行比较，如果有，则删掉此数据，并把val插入到第一个位置，如果数组长度大于maxLen,则把数组最后一个数据pop出去
 function inserArray (arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
@@ -77,10 +80,7 @@ export function clearSearch () {
 // 保存收藏的歌曲
 export function saveFavorite (song) {
   let songs = storage.get(FAVORITE_KEY, [])
-  let songlist = songs.map(item => {
-    item = new Song(item)
-    return item
-  })
+  let songlist = songs.map(item => new Song(item))
   // console.log('变了之后:', songlist)
   inserArray(songlist, song, item => {
     return song.id === item.id
@@ -102,10 +102,7 @@ export function deleteFavorite (song) {
 // 加载收藏的歌曲的列表
 export function loadFavorite () {
   let songs = storage.get(FAVORITE_KEY, [])
-  let songlist = songs.map(item => {
-    item = new Song(item)
-    return item
-  })
+  let songlist = songs.map(item => new Song(item))
   return songlist
 }
 // 清空收藏的歌曲
@@ -117,10 +114,7 @@ export function clearFavorite () {
 // 保存播放历史的歌曲
 export function saveHitory (song) {
   let songs = storage.get(HISTORY_KEY, [])
-  let songlist = songs.map(item => {
-    item = new Song(item)
-    return item
-  })
+  let songlist = songs.map(item => new Song(item))
   // console.log('变了之后:', songlist)
   inserArray(songlist, song, item => {
     return song.id === item.id
@@ -142,10 +136,7 @@ export function deleteHistory (song) {
 // 加载播放历史的歌曲的列表
 export function loadHistory () {
   let songs = storage.get(HISTORY_KEY, [])
-  let songlist = songs.map(item => {
-    item = new Song(item)
-    return item
-  })
+  let songlist = songs.map(item => new Song(item))
   return songlist
 }
 
@@ -253,4 +244,30 @@ export function loadRanks () {
 export function clearRanks () {
   storage.remove(RANKS_KEY)
   return []
+}
+
+// 保存自己创建的歌单
+export function saveUserSheet (userSheet) {
+  storage.set(USER_SHEET_KEY, userSheet)
+}
+
+// 往歌单中插入歌曲
+export function saveSongToSheet (song, sheet) {
+  inserArray(sheet.sheetList, song, item => {
+    return song.id === item.id
+  }, USER_SHEET_MAX_LENGTH)
+}
+
+export function removeSongFromSheet (song, sheet) {
+  deleteFromArray(sheet.sheetList, item => song.id === item.id)
+}
+
+// 加载用户自己创建的歌单
+export function loadUserSheet () {
+  let userSheet = storage.get(USER_SHEET_KEY, [])
+  // let sheet = userSheet.map(item => {
+  //   let itemSheet = item.sheetList.map(subItem => new Song(subItem))
+  //   return itemSheet
+  // })
+  return userSheet
 }

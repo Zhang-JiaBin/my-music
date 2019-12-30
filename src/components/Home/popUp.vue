@@ -26,12 +26,15 @@
         </div>
       </transition>
       <show-singer @select="chooseSinger" :singer-group="singerGroup" ref="showSinger" ></show-singer>
+      <show-sheet @hide="hide" ref="showSheet"></show-sheet>
     </div>
 </template>
 
 <script>
 import { playerMixin, singerMixin } from '../../utils/mixin'
 import ShowSinger from './showSinger'
+import ShowSheet from './showSheet'
+import { removeSongFromSheet, saveUserSheet } from '../../utils/localStorage'
 
 export default {
   name: 'popUp',
@@ -48,6 +51,12 @@ export default {
       }, {
         icon: 'icon-singer',
         text: ``
+      }, {
+        icon: 'icon-add',
+        text: '收藏到歌单'
+      }, {
+        icon: 'icon-deleteAll',
+        text: '删除'
       }]
     }
   },
@@ -60,7 +69,7 @@ export default {
       }
     }
   },
-  components: { ShowSinger },
+  components: { ShowSheet, ShowSinger },
   mounted () {
   },
   computed: {
@@ -69,7 +78,12 @@ export default {
       return this.selectedSong ? this.selectedSong.allSinger : []
     },
     showTextList () {
-      let myText = this.textList.slice(0)
+      let myText
+      if (this.inMySheet) {
+        myText = this.textList.slice(0)
+      } else {
+        myText = this.textList.slice(0, 4)
+      }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       myText[2].text = `歌手: ${this.SongSinger}`
       if (this.InFavorite) {
@@ -108,8 +122,29 @@ export default {
         case 2:
           this.showSinger()
           break
+        case 3:
+          this.showmysheet()
+          break
+        case 4:
+          this.clickDelete()
       }
-      // this.hide()
+    },
+    clickDelete () {
+      let list = this.mySheetList
+      let ret = this.userSheet
+      ret.forEach(item => {
+        if (item.id === list.id) {
+          removeSongFromSheet(this.selectedSong, item)
+        }
+      })
+      this.setUserSheet(ret)
+      saveUserSheet(ret)
+      this.simpleToast('已删除')
+      this.hide()
+    },
+    // 展示我的歌单选择页面
+    showmysheet () {
+      this.$refs.showSheet.show()
     },
     // 下一首播放
     insert () {

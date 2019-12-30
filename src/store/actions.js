@@ -98,6 +98,21 @@ const actions = {
     commit
   }, collectRanks) => {
     return commit('SET_COLLECTRANKS', collectRanks)
+  },
+  setUserSheet: ({
+    commit
+  }, userSheet) => {
+    return commit('SET_USERSHEET', userSheet)
+  },
+  setMySheetList: ({
+    commit
+  }, mySheetList) => {
+    return commit('SET_MYSHEETLIST', mySheetList)
+  },
+  setInMySheet: ({
+    commit
+  }, inMySheet) => {
+    return commit('SET_INMYSHEET', inMySheet)
   }
 }
 export default actions

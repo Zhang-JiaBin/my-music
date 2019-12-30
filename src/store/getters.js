@@ -19,7 +19,10 @@ const getters = {
   historyList: state => state.singer.historyList,
   collectSingers: state => state.singer.collectSingers,
   collectSheets: state => state.singer.collectSheets,
-  collectRanks: state => state.singer.collectRanks
+  collectRanks: state => state.singer.collectRanks,
+  userSheet: state => state.singer.userSheet,
+  mySheetList: state => state.singer.mySheetList,
+  inMySheet: state => state.singer.inMySheet
 }
 
 export default getters

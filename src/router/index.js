@@ -86,6 +86,9 @@ export default new VueRouter({
       }, {
         path: 'rank/:id',
         component: () => import('../components/Rank/rankDetail.vue')
+      }, {
+        path: 'mysheet/:id',
+        component: () => import('../components/user/mySheetDetail.vue')
       }]
     }]
   }]

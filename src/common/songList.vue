@@ -102,7 +102,7 @@ export default {
         padding: 5px 15px;
         box-sizing: border-box;
         &.list-leave-active {
-          transition: all 0.3s;
+          transition: all 0.5s;
         }
         &.list-enter,
         &.list-leave-to{

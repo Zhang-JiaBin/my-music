@@ -24,7 +24,7 @@ import {
   deleteHistory, deleteRanks, deleteSheets, deleteSingers,
   saveFavorite,
   saveHitory, saveRanks,
-  saveSearch, saveSheets, saveSingers
+  saveSearch, saveSheets, saveSingers, saveSongToSheet, saveUserSheet
 } from './localStorage'
 import { getSongList } from '../api/recommend'
 import { getMusicList } from '../api/rank'
@@ -51,7 +51,10 @@ export const singerMixin = {
       'historyList',
       'collectSingers',
       'collectSheets',
-      'collectRanks'
+      'collectRanks',
+      'userSheet',
+      'mySheetList',
+      'inMySheet'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -81,7 +84,10 @@ export const singerMixin = {
       'setHistoryList',
       'setCollectSingers',
       'setCollectSheets',
-      'setCollectRanks'
+      'setCollectRanks',
+      'setUserSheet',
+      'setMySheetList',
+      'setInMySheet'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -454,6 +460,16 @@ export const singerMixin = {
     // 删除全部收藏的榜单
     deletemyAllRanks () {
       this.setCollectRanks(clearRanks())
+    },
+    // 添加到我的歌单
+    addToSheet (song, item) {
+      let userSheet = this.userSheet
+      saveSongToSheet(song, item)
+      let randomNum = Math.floor(Math.random() * item.sheetList.length)
+      item.pic = item.sheetList[randomNum].image
+      this.setUserSheet(userSheet)
+      saveUserSheet(userSheet)
+      this.simpleToast('已收藏到歌单')
     }
   }
 }

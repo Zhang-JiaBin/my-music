@@ -1,5 +1,13 @@
 import { playMode } from '../../utils/config'
-import { loadFavorite, loadHistory, loadRanks, loadSearch, loadSheets, loadSingers } from '../../utils/localStorage'
+import {
+  loadFavorite,
+  loadHistory,
+  loadRanks,
+  loadSearch,
+  loadSheets,
+  loadSingers,
+  loadUserSheet
+} from '../../utils/localStorage'
 
 const singer = {
   state: {
@@ -22,7 +30,10 @@ const singer = {
     historyList: loadHistory(), // 播放历史
     collectSingers: loadSingers(), // 收藏的歌手
     collectSheets: loadSheets(), // 收藏的歌单
-    collectRanks: loadRanks() // 收藏的榜单
+    collectRanks: loadRanks(), // 收藏的榜单
+    userSheet: loadUserSheet(), // 用户自己创建的歌单
+    mySheetList: [], // 用户自己创建的某一个歌单中的所有歌曲
+    inMySheet: false // 判断是否进入我自己创建的歌单页面
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -84,6 +95,15 @@ const singer = {
     },
     'SET_COLLECTRANKS': (state, collcetRanks) => {
       state.collectRanks = collcetRanks
+    },
+    'SET_USERSHEET': (state, userSheet) => {
+      state.userSheet = userSheet
+    },
+    'SET_MYSHEETLIST': (state, mySheetList) => {
+      state.mySheetList = mySheetList
+    },
+    'SET_INMYSHEET': (state, inMySheet) => {
+      state.inMySheet = inMySheet
     }
   }
 }
