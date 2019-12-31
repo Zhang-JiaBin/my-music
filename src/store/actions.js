@@ -113,6 +113,21 @@ const actions = {
     commit
   }, inMySheet) => {
     return commit('SET_INMYSHEET', inMySheet)
+  },
+  setShowCreateSheet: ({
+    commit
+  }, showCreateSheet) => {
+    return commit('SET_SHOWCREATESHEET', showCreateSheet)
+  },
+  setSlideIndex: ({
+    commit
+  }, slideIndex) => {
+    return commit('SET_SLIDEINDEX', slideIndex)
+  },
+  setShowSheetPop: ({
+    commit
+  }, showSheetPop) => {
+    return commit('SET_SHOWSHEETPOP', showSheetPop)
   }
 }
 export default actions

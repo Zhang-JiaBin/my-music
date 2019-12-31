@@ -78,6 +78,9 @@ export default new VueRouter({
         path: 'collection',
         component: () => import('../components/user/collection.vue')
       }, {
+        path: 'manage',
+        component: () => import('../components/user/SheetManage.vue')
+      }, {
         path: 'singer/:id',
         component: () => import('../components/singer/singerDetail.vue')
       }, {

@@ -54,14 +54,29 @@ export const singerMixin = {
       'collectRanks',
       'userSheet',
       'mySheetList',
-      'inMySheet'
+      'inMySheet',
+      'showCreateSheet',
+      'slideIndex',
+      'showSheetPop'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
     },
     attentionText () {
       return this.InSingers ? '已关注' : '关注'
+    },
+    // 在我的歌单页面选中的歌单数目
+    selectNum () {
+      let count = 0
+      let list = this.userSheet.slice()
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].select) {
+          count++
+        }
+      }
+      return count
     }
+
   },
   methods: {
     ...mapActions([
@@ -87,7 +102,10 @@ export const singerMixin = {
       'setCollectRanks',
       'setUserSheet',
       'setMySheetList',
-      'setInMySheet'
+      'setInMySheet',
+      'setShowCreateSheet',
+      'setSlideIndex',
+      'setShowSheetPop'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -470,6 +488,14 @@ export const singerMixin = {
       this.setUserSheet(userSheet)
       saveUserSheet(userSheet)
       this.simpleToast('已收藏到歌单')
+    },
+    // 在我的歌单页面选择一个歌单进行操作
+    selectOneSheet (item) {
+      item.select = !item.select
+    },
+    // 歌单被选中或者没有被选中状态
+    iconChoose (item) {
+      return item.select ? 'icon-choose' : 'icon-no-choose'
     }
   }
 }

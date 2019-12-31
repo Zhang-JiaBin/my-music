@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="create-sheet" v-show="showCreate" @click="hide">
+    <div class="create-sheet" v-show="showCreateSheet" @click="hide">
       <div class="sheet-wrapper" @click.stop>
         <div class="sheet-new">
           <span class="new-text">新建歌单</span>
@@ -10,7 +10,7 @@
         </div>
         <div class="btn-wrapper">
           <div class="btn-cancel" @click="hide">取消</div>
-          <div class="btn-submit" @click="clickSubmit(false)" :class="{'showOpacity': !title}">提交</div>
+          <div class="btn-submit" @click="clickSubmit" :class="{'showOpacity': !title}">提交</div>
         </div>
       </div>
     </div>
@@ -26,7 +26,6 @@ export default {
   name: 'createSheet',
   data () {
     return {
-      showCreate: false,
       title: ''
     }
   },
@@ -37,7 +36,15 @@ export default {
     }
   },
   components: {},
-
+  watch: {
+    showCreateSheet (val) {
+      if (val === true) {
+        setTimeout(() => {
+          this.focus()
+        }, 20)
+      }
+    }
+  },
   computed: {},
   mixins: [singerMixin],
   methods: {
@@ -47,16 +54,10 @@ export default {
     focus () {
       this.$refs.input.focus()
     },
-    show () {
-      this.showCreate = true
-      setTimeout(() => {
-        this.focus()
-      }, 200)
-    },
     hide () {
-      this.showCreate = false
+      this.setShowCreateSheet(false)
     },
-    clickSubmit (add) {
+    clickSubmit () {
       if (!this.title) {
         return
       } else {
@@ -65,9 +66,8 @@ export default {
           title: this.title,
           sheetList: []
         })
-        if (add) {
+        if (this.selectedSong.id) {
           this.addToSheet(this.selectedSong, mySheet)
-          this.$emit('hideSheet')
         }
         let list = this.userSheet.slice()
         list.push(mySheet)

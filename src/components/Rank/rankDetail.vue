@@ -20,6 +20,7 @@ export default {
     MusicList
   },
   mounted () {
+    this.setSlideIndex(2)
     this._getRankList()
   },
   computed: {

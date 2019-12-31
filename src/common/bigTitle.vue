@@ -64,6 +64,7 @@ export default {
       height: 30px;
       width: 100%;
       padding: 0 15px;
+      box-sizing: border-box;
       display: flex;
       .icon-back-wrapper{
         flex: 0 0 30px;
@@ -85,10 +86,10 @@ export default {
         }
       }
       .delete-wrapper{
-        flex:0 0 65px;
-        width: 65px;
+        flex:0 0 100px;
+        width: 100px;
         height: 100%;
-        @include left;
+        @include right;
         .delete-text{
           font-size: $font-size-large;
         }

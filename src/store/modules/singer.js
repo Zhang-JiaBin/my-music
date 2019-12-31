@@ -23,7 +23,7 @@ const singer = {
     rankList: {}, // 榜单,
     pageCount: 0, // 进入musicList组件的次数,
     searchHistory: loadSearch(), // 搜索历史,
-    showPopUp: false, // 弹出框
+    showPopUp: false, // 歌曲弹出框
     selectedSong: {}, // 点击songList组件的 dot Icon选中的歌曲
     favoriteList: loadFavorite(), // 收藏的歌曲的列表,
     homeMark: 0, // 控制推荐页面的播放器上移标志
@@ -33,7 +33,10 @@ const singer = {
     collectRanks: loadRanks(), // 收藏的榜单
     userSheet: loadUserSheet(), // 用户自己创建的歌单
     mySheetList: [], // 用户自己创建的某一个歌单中的所有歌曲
-    inMySheet: false // 判断是否进入我自己创建的歌单页面
+    inMySheet: false, // 判断是否进入我自己创建的歌单页面
+    showCreateSheet: false, // 控制创建歌单组件的出现
+    slideIndex: 1, // 解决从收藏页面跳转到各个页面返回原来页面的问题
+    showSheetPop: false // 歌单弹出框
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -104,6 +107,15 @@ const singer = {
     },
     'SET_INMYSHEET': (state, inMySheet) => {
       state.inMySheet = inMySheet
+    },
+    'SET_SHOWCREATESHEET': (state, showCreateSheet) => {
+      state.showCreateSheet = showCreateSheet
+    },
+    'SET_SLIDEINDEX': (state, slideIndex) => {
+      state.slideIndex = slideIndex
+    },
+    'SET_SHOWSHEETPOP': (state, showSheetPop) => {
+      state.showSheetPop = showSheetPop
     }
   }
 }

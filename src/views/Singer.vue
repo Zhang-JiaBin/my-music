@@ -1,7 +1,8 @@
 <template>
   <div class="singer" ref="singer">
     <switches class="switches" :switches="switches" @switch="changeIndex" :c-index="cIndex"></switches>
-    <singer-list ref="singerlist" @select="selectSinger" :singer-list="singerList" v-if="cIndex === 0"></singer-list>
+    <singer-list ref="singerlist" @select="selectSinger" :singer-list="singerList" v-show="cIndex === 0"></singer-list>
+    <mysinger ref="mysinger" v-show="cIndex === 1"></mysinger>
     <transition name="slide">
       <router-view></router-view>
     </transition>
@@ -14,6 +15,7 @@ import { getSingerList } from '../api/singer'
 import Singer from '../utils/singer'
 import SingerList from '../components/singer/singerList'
 import { singerMixin } from '../utils/mixin'
+import Mysinger from '../components/singer/Mysinger'
 export default {
   name: 'Singer',
   mixins: [singerMixin],
@@ -31,24 +33,33 @@ export default {
       singerList: []
     }
   },
-
-  components: { SingerList, Switches },
+  components: { Mysinger, SingerList, Switches },
   watch: {
     currentSong () {
-      if (this.currentSong !== undefined) {
-        this.$refs.singer.style.bottom = `100px`
-        this.$refs.singerlist.refresh()
-      } else {
-        this.$refs.singer.style.bottom = `50px`
-        this.$refs.singerlist.refresh()
-      }
+      this.changeSingerBottom()
+    },
+    pageCount () {
+      this.changeSingerBottom()
+    },
+    cIndex () {
+      this.$refs.singerlist.refresh()
+      this.$refs.mysinger.refresh()
     }
   },
   computed: {},
   mounted () {
     this._getSingerList()
+    this.changeSingerBottom()
   },
   methods: {
+    changeSingerBottom () {
+      if (this.currentSong !== undefined) {
+        this.$refs.singer.style.bottom = `100px`
+      } else {
+        this.$refs.singer.style.bottom = `50px`
+      }
+      this.$refs.singerlist.refresh()
+    },
     selectSinger (singer) {
       this.$router.push({
         path: `/home/singer/${singer.id}`

@@ -17,6 +17,7 @@ export default {
     }
   },
   mounted () {
+    this.setSlideIndex(1)
     this._getSheetList()
   },
   components: { MusicList },

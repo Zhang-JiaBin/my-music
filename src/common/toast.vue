@@ -70,10 +70,10 @@ export default {
     @include center;
     .toast-wrapper {
       line-height: 20px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       box-sizing: border-box;
-      background: #dadada;
-      border-radius: 7px;
+      background: #f0f0f0;
+      border-radius: 20px;
       font-size: 14px;
       font-weight: bold;
       color: $color-icon;

@@ -33,14 +33,13 @@
                 <div class="mysheet-title">{{item.title}}</div>
                 <div class="mysheet-num">{{item.sheetList.length}}首</div>
               </div>
-            <div class="icon-choose-wrapper" @click.stop.prevent="selectOne(item)" v-show="!showMore" :class="{'select': item.select}">
+              <div class="icon-choose-wrapper" @click.stop.prevent="selectOneSheet(item)" v-show="!showMore" :class="{'select': item.select}">
                 <span :class="iconChoose(item)"></span>
               </div>
             </div>
           </div>
         </scroll>
       </div>
-      <create-sheet @hideSheet="hidesheet" ref="showCreate" :add="true"></create-sheet>
     </div>
   </transition>
 </template>
@@ -48,7 +47,6 @@
 <script>
 import { singerMixin } from '../../utils/mixin'
 import Scroll from '../../common/scroll'
-import CreateSheet from './createSheet'
 
 export default {
   name: 'showSheet',
@@ -59,41 +57,27 @@ export default {
     }
   },
   mixins: [singerMixin],
-  components: { CreateSheet, Scroll },
+  components: { Scroll },
 
   computed: {
-    selectNum () {
-      let count = 0
-      let list = this.userSheet.slice()
-      for (let i = 0;i < list.length;i++) {
-        if (list[i].select) {
-          count++
-        }
-      }
-      return count
-    }
   },
   watch: {
     userSheet () {
       this.$refs.contentScroll.refresh()
+      this.hide()
+      this.$emit('hide')
     }
   },
   mounted () {
   },
   methods: {
-    selectOne (item) {
-      item.select = !item.select
-    },
-    iconChoose (item) {
-      return item.select ? 'icon-choose' : 'icon-no-choose'
-    },
     addTo (song, item) {
       this.addToSheet(song, item)
       this.hide()
       this.$emit('hide')
     },
     showNew () {
-      this.$refs.showCreate.show()
+      this.setShowCreateSheet(true)
     },
     show () {
       this.visible = true
@@ -247,6 +231,7 @@ export default {
                 font-size: $font-size-medium;
               }
               .mysheet-num{
+                color: #83838a;
                 font-size: $font-size-small;
                 margin-top: 7px;
               }

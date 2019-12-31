@@ -17,6 +17,7 @@ export default {
     }
   },
   mounted () {
+    this.setSlideIndex(0)
     this._getSingerSongs()
   },
   mixins: [singerMixin],

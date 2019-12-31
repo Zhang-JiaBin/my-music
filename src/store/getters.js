@@ -22,7 +22,10 @@ const getters = {
   collectRanks: state => state.singer.collectRanks,
   userSheet: state => state.singer.userSheet,
   mySheetList: state => state.singer.mySheetList,
-  inMySheet: state => state.singer.inMySheet
+  inMySheet: state => state.singer.inMySheet,
+  showCreateSheet: state => state.singer.showCreateSheet,
+  slideIndex: state => state.singer.slideIndex,
+  showSheetPop: state => state.singer.showSheetPop
 }
 
 export default getters

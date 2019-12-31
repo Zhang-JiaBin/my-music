@@ -16,7 +16,7 @@
         <div class="icon-plus-wrapper" @click="clickAdd">
           <span class="icon-plus"></span>
         </div>
-        <div class="icon-dot-wrapper">
+        <div class="icon-dot-wrapper" @click="clickDot">
           <span class="icon-dot"></span>
         </div>
       </div>
@@ -34,13 +34,12 @@
         </div>
       </div>
     </transition>
-    <create-sheet ref="createSheet"></create-sheet>
   </div>
 </template>
 
 <script>
-import CreateSheet from '../Home/createSheet'
 import { singerMixin } from '../../utils/mixin'
+import SheetPopUp from '../Home/sheetPopUp'
 export default {
   name: 'mySheet',
   data () {
@@ -49,7 +48,7 @@ export default {
     }
   },
   mixins: [singerMixin],
-  components: { CreateSheet },
+  components: {},
 
   computed: {},
 
@@ -60,7 +59,11 @@ export default {
     },
     // 点击加号icon，创建歌单
     clickAdd () {
-      this.$refs.createSheet.show()
+      this.setShowCreateSheet(true)
+    },
+    // 点击三个点，弹起sheet-pop-up弹窗
+    clickDot () {
+      this.setShowSheetPop(true)
     },
     // 跳转到我自己创建的歌单详情页
     gotoMySheetDetail (item) {

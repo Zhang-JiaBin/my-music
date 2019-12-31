@@ -40,15 +40,15 @@ export default {
   data () {
     return {
       littleList: [{
-        icon: 'icon-play',
+        icon: 'icon-history',
         title: '最近播放',
         num: 0
       }, {
-        icon: 'icon-add',
+        icon: 'icon-like',
         title: '我的喜欢',
         num: 0
       }, {
-        icon: 'icon-favorite',
+        icon: 'icon-collect',
         title: '我的收藏',
         num: 0
       }],

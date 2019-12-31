@@ -3,10 +3,12 @@
     <home-search></home-search>
     <home-tab></home-tab>
     <keep-alive>
-      <router-view></router-view>
+      <router-view class="route-view"></router-view>
     </keep-alive>
-    <player></player>
+    <player class="player"></player>
     <pop-up></pop-up>
+    <create-sheet></create-sheet>
+    <sheet-pop-up></sheet-pop-up>
   </div>
 </template>
 
@@ -16,10 +18,14 @@ import HomeTab from '../components/Home/HomeTab'
 import player from '../components/Home/player'
 import { singerMixin } from '../utils/mixin'
 import PopUp from '../components/Home/popUp'
+import CreateSheet from '../components/Home/createSheet'
+import SheetPopUp from '../components/Home/sheetPopUp'
 export default {
   name: 'home',
   mixins: [singerMixin],
   components: {
+    SheetPopUp,
+    CreateSheet,
     PopUp,
     HomeTab,
     HomeSearch,
@@ -29,8 +35,4 @@ export default {
 </script>
 <style scoped lang="scss">
   @import "../assets/style/scss/global";
-  /*.home {*/
-  /*  width: 100%;*/
-  /*  height: 100%;*/
-  /*}*/
 </style>

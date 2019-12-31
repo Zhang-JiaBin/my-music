@@ -52,7 +52,7 @@ export default {
         icon: 'icon-singer',
         text: ``
       }, {
-        icon: 'icon-add',
+        icon: 'icon-addTo',
         text: '收藏到歌单'
       }, {
         icon: 'icon-deleteAll',
@@ -127,6 +127,7 @@ export default {
           break
         case 4:
           this.clickDelete()
+          break
       }
     },
     clickDelete () {
@@ -162,6 +163,7 @@ export default {
     },
     hide () {
       this.visible = false
+      this.setSelectedSong({})
       setTimeout(() => {
         this.setShowPopUp(false)
       }, 200)

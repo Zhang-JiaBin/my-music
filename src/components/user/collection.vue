@@ -61,8 +61,8 @@ export default {
   mounted () {
     this.setHomeMark(0)
     this.swiper = this.$refs.mySwiper.swiper
-    this.swiper.slideTo(this.cIndex)
     this.changeCoBottom()
+    this.swiper.slideTo(this.slideIndex)
   },
   components: { CollectRank, CollectSheet, Confirm, CollectSinger, Switches, BigTitle },
   computed: {
