@@ -39,7 +39,6 @@
 
 <script>
 import { singerMixin } from '../../utils/mixin'
-import SheetPopUp from '../Home/sheetPopUp'
 export default {
   name: 'mySheet',
   data () {

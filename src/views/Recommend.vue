@@ -67,6 +67,7 @@ export default {
   mounted () {
     this.setHomeMark(1)
     this._getRecommend()
+    this.changeRecommendBottom()
   },
   components: {
     SongSheet,
@@ -80,18 +81,23 @@ export default {
   },
   watch: {
     currentSong () {
-      if (this.currentSong !== undefined) {
-        this.$refs.recommend.style.bottom = `100px`
-        this.$refs.scroll.refresh()
-      } else {
-        this.$refs.recommend.style.bottom = `50px`
-        this.$refs.scroll.refresh()
-      }
+      this.changeRecommendBottom()
+    },
+    pageCount () {
+      this.changeRecommendBottom()
     }
   },
   computed: {},
   mixins: [singerMixin],
   methods: {
+    changeRecommendBottom () {
+      if (this.currentSong !== undefined) {
+        this.$refs.recommend.style.bottom = `100px`
+      } else {
+        this.$refs.recommend.style.bottom = `50px`
+      }
+      this.$refs.scroll.refresh()
+    },
     // 点击推荐页面的私人 FM 进行播放
     startPlaying (item) {
       this.insertSong(item)

@@ -86,7 +86,7 @@ export function createSong (item) {
   // })
   return song
 }
-function getAllSinger(singer) {
+function getAllSinger (singer) {
   let ret = []
   if (!singer) {
     return []

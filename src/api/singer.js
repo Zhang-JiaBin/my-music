@@ -12,7 +12,6 @@ import {
   commonParams,
   options
 } from './config'
-import axios from 'axios'
 
 // 获取歌手列表
 export function getSingerList () {

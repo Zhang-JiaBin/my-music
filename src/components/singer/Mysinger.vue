@@ -14,7 +14,7 @@
     </div>
     <scroll class="singers-scroll" ref="singersScroll" :data="this.collectSingers">
       <div class="scroll-item">
-        <div class="singerItem" @click="selectSinger(item)" v-for="(item, index) in this.collectSingers" :key="item.id">
+        <div class="singerItem" @click="selectSinger(item)" v-for="item in this.collectSingers" :key="item.id">
           <singer-item :mysinger="item"></singer-item>
         </div>
       </div>

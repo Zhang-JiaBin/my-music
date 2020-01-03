@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {
-  commonParams,
+  commonParams
 } from './config'
 
 // 获取排行榜指定榜单的歌曲
-export function getMusicList(topid) {
+export function getMusicList (topid) {
   const url = '/api/getMusicList'
   const data = Object.assign({}, commonParams, {
     g_tk: 5381,

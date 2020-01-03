@@ -41,6 +41,10 @@ export default {
   components: { Loading, RankAnother, Scroll, RankItem, LittleTitle },
   mounted () {
     this._getRank()
+    this.changeRankBottom()
+    setTimeout(() => {
+      this.$refs.scroll.refresh()
+    })
   },
   computed: {
     ThreerankGroup () {
@@ -52,16 +56,21 @@ export default {
   },
   watch: {
     currentSong () {
-      if (this.currentSong !== undefined) {
-        this.$refs.rank.style.bottom = `100px`
-        this.$refs.scroll.refresh()
-      } else {
-        this.$refs.rank.style.bottom = `50px`
-        this.$refs.scroll.refresh()
-      }
+      this.changeRankBottom()
+    },
+    pageCount () {
+      this.changeRankBottom()
     }
   },
   methods: {
+    changeRankBottom () {
+      if (this.currentSong !== undefined) {
+        this.$refs.rank.style.bottom = `100px`
+      } else {
+        this.$refs.rank.style.bottom = `50px`
+      }
+      this.$refs.scroll.refresh()
+    },
     // 监听rank组件的子组件rankItem和rankAnoter派发的事件select,选择了一个榜单
     selectTop (item) {
       this.selectTopItem(item)
@@ -88,6 +97,7 @@ export default {
     width: 100%;
     z-index: 600;
     .rank-scroll {
+      width: 100%;
       height: 100%;
       overflow: hidden;
       .rank-list-wrapper {

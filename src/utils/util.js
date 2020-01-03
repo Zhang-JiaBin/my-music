@@ -1,4 +1,4 @@
-function getRandomInt(min, max) {
+function getRandomInt (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 export function shuffle (arr) {
@@ -13,7 +13,7 @@ export function shuffle (arr) {
   return _arr
 }
 // 节流函数
-export function debounce(func, delay) {
+export function debounce (func, delay) {
   let timer
   return function (...args) {
     if (timer) {

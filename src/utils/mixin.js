@@ -526,6 +526,9 @@ export const playerMixin = {
       if (this.SrouterName === 'singer' || this.TrouterName === 'singer') {
         return
       }
+      if (!this.SrouterName) {
+        this.SrouterName = 'recommend'
+      }
       // 二级路由不是singer,跳转到指定的二级路由的子路由
       this.setPageCount(this.pageCount + 1)
       this.$router.push({

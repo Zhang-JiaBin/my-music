@@ -81,7 +81,9 @@ export default {
         flex: 0 0 65%;
         height: 100%;
         width: 65%;
-        padding: 5px 0 10px 15px;
+        padding-top: 5px;
+        padding-left: 15px;
+        /*padding: 5px 0 5px 15px;*/
         box-sizing: border-box;
         @include columnLeft;
         .rank-song-item{
@@ -89,6 +91,7 @@ export default {
           width: 100%;
           @include top;
           .rank-index{
+            margin-top: 3px;
             flex: 0 0 20px;
             width: 20px;
             height: 100%;
@@ -96,16 +99,19 @@ export default {
           }
           .rank-song{
             flex: 1;
+            height: 100%;
             @include columnTopLeft;
             .song-name{
-              font-size: $font-size-small;
-              @include ellipsis2(1)
+              line-height: 16px;
+              font-size: $font-size-medium;
+              @include ellipsis2(1);
             }
             .song-singer{
               margin-top: 5px;
               color: #9c9c9c;
-              font-size: $font-size-small-s;
-              @include ellipsis2(1)
+              line-height: 14px;
+              font-size: $font-size-small;
+              @include ellipsis;
             }
           }
         }

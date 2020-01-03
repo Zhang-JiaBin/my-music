@@ -44,7 +44,6 @@ import LittleTitle from '../common/LittleTitle'
 import SongSheet from '../components/sheet/songSheet'
 import Scroll from '../common/scroll'
 import Loading from '../common/loading'
-import { getSongList } from '../api/recommend'
 
 export default {
   name: 'sheet',
@@ -71,23 +70,29 @@ export default {
   },
   mounted () {
     this._getSheetList()
+    this.changeSheetBottom()
   },
   mixins: [singerMixin],
   components: { Loading, Scroll, SongSheet, LittleTitle },
   watch: {
     currentSong () {
-      if (this.currentSong !== undefined) {
-        this.$refs.sheet.style.bottom = `100px`
-        this.$refs.scroll.refresh()
-      } else {
-        this.$refs.sheet.style.bottom = `50px`
-        this.$refs.scroll.refresh()
-      }
+      this.changeSheetBottom()
+    },
+    pageCount () {
+      this.changeSheetBottom()
     }
   },
   computed: {},
 
   methods: {
+    changeSheetBottom () {
+      if (this.currentSong !== undefined) {
+        this.$refs.sheet.style.bottom = `100px`
+      } else {
+        this.$refs.sheet.style.bottom = `50px`
+      }
+      this.$refs.scroll.refresh()
+    },
     gotoPlay (item) {
       console.log(item)
     },
@@ -175,10 +180,10 @@ export default {
                 border-left: solid 1px rgba(0,0,0,0.1);
                 border-right: solid 1px rgba(0,0,0,0.1);
                 border-bottom: solid 1px rgba(0,0,0,0.1);
-                /*box-shadow: 0 2px 0 rgba(0,0,0,.1);*/
                 border-radius: 0 0 10px 10px;
                 @include center;
                 .text{
+                  line-height: 16px;
                   font-size: $font-size-medium;
                   @include ellipsis2(1);
                 }

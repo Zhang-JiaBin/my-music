@@ -572,7 +572,7 @@ export default {
         height: 50px;
         display: flex;
         .icon-down-wrapper {
-          flex: 0 0 40;
+          flex: 0 0 40px;
           width: 40px;
           height: 100%;
           z-index: 200;
@@ -588,21 +588,26 @@ export default {
           padding-left: 20px;
           box-sizing: border-box;
           .player-title-name {
-            height: 50%;
+            width: 100%;
+            /*height: 50%;*/
+            //@include ellipsis;
             @include left;
             .song-name {
               font-weight: bold;
+              line-height: 19px;
               font-size: $font-size-large;
               @include ellipsis2(1);
               color: #ffffff;
             }
             .singer-name {
+              margin-top: 5px;
               font-size: $font-size-medium;
               @include ellipsis2(1);
               line-height: 16px;
               color: #7a7572;
             }
             .icon-more {
+              margin-top: 5px;
               flex: 1;
               font-size: $font-size-small;
               color: #7a7572;

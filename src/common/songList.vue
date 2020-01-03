@@ -149,6 +149,7 @@ export default {
               }
               .item-singer {
                 margin-left: 4px;
+                line-height: 14px;
                 font-size: $font-size-small;
                 @include ellipsis2(1);
                 color: #828282;

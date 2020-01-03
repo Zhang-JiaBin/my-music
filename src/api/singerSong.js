@@ -14,7 +14,7 @@ import axios from 'axios'
 // }
 // import jsonp from '../utils/jsonp'
 import {
-  commonParams,
+  commonParams
 } from './config'
 // 获取歌曲的vkey用了拼接歌曲播放url
 export function getSongUrl (songMid) {

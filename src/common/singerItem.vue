@@ -36,10 +36,7 @@ export default {
     InSingers () {
       const index = this._findIndex(this.collectSingers, this.mysinger)
       return index > -1
-    },
-    // attentionText () {
-    //   return this.InSingers ? '已关注' : '关注'
-    // }
+    }
   },
 
   methods: {
@@ -79,6 +76,7 @@ export default {
         flex: 1;
         @include justcenter;
         .name {
+          line-height: 16px;
           @include ellipsis2(1);
         }
       }
