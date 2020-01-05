@@ -63,19 +63,6 @@ export default {
   },
   watch: {
     data (newlist, oldlist) {
-      // if (newlist.length === 1) {
-      //   this.loop = false
-      // } else {
-      //   this.loop = true
-      // }
-      // if (newlist.length === 0) {
-      //   this.refresh()
-      //   console.log('destroy1111')
-      //   this.destroy()
-      // }
-      // if (!this.slider) {
-      //   return
-      // }
       if (this.compareList(newlist, oldlist)) {
         // console.log('进入相同的歌手歌曲列表')
         this._setSlideWidth(true)
@@ -125,7 +112,7 @@ export default {
         this._initSlide()
         this.refresh()
         this.gotoPage(this.cIndex) // 初始化就要移动到指定的page页面
-      }, 40)
+      }, 200)
     },
     _NoSlider () {
       this.refresh()

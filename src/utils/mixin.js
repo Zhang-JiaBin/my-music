@@ -333,6 +333,7 @@ export const singerMixin = {
           this.selectSheetPlay(songs, 0, item)
         })
       }
+      this.setPlayingRank({})
       this.setPlayingSheet(item)
     },
     // rankItem 排行榜图片上的点击播放按钮
@@ -368,6 +369,7 @@ export const singerMixin = {
           this.selectRankPlay(songs, 0, item)
         })
       }
+      this.setPlayingSheet({})
       this.setPlayingRank(item)
     },
     // 选择一首歌曲播放

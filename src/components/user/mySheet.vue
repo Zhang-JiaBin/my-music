@@ -23,7 +23,7 @@
     </div>
     <transition name="fade">
       <div class="user-mysheet-wrapper" v-show="visible">
-        <div class="user-mysheet" @click="gotoMySheetDetail(item)" v-for="item in this.userSheet" :key="item.id">
+        <div class="user-mysheet" @click="gotoMySheetDetail(item)" v-for="(item, index) in this.userSheet" :key="index">
           <div class="mysheet-img-wrapper">
             <img class="mysheet-img" :src="item.pic" alt="">
           </div>

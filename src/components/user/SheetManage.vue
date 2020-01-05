@@ -4,7 +4,7 @@
     <div class="scroll-wrapper" ref="scrollWrapper">
       <scroll :data="this.userSheet" ref="manageScroll" class="manage-scroll">
         <div class="scroll-item">
-          <div class="user-mysheet" v-for="item in this.userSheet" :key="item.id">
+          <div class="user-mysheet" v-for="(item,index) in this.userSheet" :key="index">
         <div class="icon-choose-wrapper" @click.stop.prevent="selectOneSheet(item)" :class="{'select': item.select}">
           <span :class="iconChoose(item)"></span>
         </div>

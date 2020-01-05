@@ -25,7 +25,7 @@
                 <div class="mysheet-new">新建歌单</div>
               </div>
             </div>
-            <div class="user-mysheet" @click="addTo(selectedSong,item)" v-for="item in this.userSheet" :key="item.id">
+            <div class="user-mysheet" @click="addTo(selectedSong,item)" v-for="(item, index) in this.userSheet" :key="index">
               <div class="mysheet-img-wrapper">
                 <img class="mysheet-img" :src="item.pic" alt="">
               </div>
