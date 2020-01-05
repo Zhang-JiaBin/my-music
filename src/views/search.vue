@@ -161,7 +161,7 @@ export default {
       this.hasMore = true
       this.saveSearchHistory(this.query)
       search(this.query, this.page, showSinger, perpage).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         const data = res.data
         if (data.zhida && data.zhida.singermid) {
           this.searchSinger = new Singer({

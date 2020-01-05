@@ -78,7 +78,6 @@ export default {
   methods: {
     // 改变底部高度适应mini播放器
     changeMaBottom () {
-      console.log('bottom')
       if (this.currentSong !== undefined && this.pageCount >= 1) {
         this.$refs.scrollWrapper.style.bottom = `101px`
         this.$refs.manageBottom.style.bottom = `50px`

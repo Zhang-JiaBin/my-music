@@ -18,6 +18,7 @@ export default {
   },
   mounted () {
     this.setSlideIndex(1)
+    this.setSheetOrRank(0)
     this._getSheetList()
   },
   components: { MusicList },
@@ -44,7 +45,7 @@ export default {
   },
   watch: {
     contentId (newContentId) {
-      console.log('newcontentId', newContentId)
+      // console.log('newcontentId', newContentId)
       this._getSheetList()
     }
   },

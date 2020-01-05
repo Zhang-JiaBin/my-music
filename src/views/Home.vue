@@ -2,7 +2,9 @@
   <div class="home">
     <home-search></home-search>
     <home-tab></home-tab>
-    <router-view class="route-view"></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <player class="player"></player>
     <pop-up></pop-up>
     <create-sheet></create-sheet>

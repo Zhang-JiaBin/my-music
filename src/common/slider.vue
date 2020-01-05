@@ -53,10 +53,7 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted')
-    // this._initlize()
     window.addEventListener('resize', () => {
-      console.log('window')
       if (!this.slider) {
         return
       }
@@ -80,13 +77,13 @@ export default {
       //   return
       // }
       if (this.compareList(newlist, oldlist)) {
-        console.log('进入相同的歌手歌曲列表')
+        // console.log('进入相同的歌手歌曲列表')
         this._setSlideWidth(true)
         this.refresh()
       } else {
         this.refresh()
         this.destroy()
-        console.log('进入不同的歌手歌曲列表')
+        // console.log('进入不同的歌手歌曲列表')
         if (newlist.length === 1) {
           this._NoSlider()
         } else {

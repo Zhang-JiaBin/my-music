@@ -36,7 +36,10 @@ const singer = {
     inMySheet: false, // 判断是否进入我自己创建的歌单页面
     showCreateSheet: false, // 控制创建歌单组件的出现
     slideIndex: 1, // 解决从收藏页面跳转到各个页面返回原来页面的问题
-    showSheetPop: false // 歌单弹出框
+    showSheetPop: false, // 歌单弹出框
+    playingSheet: [], // 正在播放的歌单
+    playingRank: [],
+    SheetOrRank: 0
   },
   mutations: {
     'SET_SINGER': (state, singer) => {
@@ -116,6 +119,15 @@ const singer = {
     },
     'SET_SHOWSHEETPOP': (state, showSheetPop) => {
       state.showSheetPop = showSheetPop
+    },
+    'SET_PLAYINGSHEET': (state, playingSheet) => {
+      state.playingSheet = playingSheet
+    },
+    'SET_PLAYINGRANK': (state, playingRank) => {
+      state.playingRank = playingRank
+    },
+    'SET_SHEETORRANK': (state, SheetOrRank) => {
+      state.SheetOrRank = SheetOrRank
     }
   }
 }

@@ -128,6 +128,21 @@ const actions = {
     commit
   }, showSheetPop) => {
     return commit('SET_SHOWSHEETPOP', showSheetPop)
+  },
+  setPlayingSheet: ({
+    commit
+  }, playingSheet) => {
+    return commit('SET_PLAYINGSHEET', playingSheet)
+  },
+  setPlayingRank: ({
+    commit
+  }, playingRank) => {
+    return commit('SET_PLAYINGRANK', playingRank)
+  },
+  setSheetOrRank: ({
+    commit
+  }, SheetOrRank) => {
+    return commit('SET_SHEETORRANK', SheetOrRank)
   }
 }
 export default actions

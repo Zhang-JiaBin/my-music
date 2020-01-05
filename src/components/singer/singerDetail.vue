@@ -40,7 +40,7 @@ export default {
   },
   watch: {
     Mid (newMid) {
-      console.log('newMid', newMid)
+      // console.log('newMid', newMid)
       this._getSingerSongs()
     }
   },

@@ -125,7 +125,6 @@ import Scroll from '../../common/scroll'
 import slider from '../../common/slider'
 import ShowSinger from './showSinger'
 import PlayerList from '../player/playerList'
-
 export default {
   name: 'player',
   data () {
@@ -219,7 +218,7 @@ export default {
       })
     },
     homeMark (newHomeMark) {
-      console.log('newHomeMark', newHomeMark)
+      // console.log('newHomeMark', newHomeMark)
       if (newHomeMark >= 1) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
@@ -250,7 +249,7 @@ export default {
     },
     // 进入一次musicList组件 count + 1,退出 count - 1
     pageCount (newPageCount, oldPageCount) {
-      console.log('newPageCount', newPageCount)
+      // console.log('newPageCount', newPageCount)
       if (newPageCount === 0) {
         this.$refs.mini.style.transform = `translateY(-50px)`
         this.$refs.mini.style.transition = `transform 0.2s`
@@ -860,6 +859,11 @@ export default {
           width: 100%;
           height: 40px;
           position: relative;
+          .svgbar{
+            position: absolute;
+            left: 0;
+            top: 10px;
+          }
           .progress-circle {
             position: absolute;
             left: 3px;

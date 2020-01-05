@@ -22,7 +22,7 @@
         </div>
         <little-title title="官方歌单" :show-more="false"></little-title>
         <div class="sheet-wrapper">
-          <song-sheet @select="selectSheet" @play="gotoPlay" :sheet-list="this.sheetList"></song-sheet>
+          <song-sheet @select="selectSheet" :sheet-list="this.sheetList"></song-sheet>
         </div>
       </div>
       <div class="loading-container" v-show="!sheetList.length">
@@ -92,9 +92,6 @@ export default {
         this.$refs.sheet.style.bottom = `50px`
       }
       this.$refs.scroll.refresh()
-    },
-    gotoPlay (item) {
-      console.log(item)
     },
     // 监听sheet组件子组件select,选择了一个的歌单
     selectSheet (sheet) {

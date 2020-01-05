@@ -57,7 +57,10 @@ export const singerMixin = {
       'inMySheet',
       'showCreateSheet',
       'slideIndex',
-      'showSheetPop'
+      'showSheetPop',
+      'playingSheet',
+      'playingRank',
+      'SheetOrRank'
     ]),
     iconMode () {
       return this.mode === playMode.sequence ? 'icon-loop' : this.mode === playMode.loop ? 'icon-single' : 'icon-random'
@@ -105,7 +108,10 @@ export const singerMixin = {
       'setInMySheet',
       'setShowCreateSheet',
       'setSlideIndex',
-      'setShowSheetPop'
+      'setShowSheetPop',
+      'setPlayingSheet',
+      'setPlayingRank',
+      'setSheetOrRank'
     ]),
     // 对list每个数据进行处理，返回Song类实例数组
     normalizeSong (list) {
@@ -311,7 +317,7 @@ export const singerMixin = {
     },
     // 获取播放的图标
     getSheetIcon (item) {
-      if (this.playering && this.songSheet.content_id === item.content_id) {
+      if (this.playering && this.playingSheet.content_id === item.content_id) {
         return 'icon-sheet-pause'
       } else {
         return 'icon-sheet-play'
@@ -319,7 +325,7 @@ export const singerMixin = {
     },
     // 点击每个歌单图片上的播放按钮
     clickplay (item) {
-      if (this.songSheet.content_id === item.content_id) {
+      if (this.playingSheet.content_id === item.content_id) {
         this.setPlayering(!this.playering)
       } else {
         getSongList(item.content_id).then(res => {
@@ -327,6 +333,7 @@ export const singerMixin = {
           this.selectSheetPlay(songs, 0, item)
         })
       }
+      this.setPlayingSheet(item)
     },
     // rankItem 排行榜图片上的点击播放按钮
     selectRankPlay (list, index, rank) {
@@ -346,14 +353,14 @@ export const singerMixin = {
       this.setRankList(rank)
     },
     getRankIcon (item) {
-      if (this.playering && this.rankList.topId === item.topId) {
+      if (this.playering && this.playingRank.topId === item.topId) {
         return 'icon-sheet-pause'
       } else {
         return 'icon-sheet-play'
       }
     },
     clickRankPlay (item) {
-      if (this.rankList.topId === item.topId) {
+      if (this.playingRank.topId === item.topId) {
         this.setPlayering(!this.playering)
       } else {
         getMusicList(item.topId).then(res => {
@@ -361,6 +368,7 @@ export const singerMixin = {
           this.selectRankPlay(songs, 0, item)
         })
       }
+      this.setPlayingRank(item)
     },
     // 选择一首歌曲播放
     selectPlay (list, index, item) {
@@ -522,7 +530,7 @@ export const playerMixin = {
       }
       this.setFullScreen(false)
       // 如果二级路由或者三级就是singer直接return，不用跳转
-      console.log('goto:', this.SrouterName, this.TrouterName)
+      // console.log('goto:', this.SrouterName, this.TrouterName)
       if (this.SrouterName === 'singer' || this.TrouterName === 'singer') {
         return
       }

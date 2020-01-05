@@ -25,7 +25,10 @@ const getters = {
   inMySheet: state => state.singer.inMySheet,
   showCreateSheet: state => state.singer.showCreateSheet,
   slideIndex: state => state.singer.slideIndex,
-  showSheetPop: state => state.singer.showSheetPop
+  showSheetPop: state => state.singer.showSheetPop,
+  playingSheet: state => state.singer.playingSheet,
+  playingRank: state => state.singer.playingRank,
+  SheetOrRank: state => state.singer.SheetOrRank
 }
 
 export default getters

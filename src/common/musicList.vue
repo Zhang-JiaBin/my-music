@@ -153,6 +153,8 @@ export default {
       if (this.pageCount === 0) {
         return
       }
+      // this.setSongSheet({})
+      // this.setRankList({})
       this.setInMySheet(false)
       this.setPageCount(this.pageCount - 1)
     },
@@ -162,6 +164,13 @@ export default {
     // 获取歌曲播放地址
     selectItem (item, index) {
       this.selectPlay(this.songs, index, item)
+      if (this.SheetOrRank === 0) {
+        this.setPlayingSheet(this.songSheet)
+        this.setPlayingRank({})
+      } else {
+        this.setPlayingSheet({})
+        this.setPlayingRank(this.rankList)
+      }
       // 选择歌曲后滚动到相应的位置
       const ItemArr = this.$refs.scrollItem.getRefsSongItem()
       if (index > 4) {

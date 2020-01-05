@@ -21,6 +21,7 @@ export default {
   },
   mounted () {
     this.setSlideIndex(2)
+    this.setSheetOrRank(1)
     this._getRankList()
   },
   computed: {

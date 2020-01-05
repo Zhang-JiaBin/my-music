@@ -1,7 +1,7 @@
 <template>
   <div class="song-sheet-wrapper">
     <div class="song-sheet" v-for="item in sheetList" :key="item.content_id">
-      <div class="song-item" @click="selectItem(item)">
+      <div class="song-item" @click.prevent.stop="selectItem(item)">
         <div class="song-img-wrapper">
           <img class="song-img" v-lazy="item.cover">
           <div class="play-wrapper" @click.prevent.stop="clickplay(item)">
