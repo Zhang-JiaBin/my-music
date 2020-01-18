@@ -62,7 +62,7 @@ export default {
   computed: {
     showText () {
       let littleText = this.littleList.slice(0)
-      littleText[2].num = this.collectRanks.length + this.collectSheets.length + this.collectRanks.length
+      littleText[2].num = this.collectSingers.length + this.collectSheets.length + this.collectRanks.length
       littleText[1].num = this.favoriteList.length
       littleText[0].num = this.historyList.length
       return littleText

@@ -1,0 +1,11 @@
+@import "./variable";
+
+html,
+body {
+  line-height: 1;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  //background: $color-background;
+  color: $color-text;
+  font-size: $font-size-medium;
+}
